@@ -1,0 +1,64 @@
+<template>
+	<view class="page">
+		<view class="block">
+			<!-- <waterfall column-count="4">
+				<cell v-for="(item, index) of 30" :key="index">
+					<view class="cell" :style="{height: Math.random()*100 + 100 + 'px'}">{{item}}</view>
+				</cell>
+			</waterfall> -->
+			
+			<xg-waterfall>
+				<xg-waterfall-item v-for="(item, index) of 10" :key="index">
+					<view class="cell" :style="{height: Math.random()*100 + 100 + 'px'}">{{item}}</view>
+				</xg-waterfall-item>
+			</xg-waterfall>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {between} from '@/common/helper.js';
+	
+	export default {
+		data() {
+			return {
+				xgNavBar: {
+					progress: 0
+				},
+				scrollTop: 0,
+			}
+		},
+		onLoad() {
+			
+		},
+		onPageScroll(e) {
+			this.scrollTop = e.scrollTop;
+			this.$set(this.xgNavBar, 'progress', between(e.scrollTop/300, 0, 1));
+		},
+		methods: {
+
+		}
+	}
+</script>
+
+<style lang="scss">
+	$font-size-base: $uni-font-size-base;
+	
+	.cell {
+		background-color: red;
+		margin: 20px 0;
+	}
+	.block {
+		width: 750rpx;
+		// background-color: #000000;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		
+		margin-top: 30px;
+		height: 2000px;
+		// background-color: blue;
+		font-size: $font-size-base;
+	}
+</style>
