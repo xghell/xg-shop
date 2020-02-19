@@ -1,6 +1,8 @@
 <template>
 	<view class="nav-bar-wrap" :style="{height: navBarWrapHeight + 'px'}">
-		<view class="nav-bar" :style="{position: true === fixed ? 'fixed' : 'relative'}">
+		<view class="nav-bar" :style="{position: fixed ? 'fixed' : 'relative'}">
+			<!-- 默认插槽，可作为背景使用 -->
+			<slot name="default"></slot>
 			
 			<view class="status-bar" v-if="statusBar" :style="{height: statusBarHeight + 'px'}"></view>
 			
@@ -9,28 +11,53 @@
 					<view class="left-section" :style="{opacity: opacity}">
 						<slot name="left">
 							<!-- <text>左侧区域</text> -->
+							<xg-icon v-for="(icon, index) of left.iconList" :key="index" @iconTap="iconTap" :id="icon.id" :iconStyle="left.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||left.fontFamily" :text="icon.text" :textStyle="left.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="left.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="left.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="left.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
 						</slot>
 					</view>
-					<view class="center-section" :style="{opacity: opacity}">
+					<view v-if="hasCenter" class="center-section" :style="{opacity: opacity}">
 						<slot name="center">
 							<!-- <text>中间区域</text> -->
+							<xg-icon v-for="(icon, index) of center.iconList" :key="index" @iconTap="iconTap" :id="icon.id" :iconStyle="center.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||center.fontFamily" :text="icon.text" :textStyle="center.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="center.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="center.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="center.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
 						</slot>
 					</view>
 					<view ref="right-section" class="right-section">
 						<slot name="right">
 							<!-- <text>右侧区域</text> -->
+							<xg-icon v-for="(icon, index) of right.iconList" :key="index" @iconTap="iconTap" :id="icon.id" :iconStyle="right.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||right.fontFamily" :text="icon.text" :textStyle="right.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="right.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="right.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="right.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
 						</slot>
 					</view>
-					<view class="title-section">
+					<view v-if="hasTitle" class="title-section">
 						<slot name="title">
 							<!-- <text>标题区域</text> -->
+							<xg-icon v-for="(icon, index) of title.iconList" :key="index" @iconTap="iconTap" :id="icon.id" :iconStyle="title.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||title.fontFamily" :text="icon.text" :textStyle="title.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="title.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="title.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="title.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
 						</slot>
 					</view>
 				</view>
 				
-				<view ref="changeable-section" class="changeable-section" :style="{top: changeableTop + 'px', right: changeableRight + 'px'}">
+				<view v-if="hasChangeable" ref="changeable-section" class="changeable-section" :style="{top: changeableTop + 'px', right: changeableRight + 'px'}">
 					<slot name="changeable">
 						<!-- <text>可变区域</text> -->
+						<xg-search-input :leftIcon="searchInput.leftIcon" :rightIcon="searchInput.rightIcon"
+						:searchInputStyle="searchInput.searchInputStyle"
+						:inputStyle="searchInput.inputStyle"
+						:value="searchInput.value"
+						:placeholder="searchInput.placeholder"
+						:placeholder-style="searchInput.placeholderStyle"
+						:disabled="searchInput.disabled"
+						:maxlength="searchInput.maxlength"
+						:focus="searchInput.focus"
+						:confirm-type="searchInput.confirmType"
+						:confirm-hold="searchInput.confirmHold"
+						:cursor="searchInput.cursor"
+						:selection-start="searchInput.selectionStart"
+						:selection-end="searchInput.selectionEnd"
+						:adjust-position="searchInput.adjustPosition"
+						@input="input"
+						@focus="getFocus"
+						@blur="blur"
+						@confirm="confirm"
+						@leftTap="leftTap"
+						@rightTap="rightTap"></xg-search-input>
 					</slot>
 				</view>
 			</view>
@@ -40,9 +67,31 @@
 </template>
 
 <script>
+	/**
+	 * 
+	 * 插槽default,left,right,center(如果hasChangeable为false则没有此属性),title(如果hasChangeable为false则没有此属性),changeable(如果hasChangeable为false则没有此属性)
+	 * 
+	 * @iconTap
+	 * @input
+	 * @focus
+	 * @blur
+	 * @confirm
+	 * @searchInputleftIconTap
+	 * @searchInputrightIconTap
+	 */
 	export default {
 		name: 'XgNavBar',
 		props: {
+			hasCenter: {
+				type: Boolean
+			},
+			hasTitle: {
+				type: Boolean
+			},
+			hasChangeable: {
+				type: Boolean,
+				default: false
+			},
 			fixed: {
 				type: Boolean,
 				default: false
@@ -57,8 +106,100 @@
 			},
 			progress: {
 				type: Number,
-				default: 0
-			}
+				default: 0,
+				validator(value) {
+					if (value > 1 || value < 0) {
+						throw new RangeError(progress的值必须在0到1之间);
+					}
+					return true;
+				}
+			},
+			left: {
+				type: Object,
+				default: function () {
+					return {
+						iconStyle: '',
+						fontFamily: '',
+						textStyle: '',
+						thumbStyle: '',
+						titleStyle: '',
+						subtitleStyle: '',
+						iconList: [
+							{
+							id: '',
+							iconStyle: '',
+							fontFamily: '',
+							text: '',
+							textStyle: '',
+							thumb: '',
+							thumbStyle: '',
+							title: '',
+							titleStyle: '',
+							subtitle: '',
+							subtitleStyle: ''
+							},
+						]
+					}
+				}
+			},
+			center: {
+				type: Object,
+				default: function () {
+					return {
+						//同left
+					}
+				}
+			},
+			right: {
+				type: Object,
+				default: function () {
+					return {
+						//同left
+					}
+				}
+			},
+			title: {
+				type: Object,
+				default: function () {
+					return {
+						//同left
+					}
+				}
+			},
+			searchInput: {
+				type: Object,
+				default: function () {
+					return {
+						searchInputStyle: '',
+						inputStyle: '',
+						//只支持字体图标,且必须使用Unicode方式使用
+						leftIcon: {
+							fontFamily: '',
+							text: '',
+							iconSize: '',
+							iconColor: ''
+						},
+						rightIcon: {
+							//同leftIcon
+						},
+						//只支持字体图标,且必须使用Unicode方式使用
+						iconSize:'40rpx',
+						//图标距离两侧边的距离
+						iconPosition: '30rpx',
+						value: '',
+						placeholder: '请输入要搜索的内容',
+						placeholderStyle: '',
+						disabled: false,
+						maxlength: 140,
+						focus: false,
+						confirmType: 'done',
+						confirmHold: false,
+						selectionStart: -1,
+						selectionEnd: -1,
+						adjustPosition: true
+					}
+				}
+			},
 		},
 		data() {
 			return {
@@ -85,8 +226,29 @@
 						resolve(data);
 					})
 				})
-			}
+			},
 			// #endif
+			iconTap(e) {
+				this.$emit('iconTap', e);
+			},
+			input(e) {
+				this.$emit('input', e);
+			},
+			getFocus(e) {
+				this.$emit('focus', e);
+			},
+			blur(e) {
+				this.$emit('blur', e);
+			},
+			confirm(e) {
+				this.$emit('confirm', e);
+			},
+			leftTap(e) {
+				this.$emit('searchInputleftIconTap', e);
+			},
+			rightTap(e) {
+				this.$emit('searchInputRightIconTap', e);
+			}
 		},
 		mounted() {
 			let minChangeableTop = 0;
@@ -99,7 +261,13 @@
 				
 				const rightResult = this.getComponentRect(this.$refs['right-section']);
 				const fixedResult = this.getComponentRect(this.$refs['fixed-section']);
-				const changeableResult = this.getComponentRect(this.$refs['changeable-section']);
+				
+				let changeableResult = 0;
+				
+				if (this.hasChangeable) {
+					changeableResult = this.getComponentRect(this.$refs['changeable-section']);
+				}
+				
 				const rightData = await rightResult;
 				const fixedRData = await fixedResult;
 				const changeableData = await changeableResult;
@@ -111,17 +279,21 @@
 				
 				minChangeableTop = rightHeight/2 - changeableHeight/2;
 				
-				if (true === this.float) {
+				if (true !== this.float) {
 					this.navBarWrapHeight = maxChangeableTop + changeableHeight + this.statusBarHeight;
 				}
 				
-				this.$watch('progress', ()=>{
-					this.changeableTop = minChangeableTop + (maxChangeableTop - minChangeableTop) * (this.progress < 0.5 ? 0.5 : (1 - this.progress)) * 2;
-					this.changeableRight = minChangeableRight + (maxChangeableRight - minChangeableRight) * (this.progress < 0.5 ? this.progress : 0.5) * 2;
-					this.navBarInnerHeight = Math.max(changeableHeight + this.changeableTop, rightHeight);
-					this.opacity = 1 - this.progress;
-					
-				},{immediate: true});
+				if (this.hasChangeable) {
+					this.$watch('progress', ()=>{
+						this.changeableTop = minChangeableTop + (maxChangeableTop - minChangeableTop) * (this.progress < 0.5 ? 0.5 : (1 - this.progress)) * 2;
+						this.changeableRight = minChangeableRight + (maxChangeableRight - minChangeableRight) * (this.progress < 0.5 ? this.progress : 0.5) * 2;
+						this.navBarInnerHeight = Math.max(changeableHeight + this.changeableTop, rightHeight);
+						this.opacity = 1 - this.progress;
+						
+					},{immediate: true});
+				}
+				
+				
 				
 				// #endif
 				
@@ -134,22 +306,30 @@
 				
 				selector.exec(data => {
 					const rightHeight = data[1].height;
-					const changeableHeight = data[2].height;
+					
+					let changeableHeight = 0;
+					
+					if (this.hasChangeable) {
+						changeableHeight = data[2].height;
+					}
 					
 					minChangeableTop = rightHeight/2 - changeableHeight/2;
 					maxChangeableTop = data[0].height;
 					maxChangeableRight = data[1].width;
 					
-					if (true === this.float) {
+					if (true !== this.float) {
 						this.navBarWrapHeight = maxChangeableTop + changeableHeight + this.statusBarHeight;
 					}
 					
-					this.$watch('progress', ()=>{
-						this.changeableTop = minChangeableTop + (maxChangeableTop - minChangeableTop) * (this.progress < 0.5 ? 0.5 : (1 - this.progress)) * 2;
-						this.changeableRight = minChangeableRight + (maxChangeableRight - minChangeableRight) * (this.progress < 0.5 ? this.progress : 0.5) * 2;
-						this.navBarInnerHeight = Math.max(changeableHeight + this.changeableTop, rightHeight);
-						this.opacity = 1 - this.progress;
-					},{immediate: true});
+					
+					if (this.hasChangeable) {
+						this.$watch('progress', ()=>{
+							this.changeableTop = minChangeableTop + (maxChangeableTop - minChangeableTop) * (this.progress < 0.5 ? 0.5 : (1 - this.progress)) * 2;
+							this.changeableRight = minChangeableRight + (maxChangeableRight - minChangeableRight) * (this.progress < 0.5 ? this.progress : 0.5) * 2;
+							this.navBarInnerHeight = Math.max(changeableHeight + this.changeableTop, rightHeight);
+							this.opacity = 1 - this.progress;
+						},{immediate: true});
+					}
 				})
 				// #endif
 			})
@@ -160,10 +340,13 @@
 <style lang="scss" scoped>
 	.nav-bar-wrap {
 		position: relative;
+		overflow: hidden;
 	}
 	.nav-bar {
+		position: relative;
 		// border-style: solid;border-width: 1px;
 		z-index: 10000;
+		overflow: hidden;
 	}
 	.nav-bar-inner {
 		width: 750rpx;
@@ -177,6 +360,7 @@
 		/* #endif */
 		flex-direction: row;
 		justify-content: space-between;
+		align-items: stretch;
 	}
 	
 	.title-section {
@@ -188,17 +372,39 @@
 		display: flex;
 		/* #endif */
 		flex-direction: row;
-		justify-content: center;
+		align-items: center;
 	}
 	
 	.left-section {
+		position: relative;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
 	}
 	
 	.center-section {
+		// border-width: 1px;
+		position: relative;
 		flex: 1;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
 	}
 	
 	.right-section {
+		position: relative;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
 	}
 	
 	.changeable-section {

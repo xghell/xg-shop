@@ -59,7 +59,6 @@ function toPx(value) {
 	
 }
 
-
 export {
 	config,
 	getData,

@@ -1,0 +1,59 @@
+<template>
+	<view class="page">
+		<xg-nav-bar status-bar fixed hasCenter :left="lang(xgNavBar.left)" :right="lang(xgNavBar.right)" @iconTap="xgNavBarIconTap">
+			<view class="nav-bar-search-input" slot="center">
+				<xg-search-input :leftIcon="lang(xgNavBar.searchInput.leftIcon)" :rightIcon="lang(xgNavBar.searchInput.rightIcon)" :searchInputStyle="lang(xgNavBar.searchInput.searchInputStyle)" :inputStyle="lang(xgNavBar.searchInput.inputStyle)" :placeholder="lang(xgNavBar.searchInput.placeholder)" @rightTap="xgNavBarSearchInputRightIconTap"></xg-search-input>
+			</view>
+		</xg-nav-bar>
+		
+		<view class="">
+			<view class="history-section">
+				<view class="">{{lang(historySection.title)}}</view>
+				<text :style="{'font-family':lang(historySection.icon.fontFamily)}">{{lang(historySection.icon.text)}}</text>
+			</view>
+			
+			<view class="find-section">
+				
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import config from '@/config/search/search.js';
+	
+	export default {
+		mixins: [config],
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			xgNavBarIconTap(e) {
+				const action = {
+					back() {
+						uni.navigateBack();
+					},
+					search() {
+						console.log('点击了搜索按钮');
+					}
+				}
+				
+				action[e]();
+			},
+			xgNavBarSearchInputRightIconTap(e) {
+				console.log('点击搜索框右侧按钮');
+			},
+		},
+		created() {
+			console.log();
+		}
+	}
+</script>
+
+<style lang="scss">
+	.nav-bar-search-input {
+		width: 100%;
+	}
+</style>

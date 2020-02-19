@@ -6,7 +6,13 @@
 				"navigationStyle": "custom"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/search/search",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -20,5 +26,15 @@
 		"tpl-(.*)": "@/components/tpl-ui/tpl-$1/tpl-$1.vue",
 		"uni-(.*)": "@/components/uni-ui/uni-$1/uni-$1.vue"
 	  }
+	},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "search", //模式名称
+				"path": "pages/search/search", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
 	}
 }

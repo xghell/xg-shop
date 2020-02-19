@@ -1,5 +1,5 @@
 <template>
-	<view ref="waterfall" class="waterfall">
+	<view ref="waterfall" class="waterfall" :style="{height: waterfallHeight + 'px'}">
 		<slot></slot>
 	</view>
 </template>
@@ -7,11 +7,10 @@
 <script>
 	/**
 	 * column-count: [可选]描述瀑布流的列数
-	 *   auto: 意味着列数是被其他属性所决定的(比如 column-width)
 	 *   <integer>: 最佳列数，column-width 和 column-count 都指定非0值， 则 column-count 代表最大列数。
 	 * column-width : [可选]描述瀑布流每一列的列宽。 
-	 *   auto: 意味着列宽是被其他属性所决定的(比如 column-count)
-	 *   <length>: 最佳列宽，实际的列宽可能会更宽(需要填充剩余的空间)， 或者更窄(如果剩余空间比列宽还要小)。 该值必须大于0,如果与column-count同时指定则column-width优先
+	 *   不填意味着列宽是被其他属性所决定的(比如 column-count)
+	 *   <length>: 最佳列宽，实际的列宽可能会更宽(需要填充剩余的空间)， 或者更窄(如果剩余空间比列宽还要小)。 该值必须大于0
 	 * column-gap: [可选]列与列的间隙. 如果指定了 normal ，则对应 32.
 	 * left-gap: [可选]左边cell和列表的间隙. 如果未指定 ，则对应 0
 	 * right-gap: [可选]右边cell和列表的间隙. 如果未指定，则对应 0
@@ -26,7 +25,7 @@
 		props: {
 			columnCount: {
 				type: Number,
-				default: 4
+				default: 0
 			},
 			columnWidth: {
 				type: String,
@@ -48,6 +47,7 @@
 		data() {
 			return {
 				waterfallWidth: 0,
+				waterfallHeight: 0,
 				columnsHeight: [],
 				columnsLeft: [],
 			}
@@ -55,9 +55,11 @@
 		computed: {
 			realColumnCount() {
 				if (Object.is(this.columnWidth, '')) {
-					return this.columnCount;
+					return Math.max(1, this.columnCount);
+				} else if(0 < this.columnCount) {
+					return Math.max(1, Math.min(this.columnCount, Math.round(this.waterfallWidth / this.toPx(this.columnWidth))));
 				} else {
-					return Math.round(this.waterfallWidth / this.toPx(this.columnWidth));
+					return Math.max(1, Math.round(this.waterfallWidth / this.toPx(this.columnWidth)));
 				}
 			},
 			realColumnWidth() {
@@ -80,6 +82,15 @@
 				const data = await this.getComponentRect(this.$refs['waterfall']);
 				this.waterfallWidth = data.size.width;
 				
+				this.columnsHeight = (new Array(this.realColumnCount)).fill(0);
+				
+				this.columnsHeight.forEach((item, index) => {
+					this.columnsLeft[index] = (this.realColumnWidth + this.realColumnGap) * index + this.realLeftGap;
+				})
+				
+				setTimeout(()=> {
+					this.waterfallHeight = Math.max(...this.columnsHeight);
+				}, 10);
 				// #endif
 				
 				// #ifndef APP-PLUS-NVUE
@@ -87,17 +98,20 @@
 				selector.select('.waterfall').fields({size: true});
 				selector.exec(data => {
 					this.waterfallWidth = data[0].width;
+					
+					this.columnsHeight = (new Array(this.realColumnCount)).fill(0);
+					
+					this.columnsHeight.forEach((item, index) => {
+						this.columnsLeft[index] = (this.realColumnWidth + this.realColumnGap) * index + this.realLeftGap;
+					})
+					
+					setTimeout(()=> {
+						this.waterfallHeight = Math.max(...this.columnsHeight);
+					}, 10);
 				})
 				// #endif
-				console.log(this.waterfallWidth, 'adfaefaerf');
-				
-				
-				this.columnsHeight = (new Array(this.realColumnCount)).fill(0);
-				
-				this.columnsHeight.forEach((item, index) => {
-					this.columnsLeft[index] = (this.realColumnWidth + this.realColumnGap) * index + this.realLeftGap;
-				})
 			})
+			
 		},
 		methods: {
 			toPx(value) {

@@ -27,6 +27,7 @@
 					this.top = minColumnHeight;
 					this.waterfall.columnsHeight[minColumnIndex] += waterfallItemHeight;
 					this.left = this.waterfall.columnsLeft[minColumnIndex];
+					// console.log(this.waterfall.columnsHeight);
 					// #endif
 					
 					// #ifndef APP-PLUS-NVUE
@@ -66,7 +67,6 @@
 
 <style scoped>
 	.waterfall-item {
-		border-width: 1px;
 		position: absolute;
 	}
 </style>

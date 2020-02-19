@@ -1,35 +1,33 @@
 <template>
-	<view>
-		<view class="search-input-component">
-			<view class="left  side" :style="{left: iconPosition}" @tap="leftTap">
-				<slot name="left">
-					<text :style="{'font-size': iconSize, 'font-family': leftIcon.fontFamily}">{{leftIcon.unicode}}</text>
-				</slot>
-			</view>
-			<input class="center" type="text" placeholder-class="placeholder"
-				:style="inputStyle"
-				:value="value"
-				:placeholder="placeholder"
-				:placeholder-style="placeholderStyle"
-				:disabled="disabled"
-				:maxlength="maxlength"
-				:focus="focus"
-				:confirm-type="confirmType"
-				:confirm-hold="confirmHold"
-				:cursor="cursor"
-				:selection-start="selectionStart"
-				:selection-end="selectionEnd"
-				:adjust-position="adjustPosition"
-				@input="input"
-				@focus="getFocus"
-				@blur="blur"
-				@confirm="confirm"
-			/>
-			<view class="right side" :style="{right: iconPosition}" @tap="rightTap">
-				<slot name="right">
-					<text :style="{'font-size': iconSize,  'font-family': rightIcon.fontFamily}">{{rightIcon.unicode}}</text>
-				</slot>
-			</view>
+	<view :style="searchInputStyle">
+		<input class="center" type="text" placeholder-class="placeholder"
+			:style="`${inputStyle};${inputStyleInner}`"
+			:value="value"
+			:placeholder="placeholder"
+			:placeholder-style="placeholderStyle"
+			:disabled="disabled"
+			:maxlength="maxlength"
+			:focus="focus"
+			:confirm-type="confirmType"
+			:confirm-hold="confirmHold"
+			:cursor="cursor"
+			:selection-start="selectionStart"
+			:selection-end="selectionEnd"
+			:adjust-position="adjustPosition"
+			@input="input"
+			@focus="getFocus"
+			@blur="blur"
+			@confirm="confirm"
+		/>
+		<view class="left  side" :style="{left: iconPosition}" @tap="leftTap">
+			<slot name="left">
+				<text :style="{'font-size': leftIcon.iconSize||iconSize, color: leftIcon.iconColor||iconColor,'font-family': leftIcon.fontFamily}">{{leftIcon.text}}</text>
+			</slot>
+		</view>
+		<view class="right side" :style="{right: iconPosition}" @tap="rightTap">
+			<slot name="right">
+				<text :style="{'font-size': rightIcon.iconSize||iconSize, color: rightIcon.iconColor||iconColor, 'font-family': rightIcon.fontFamily}">{{rightIcon.text}}</text>
+			</slot>
 		</view>
 	</view>
 </template>
@@ -46,13 +44,21 @@
 	export default {
 		name: 'XgSearchInput',
 		props: {
+			searchInputStyle: {
+				type: String
+			},
+			inputStyle: {
+				type: String
+			},
 			//只支持字体图标,且必须使用Unicode方式使用
 			leftIcon: {
 				type: Object,
 				default: function () {
 					return {
-						fontFamily: 'xg-iconfont',
-						unicode: ''
+						fontFamily: '',
+						text: '',
+						iconSize: '',
+						iconColor: ''
 					}
 				}
 			},
@@ -60,8 +66,10 @@
 				type: Object,
 				default: function () {
 					return {
-						fontFamily: 'xg-iconfont',
-						unicode: ''
+						fontFamily: '',
+						text: '',
+						iconSize: '',
+						iconColor: ''
 					}
 				}
 			},
@@ -70,10 +78,13 @@
 				type: String,
 				default: '40rpx'
 			},
+			iconColor: {
+				type: String
+			},
 			//图标距离两侧边的距离
 			iconPosition: {
 				type: String,
-				default:'30rpx'
+				default:'20rpx'
 			},
 			value: {
 				type: String,
@@ -139,6 +150,7 @@
 				this.$emit('leftTap', e);
 			},
 			rightTap(e) {
+				// console.log('rightTap', e);
 				this.$emit('rightTap', e);
 			},
 			toPx(value) {
@@ -154,7 +166,7 @@
 			}
 		},
 		computed: {
-			inputStyle() {
+			inputStyleInner() {
 				return `
 					padding-left: ${this.toPx(this.iconSize) + this.toPx(this.iconPosition) + 8}px;
 					padding-right: ${this.toPx(this.iconSize) + this.toPx(this.iconPosition) + 8}px;
@@ -165,41 +177,32 @@
 </script>
 
 <style lang="scss" scoped>
-	$font-size-base: $uni-font-size-base;
+	$uni-font-size-base: 14px !default;
 	
-.search-input-component {
-	position: relative;
-	/* #ifndef APP-PLUS-NVUE */
-	display: flex;
-	/* #endif */
-	flex-direction: row;
-	align-items: center;
-	// background-color: red;
-	height: 80rpx;
-	// border-radius: 1000px;
-	// border-width: 1px;
-	
-	
-}
+	.side {
+		// border-width: 1px;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
 
-.side {
-	// border-width: 1px;
-	position: absolute;
-}
-
-.left {
-	left: 0;
-}
-.center {
-	flex: 1;
-	// border-width: 1px;
-	// padding-left: 30px;
-	height: 100%;
-}
-.placeholder {
-	font-size: $font-size-base;
-}
-.right {
-	right: 0;
-}
+	.left {
+		left: 0;
+	}
+	.center {
+		position: relative;
+		flex: 1;
+	}
+	.placeholder {
+		font-size: $uni-font-size-base;
+	}
+	.right {
+		right: 0;
+	}
 </style>
