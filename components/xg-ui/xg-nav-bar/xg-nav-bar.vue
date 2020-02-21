@@ -343,7 +343,7 @@
 		overflow: hidden;
 	}
 	.nav-bar {
-		position: relative;
+		// position: relative;
 		// border-style: solid;border-width: 1px;
 		z-index: 10000;
 		overflow: hidden;

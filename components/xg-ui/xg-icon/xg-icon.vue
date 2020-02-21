@@ -1,7 +1,7 @@
 <template>
 	<view class="icon" :style="`${iconStyle};flex-direction: ${vertical ? 'column' : 'row'};`" @tap="iconTap(id)">
 		<text v-if="text" class="iconfont" :style="`font-family: ${fontFamily};` + textStyle">{{text}}</text>
-		<image v-if="thumb" class="thumb" :src="thumb" mode="widthFix"></image>
+		<image v-if="thumb" class="thumb" :style="thumbStyle" :src="thumb"></image>
 		<text v-if="title" class="title" :style="`font-family: ${fontFamily};` + titleStyle">{{title}}</text>
 		<text v-if="subtitle" class="subtitle" :style="`font-family: ${fontFamily};` + subtitleStyle">{{subtitle}}</text>
 	</view>

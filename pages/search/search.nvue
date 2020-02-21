@@ -8,12 +8,27 @@
 		
 		<view class="">
 			<view class="history-section">
-				<view class="">{{lang(historySection.title)}}</view>
-				<text :style="{'font-family':lang(historySection.icon.fontFamily)}">{{lang(historySection.icon.text)}}</text>
+				<view class="history-section-title">
+					<text>{{lang(historySection.title)}}</text>
+					<text :style="{'font-family':lang(historySection.icon.fontFamily)}">{{lang(historySection.icon.text)}}</text>
+				</view>
+				
+				<view class="history-section-content">
+					<view class="history-section-item" v-for="(historyItem, index) of history" :key="index">
+						<text  class="history-section-item-text">{{historyItem}}</text>
+					</view>
+				</view>
 			</view>
 			
 			<view class="find-section">
-				
+				<view class="find-section-title">
+					<view class="find-section-title-text">
+						<view class="find-section-title-item" v-for="(title, index) of lang(findSection.titleList)" :key="index" @tap="findSectionTitleTap(title.id)">
+							<text>{{title.text}}</text>
+						</view>
+					</view>
+					<text :style="{'font-family': findSection.icon.fontFamily}">{{lang(findSection.icon.text)}}</text>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -21,12 +36,13 @@
 
 <script>
 	import config from '@/config/search/search.js';
+	import data from '@/data/search/search.js';
 	
 	export default {
 		mixins: [config],
 		data() {
 			return {
-				
+				history: [],
 			}
 		},
 		methods: {
@@ -45,15 +61,80 @@
 			xgNavBarSearchInputRightIconTap(e) {
 				console.log('点击搜索框右侧按钮');
 			},
+			findSectionTitleTap(id) {
+				console.log('点击了搜索发现部分标题', id);
+			}
 		},
-		created() {
-			console.log();
+		async created() {
+			this.history = await data.history();
 		}
 	}
 </script>
 
 <style lang="scss">
+	$uni-bg-color-grey:#f8f8f8 !default;
+	$uni-spacing-row-base: 20upx !default;
+	$uni-spacing-col-base: 16upx !default;
+	$uni-font-size-base:14px !default;
+	
 	.nav-bar-search-input {
 		width: 100%;
+	}
+	
+	.history-section {
+		
+	}
+	.history-section-title {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: space-between;
+		margin-left: $uni-spacing-col-base;
+		margin-right: $uni-spacing-col-base;
+	}
+	
+	.history-section-content {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+	.history-section-item {
+		background-color: $uni-bg-color-grey;
+		border-radius: 10000px;
+		padding-left: $uni-spacing-col-lg;
+		padding-right: $uni-spacing-col-lg;
+		margin-top: $uni-spacing-row-base;
+		margin-bottom: $uni-spacing-row-base;
+		margin-left: $uni-spacing-col-base;
+		margin-right: $uni-spacing-col-base;
+	}
+	.history-section-item-text {
+		line-height: 2;
+		font-size: $uni-font-size-base;
+	}
+	
+	.find-section {
+		
+	}
+	.find-section-title {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: space-between;
+		margin-left: $uni-spacing-col-lg;
+		margin-right: $uni-spacing-col-lg;
+	}
+	.find-section-title-text {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+	}
+	.find-section-title-item {
+		margin-right: $uni-spacing-col-lg;
 	}
 </style>

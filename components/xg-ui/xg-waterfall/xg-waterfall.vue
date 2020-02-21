@@ -14,6 +14,8 @@
 	 * column-gap: [可选]列与列的间隙. 如果指定了 normal ，则对应 32.
 	 * left-gap: [可选]左边cell和列表的间隙. 如果未指定 ，则对应 0
 	 * right-gap: [可选]右边cell和列表的间隙. 如果未指定，则对应 0
+	 * @getWaterfallItemWidth 获取子组件宽度，触发时瀑布流布局还未开始，可用于xg-waterfall-item中高度或其他尺寸，瀑布流依然生效
+	 * @getWaterfallHeight 获取总高度
 	 */
 	export default {
 		name: 'XgWaterfall',
@@ -33,7 +35,7 @@
 			},
 			columnGap: {
 				type: String,
-				default: '20rpx'
+				default: '0rpx'
 			},
 			leftGap: {
 				type: String,
@@ -82,6 +84,9 @@
 				const data = await this.getComponentRect(this.$refs['waterfall']);
 				this.waterfallWidth = data.size.width;
 				
+				//触发事件，可获子组件宽度，此时瀑布流布局计算还未开始
+				this.$emit('getWaterfallItemWidth', this.realColumnWidth);
+				
 				this.columnsHeight = (new Array(this.realColumnCount)).fill(0);
 				
 				this.columnsHeight.forEach((item, index) => {
@@ -90,7 +95,8 @@
 				
 				setTimeout(()=> {
 					this.waterfallHeight = Math.max(...this.columnsHeight);
-				}, 10);
+					this.$emit('getWaterfallHeight', this.waterfallHeight);
+				}, 300);
 				// #endif
 				
 				// #ifndef APP-PLUS-NVUE
@@ -99,6 +105,9 @@
 				selector.exec(data => {
 					this.waterfallWidth = data[0].width;
 					
+					//触发事件，可获子组件宽度，此时瀑布流布局计算还未开始
+					this.$emit('getWaterfallItemWidth', this.realColumnWidth);
+						
 					this.columnsHeight = (new Array(this.realColumnCount)).fill(0);
 					
 					this.columnsHeight.forEach((item, index) => {
@@ -107,7 +116,8 @@
 					
 					setTimeout(()=> {
 						this.waterfallHeight = Math.max(...this.columnsHeight);
-					}, 10);
+						this.$emit('getWaterfallHeight', this.waterfallHeight);
+					}, 300);
 				})
 				// #endif
 			})

@@ -1,9 +1,9 @@
 <template>
 	<view class="xg-price-component">
-		<text class="price-icon">{{currencySymbol}}</text>
-		<text>{{priceArray[0]}}</text>
-		<text>.</text>
-		<text class="price-decimal">{{priceArray[1]}}</text>
+		<text class="price-icon" :style="currencySymbolStyle">{{currencySymbol}}</text>
+		<text class="price-integer" :style="integerStyle">{{priceArray[0]}}</text>
+		<text class="price-dot">.</text>
+		<text class="price-decimal" :style="decimalStyle">{{priceArray[1]}}</text>
 	</view>
 </template>
 
@@ -41,14 +41,35 @@
 </script>
 
 <style lang="scss" scoped>
-.xg-price-component {
-	flex-shrink: 0;
-}
-.price-icon {
-	font-size: $uni-font-size-sm;
-}
-
-.price-decimal {
-	font-size: $uni-font-size-sm;
-}
+	$uni-font-size-sm:12px !default;
+	$uni-font-size-base:14px !default;
+	$uni-text-color-red: #ed1c24 !default;
+	
+	.xg-price-component {
+		position: relative;
+		font-size: $uni-font-size-sm;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: flex-end;
+		
+	}
+	
+	.price-icon {
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-red;
+	}
+	
+	.price-integer {
+		font-size: $uni-font-size-base;
+		color: $uni-text-color-red;
+	}
+	.price-dot {
+		color: $uni-text-color-red;
+	}
+	.price-decimal {
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-red;
+	}
 </style>

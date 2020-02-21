@@ -76,8 +76,28 @@ const search = {
 					'en_US': 'Search history'
 				},
 				icon: {
+					//垃圾桶图标
 					fontFamily: 'xg-iconfont',
 					text: '\ue6a0'
+				}
+			},
+			findSection: {
+				titleList: {
+					'zh_CN': [
+						{
+							id: 'find',
+							text: '搜索发现',
+						},
+						{
+							id: 'hot',
+							text: '热搜榜'
+						}
+					],
+				},
+				icon: {
+					//眼睛
+					fontFamily: 'xg-iconfont',
+					text: '\ue61a'
 				}
 			}
 		}

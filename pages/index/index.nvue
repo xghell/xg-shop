@@ -1,31 +1,85 @@
 <template>
 	<view class="page">
-		<xg-nav-bar status-bar fixed hasChangeable :progress="xgNavBarProgress" :left="xgNavBar.left" :right="xgNavBar.right" :searchInput="xgNavBar.searchInput" @iconTap="xgNavBarIconTap" @searchInputRightIconTap="xgNavBarSearchInputRightIconTap" @focus="xgNavBarSearchInputFocus">
-			<image class="xg-nav-bar-bg-img" :src="xgNavBar.backgroundImage" mode="widthFix"></image>
+		<!-- 顶部导航栏及背景 -->
+		<image class="xg-nav-bar-bg-img" :src="lang(xgNavBar.backgroundImage)"></image>
+		<xg-nav-bar status-bar fixed hasChangeable :progress="xgNavBarProgress" :left="lang(xgNavBar.left)" :right="lang(xgNavBar.right)" :searchInput="lang(xgNavBar.searchInput)" @iconTap="xgNavBarIconTap" @searchInputRightIconTap="xgNavBarSearchInputRightIconTap" @focus="xgNavBarSearchInputFocus">
+			<image class="xg-nav-bar-bg-img" :src="lang(xgNavBar.backgroundImage)"></image>
 		</xg-nav-bar>
 		
+		<!-- 导航栏下的轮播图 -->
+		<uni-swiper-dot :info="carouselList" :current="carouselIndex" mode="default" :dotsStyles="{backgroundColor: '#999', selectedBackgroundColor: '#FFF', width: 8}">
+			<swiper class="carousel" circular autoplay :interval="5000" :duration="500" @change="carouselChange">
+				<swiper-item v-for="(carousel, index) of carouselList" :key="index">
+					<view class="carousel-image-wrap">
+						<image class="carousel-image" :src="carousel.image" @tap="carouselTap(carousel.url)"></image>
+					</view>
+				</swiper-item>
+			</swiper>
+		</uni-swiper-dot>
 		
-		<view style="height: 1000px;background-color: #007AFF;">
-			<!-- <view class="">{{lang(test)}}</view> -->
-		</view>
+		<!-- 轮播图下的分类导航 -->
+		<uni-swiper-dot :info="cateNavPages" :current="cateNavIndex" mode="default">
+			<swiper  class="cate-nav" @change="cateNavIndexChange">
+				<swiper-item v-for="(item, index) of cateNavPages" :key="index">
+					<uni-grid :showBorder="false" :square="false" :column="cateNav.column">
+						<uni-grid-item v-for="(cate, index) of lang(cateNav.cateList).slice(cateNav.column*cateNav.row*index, cateNav.column*cateNav.row*(index + 1))" :key="index">
+							<xg-icon :id="cate.id" :iconStyle="cateNav.iconStyle" :thumb="cate.thumb" :thumbStyle="cateNav.thumbStyle" :subtitle="cate.subtitle" :subtitleStyle="cateNav.subtitleStyle"></xg-icon>
+						</uni-grid-item>
+					</uni-grid>
+				</swiper-item>
+			</swiper>
+		</uni-swiper-dot>
+		
+		
+		<!-- 产品列表tab -->
+		<tpl-product-list-tab height="2000rpx" :columnCount="productListTab.columnCount" :rowGap="productListTab.rowGap" :columnGap="productListTab.columnGap" :leftGap="productListTab.leftGap" :rightGap="productListTab.rightGap" :productListTabData="productListTabData" @change="productListTabChange"></tpl-product-list-tab>
+		
 	</view>
 </template>
 
 <script>
 	import {between} from '@/common/helper.js';
 	import config from '@/config/index/index.js';
+	import data from '@/data/index/index.js';
 	
 	export default {
 		mixins: [config],
 		data() {
 			return {
 				xgNavBarProgress: 0,
+				
+				carouselIndex: 0,
+				carouselList: [],
+				
+				cateNavIndex:0,
+				
+				productListTabCurrentIndex: 0,
+				productListTabData: []
 			}
+		},
+		onLoad() {
+			this.carouselList = data.carouselList();
+			
+			this.productListTabData = (new Array(2)).fill([]);
+			
+			// this.productListTabData[0] = data.productListTab(0);
+			this.$set(this.productListTabData, 0, data.productListTab(0))
 		},
 		onPageScroll(e) {
 			this.xgNavBarProgress = between(e.scrollTop/100, 0, 1);
 		},
 		methods: {
+			toPx(value) {
+				const result = /(\d+)(\w+)/.exec(value);
+				if ('rpx' === result[2].trim()) {
+					return uni.getSystemInfoSync().screenWidth * Number(result[1]) / 750;
+				} else if('px' === result[2].trim()) {
+					return Number(result[1]);
+				} else {
+					throw new TypeError(`${value}单位格式不正确`);
+				}
+				
+			},
 			xgNavBarIconTap(e) {
 				console.log('点击了导航栏图标：', e);
 			},
@@ -35,16 +89,71 @@
 			xgNavBarSearchInputFocus(e) {
 				// console.log('导航栏搜索框聚焦');
 				uni.navigateTo({url: '/pages/search/search'});
+			},
+			
+			carouselTap(url) {
+				uni.navigateTo({url: url});
+			},
+			carouselChange(e) {
+				this.carouselIndex = e.detail.current;
+			},
+			
+			cateNavIndexChange(e) {
+				this.cateNavIndex = e.detail.current;
+			},
+			
+			
+			productListTabChange(e) {
+				const currentIndex = e;
+				this.productListTabCurrentIndex = currentIndex;
+				
+				this.$set(this.productListTabData, currentIndex, data.productListTab(currentIndex))
+			}
+			
+		},
+		computed: {
+			cateNavPages() {
+				return new Array(Math.ceil(this.lang(this.cateNav.cateList).length/(this.cateNav.column*this.cateNav.row)));
 			}
 		},
 	}
 </script>
 
 <style lang="scss" scoped>
+	$uni-spacing-row-base: 24rpx !default;
+	$uni-spacing-col-base: 20rpx !default;
+	$uni-border-radius-lg: 24rpx !default;
+	
 	.xg-nav-bar-bg-img {
 		position: absolute;
 		top: 0;
-		left: 0;
-		right: 0;
+		width: 750rpx;
+		height: 400rpx;
 	}
+	
+	.carousel {
+		width: 750rpx;
+		height: 350rpx;
+	}
+	.carousel-image-wrap {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: center;
+		// padding-bottom: 100rpx;
+	}
+	.carousel-image {
+		border-radius: $uni-border-radius-lg;
+		width: 750rpx - $uni-spacing-col-base * 2;
+		height: 350rpx;
+	}
+	
+	.cate-nav {
+		// border-width: 1px;
+		margin-top: $uni-spacing-row-base;
+	}
+	
+	
+	
 </style>

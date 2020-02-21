@@ -2,16 +2,19 @@ const style = {
 	/* 对应@/common/xg.scss文件样式 */
 	
 	//文字尺寸
-	UNI_FONT_SIZE_MI: '8px',
+	UNI_FONT_SIZE_MI: '10px',
 	UNI_FONT_SIZE_HG: '18px',
-	UNI_FONT_SIZE_MX: '22px',
+	UNI_FONT_SIZE_MX: '20px',
+	
+	//文字颜色
+	UNI_TEXT_COLOR_RED: '#ed1c24',
 	
 	//图标尺寸
 	UNI_ICON_SIZE_MI: '20px',
 	UNI_ICON_SIZE_SM: '30px',
 	UNI_ICON_SIZE_BASE: '40px',
 	UNI_ICON_SIZE_LG: '50px',
-	UNI_ICON_SIZE_LG: '60px',
+	UNI_ICON_SIZE_HG: '60px',
 	UNI_ICON_SIZE_MX: '70px',
 	
 	//图标颜色
@@ -65,14 +68,14 @@ const style = {
 	UNI_BORDER_RADIUS_CIRCLE: '50%',
 	
 	// 水平间距 
-	UNI_SPACING_ROW_SM: '10rpx',
-	UNI_SPACING_ROW_BASE: '20rpx',
-	UNI_SPACING_ROW_LG: '30rpx',
+	UNI_SPACING_ROW_SM: '12rpx',
+	UNI_SPACING_ROW_BASE: '24rpx',
+	UNI_SPACING_ROW_LG: '36rpx',
 	
 	// 垂直间距
-	UNI_SPACING_COL_SM: '8rpx',
-	UNI_SPACING_COL_BASE: '16rpx',
-	UNI_SPACING_COL_LG: '24rpx',
+	UNI_SPACING_COL_SM: '10rpx',
+	UNI_SPACING_COL_BASE: '20rpx',
+	UNI_SPACING_COL_LG: '30rpx',
 	
 	//透明度 
 	UNI_OPACITY_DISABLED: 0.3,

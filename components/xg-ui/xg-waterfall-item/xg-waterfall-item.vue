@@ -16,7 +16,8 @@
 		},
 		mounted() {
 			this.$nextTick(function () {
-				this.$nextTick(async function () {
+				setTimeout(async () => {
+					
 					// #ifdef APP-PLUS-NVUE
 					const data = await this.getComponentRect(this.$refs['waterfall-item']);
 					const waterfallItemHeight = data.size.height;
@@ -45,7 +46,8 @@
 						this.left = this.waterfall.columnsLeft[minColumnIndex];
 					})
 					// #endif
-				})
+					
+				}, 300);
 			})
 		},
 		methods: {
