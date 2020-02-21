@@ -17,7 +17,6 @@
 		mounted() {
 			this.$nextTick(function () {
 				setTimeout(async () => {
-					
 					// #ifdef APP-PLUS-NVUE
 					const data = await this.getComponentRect(this.$refs['waterfall-item']);
 					const waterfallItemHeight = data.size.height;
@@ -47,7 +46,7 @@
 					})
 					// #endif
 					
-				}, 300);
+				}, 100);
 			})
 		},
 		methods: {

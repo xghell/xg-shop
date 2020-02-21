@@ -32,7 +32,7 @@
 		
 		
 		<!-- 产品列表tab -->
-		<tpl-product-list-tab height="2000rpx" :columnCount="productListTab.columnCount" :rowGap="productListTab.rowGap" :columnGap="productListTab.columnGap" :leftGap="productListTab.leftGap" :rightGap="productListTab.rightGap" :productListTabData="productListTabData" @change="productListTabChange"></tpl-product-list-tab>
+		<tpl-product-list-tab height="1000rpx" :columnCount="productListTab.columnCount" :rowGap="productListTab.rowGap" :columnGap="productListTab.columnGap" :leftGap="productListTab.leftGap" :rightGap="productListTab.rightGap" :productListTabData="productListTabData" @change="productListTabChange"></tpl-product-list-tab>
 		
 	</view>
 </template>

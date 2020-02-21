@@ -1,17 +1,15 @@
 <template>
-	<view class="product-list-tab" :style="{height: height}">
-		<swiper class="product-list-tab-card" @change="productListTabChange">
-			<swiper-item v-for="(productListTabCard, index) of productListTabData" :key="index">
-				<scroll-view class="product-list-tab-card-scroll" scroll-y="true">
-					<xg-waterfall class="waterfall" :columnCount="columnCount" :columnGap="columnGap" :leftGap="leftGap" :rightGap="rightGap" @getWaterfallItemWidth="getproductListTabCardItemWidth">
-						<xg-waterfall-item v-for="(product, index) of productListTabCard" :key="index">
-							<tpl-product :style="{'margin-bottom': rowGap}" :size="productListTabCardItemWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount"></tpl-product>
-						</xg-waterfall-item>
-					</xg-waterfall>
-				</scroll-view>
-			</swiper-item>
-		</swiper>
-	</view>
+	<swiper class="product-list-tab-card" :style="{height: height}" @change="productListTabChange">
+		<swiper-item v-for="(productListTabCard, index) of productListTabData" :key="index">
+			<scroll-view class="product-list-tab-card-scroll" scroll-y="true">
+				<xg-waterfall :columnCount="columnCount" :columnGap="columnGap" :leftGap="leftGap" :rightGap="rightGap" @getWaterfallItemWidth="getproductListTabCardItemWidth">
+					<xg-waterfall-item v-for="(product, index) of productListTabCard" :key="index">
+						<tpl-product :style="{'margin-bottom': rowGap}" :size="productListTabCardItemWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount"></tpl-product>
+					</xg-waterfall-item>
+				</xg-waterfall>
+			</scroll-view>
+		</swiper-item>
+	</swiper>
 </template>
 
 <script>
@@ -76,22 +74,16 @@
 </script>
 
 <style lang="scss" scoped>
-	.product-list-tab {
-		border-width: 5px;border-color: red;
+	.product-list-tab-card {
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
 		flex-direction: column;
 	}
-	.product-list-tab-card {
-		border-width: 5px;border-color: red;
-		flex: 1;
-	}
 	.product-list-tab-card-scroll {
-		border-width: 5px;border-color: red;
 		flex: 1;
-	}
-	.waterfall {
+		// height: 800rpx;
 		border-width: 5px;
+		border-color: red;
 	}
 </style>

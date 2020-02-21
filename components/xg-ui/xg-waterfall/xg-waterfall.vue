@@ -78,6 +78,14 @@
 			}
 			
 		},
+		updated() {
+			this.$nextTick(function () {
+				setTimeout(()=> {
+					this.waterfallHeight = Math.max(...this.columnsHeight);
+					this.$emit('getWaterfallHeight', this.waterfallHeight);
+				}, 200);
+			})
+		},
 		mounted() {
 			this.$nextTick(async function () {
 				// #ifdef APP-PLUS-NVUE
@@ -92,11 +100,6 @@
 				this.columnsHeight.forEach((item, index) => {
 					this.columnsLeft[index] = (this.realColumnWidth + this.realColumnGap) * index + this.realLeftGap;
 				})
-				
-				setTimeout(()=> {
-					this.waterfallHeight = Math.max(...this.columnsHeight);
-					this.$emit('getWaterfallHeight', this.waterfallHeight);
-				}, 300);
 				// #endif
 				
 				// #ifndef APP-PLUS-NVUE
@@ -113,11 +116,6 @@
 					this.columnsHeight.forEach((item, index) => {
 						this.columnsLeft[index] = (this.realColumnWidth + this.realColumnGap) * index + this.realLeftGap;
 					})
-					
-					setTimeout(()=> {
-						this.waterfallHeight = Math.max(...this.columnsHeight);
-						this.$emit('getWaterfallHeight', this.waterfallHeight);
-					}, 300);
 				})
 				// #endif
 			})
