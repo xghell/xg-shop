@@ -3,6 +3,12 @@ import style from '@/common/style.js';
 const index = {
 	data() {
 		return {
+			goTopButton: {
+				image: '/static/index/go-top.png',
+				size: '80rpx',
+				right: '30rpx',
+				bottom: '80rpx',
+			},
 			xgNavBar: {
 				backgroundImage: {
 					'zh_CN': 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2346819948,4073569407&fm=26&gp=0.jpg'
@@ -79,67 +85,67 @@ const index = {
 						{
 							url: '',
 							id: '',
-							thumb: '/static/index/baifuyun_shangquan-shumadianqi.png',
+							thumb: '/static/index/cate-nav/baifuyun_shangquan-shumadianqi.png',
 							subtitle: '电器',
 						},
 						{
 							url: '',
 							id: '',
-							thumb: '/static/index/chaoshi.png',
+							thumb: '/static/index/cate-nav/chaoshi.png',
 							subtitle: '医药',
 						},
 						{
 							url: '',
 							id: '',
-							thumb: '/static/index/chongzhijiaofei.png',
+							thumb: '/static/index/cate-nav/chongzhijiaofei.png',
 							subtitle: '充值',
 						},
 						{
 							url: '',
 							id: '',
-							thumb: '/static/index/fenxiangzhuanqian-.png',
+							thumb: '/static/index/cate-nav/fenxiangzhuanqian-.png',
 							subtitle: '赚钱',
 						},
 						{
 							url: '',
 							id: '',
-							thumb: '/static/index/fushixiangbao.png',
+							thumb: '/static/index/cate-nav/fushixiangbao.png',
 							subtitle: '服饰',
 						},
 						{
 							url: '',
 							id: '',
-							thumb: '/static/index/huiyuan.png',
+							thumb: '/static/index/cate-nav/huiyuan.png',
 							subtitle: '会员',
 						},
 						{
 							url: '',
 							id: '',
-							thumb: '/static/index/icon-.png',
+							thumb: '/static/index/cate-nav/icon-.png',
 							subtitle: '超市',
 						},
 						{
 							url: '',
 							id: '',
-							thumb: '/static/index/jinkoubaoguan.png',
+							thumb: '/static/index/cate-nav/jinkoubaoguan.png',
 							subtitle: '进口',
 						},
 						{
 							url: '',
 							id: '',
-							thumb: '/static/index/lingquanzhongxin.png',
+							thumb: '/static/index/cate-nav/lingquanzhongxin.png',
 							subtitle: '领券',
 						},
 						{
 							url: '',
 							id: '',
-							thumb: '/static/index/shuiguo.png',
+							thumb: '/static/index/cate-nav/shuiguo.png',
 							subtitle: '水果',
 						},
 						{
 							url: '',
 							id: '',
-							thumb: '/static/index/shuiguoshengxian.png',
+							thumb: '/static/index/cate-nav/shuiguoshengxian.png',
 							subtitle: '生鲜',
 						},
 					

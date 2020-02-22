@@ -1,40 +1,45 @@
 <template>
-	<view class="page">
-		<!-- 顶部导航栏及背景 -->
-		<image class="xg-nav-bar-bg-img" :src="lang(xgNavBar.backgroundImage)"></image>
-		<xg-nav-bar status-bar fixed hasChangeable :progress="xgNavBarProgress" :left="lang(xgNavBar.left)" :right="lang(xgNavBar.right)" :searchInput="lang(xgNavBar.searchInput)" @iconTap="xgNavBarIconTap" @searchInputRightIconTap="xgNavBarSearchInputRightIconTap" @focus="xgNavBarSearchInputFocus">
+	<scroll-view class="page" lower-threshold="3" :scrollTop="pageScrollTop" :scroll-y="pageScrollable" @scrolltolower="pageScrollToLower" @scroll="pageScroll">
+		<view>
+			<!-- 返回顶部按钮 -->
+			<image v-if="goTopButtonShow" class="go-top-button" :src="goTopButton.image" :style="{width: goTopButton.size, height: goTopButton.size, bottom: goTopButton.bottom, right: goTopButton.right}" @tap="goTop"></image>
+			
+			<!-- 顶部导航栏及背景 -->
 			<image class="xg-nav-bar-bg-img" :src="lang(xgNavBar.backgroundImage)"></image>
-		</xg-nav-bar>
-		
-		<!-- 导航栏下的轮播图 -->
-		<uni-swiper-dot :info="carouselList" :current="carouselIndex" mode="default" :dotsStyles="{backgroundColor: '#999', selectedBackgroundColor: '#FFF', width: 8}">
-			<swiper class="carousel" circular autoplay :interval="5000" :duration="500" @change="carouselChange">
-				<swiper-item v-for="(carousel, index) of carouselList" :key="index">
-					<view class="carousel-image-wrap">
-						<image class="carousel-image" :src="carousel.image" @tap="carouselTap(carousel.url)"></image>
-					</view>
-				</swiper-item>
-			</swiper>
-		</uni-swiper-dot>
-		
-		<!-- 轮播图下的分类导航 -->
-		<uni-swiper-dot :info="cateNavPages" :current="cateNavIndex" mode="default">
-			<swiper  class="cate-nav" @change="cateNavIndexChange">
-				<swiper-item v-for="(item, index) of cateNavPages" :key="index">
-					<uni-grid :showBorder="false" :square="false" :column="cateNav.column">
-						<uni-grid-item v-for="(cate, index) of lang(cateNav.cateList).slice(cateNav.column*cateNav.row*index, cateNav.column*cateNav.row*(index + 1))" :key="index">
-							<xg-icon :id="cate.id" :iconStyle="cateNav.iconStyle" :thumb="cate.thumb" :thumbStyle="cateNav.thumbStyle" :subtitle="cate.subtitle" :subtitleStyle="cateNav.subtitleStyle"></xg-icon>
-						</uni-grid-item>
-					</uni-grid>
-				</swiper-item>
-			</swiper>
-		</uni-swiper-dot>
-		
-		
-		<!-- 产品列表tab -->
-		<tpl-product-list-tab height="1000rpx" :columnCount="productListTab.columnCount" :rowGap="productListTab.rowGap" :columnGap="productListTab.columnGap" :leftGap="productListTab.leftGap" :rightGap="productListTab.rightGap" :productListTabData="productListTabData" @change="productListTabChange"></tpl-product-list-tab>
-		
-	</view>
+			<xg-nav-bar status-bar fixed hasChangeable :progress="xgNavBarProgress" :left="lang(xgNavBar.left)" :right="lang(xgNavBar.right)" :searchInput="lang(xgNavBar.searchInput)" @iconTap="xgNavBarIconTap" @searchInputRightIconTap="xgNavBarSearchInputRightIconTap" @focus="xgNavBarSearchInputFocus">
+				<image class="xg-nav-bar-bg-img" :src="lang(xgNavBar.backgroundImage)"></image>
+			</xg-nav-bar>
+			
+			<!-- 导航栏下的轮播图 -->
+			<uni-swiper-dot :info="carouselList" :current="carouselIndex" mode="default" :dotsStyles="{backgroundColor: '#999', selectedBackgroundColor: '#FFF', width: 8}">
+				<swiper class="carousel" circular autoplay :interval="5000" :duration="500" @change="carouselChange">
+					<swiper-item v-for="(carousel, index) of carouselList" :key="index">
+						<view class="carousel-image-wrap">
+							<image class="carousel-image" :src="carousel.image" @tap="carouselTap(carousel.url)"></image>
+						</view>
+					</swiper-item>
+				</swiper>
+			</uni-swiper-dot>
+			
+			<!-- 轮播图下的分类导航 -->
+			<uni-swiper-dot :info="cateNavPages" :current="cateNavIndex" mode="default">
+				<swiper  class="cate-nav" @change="cateNavIndexChange">
+					<swiper-item v-for="(item, index) of cateNavPages" :key="index">
+						<uni-grid :showBorder="false" :square="false" :column="cateNav.column">
+							<uni-grid-item v-for="(cate, index) of lang(cateNav.cateList).slice(cateNav.column*cateNav.row*index, cateNav.column*cateNav.row*(index + 1))" :key="index">
+								<xg-icon :id="cate.id" :iconStyle="cateNav.iconStyle" :thumb="cate.thumb" :thumbStyle="cateNav.thumbStyle" :subtitle="cate.subtitle" :subtitleStyle="cateNav.subtitleStyle"></xg-icon>
+							</uni-grid-item>
+						</uni-grid>
+					</swiper-item>
+				</swiper>
+			</uni-swiper-dot>
+			
+			
+			<!-- 产品列表tab -->
+			<tpl-product-list-tab ref='product-list-tab' class="product-list-tab" :scrollable="productListTabScrollable" :columnCount="productListTab.columnCount" :rowGap="productListTab.rowGap" :columnGap="productListTab.columnGap" :leftGap="productListTab.leftGap" :rightGap="productListTab.rightGap" :productListTabData="productListTabData" @change="productListTabChange" @scrolltoupper="productListTabScrolltoupper"></tpl-product-list-tab>
+			
+		</view>
+	</scroll-view>
 </template>
 
 <script>
@@ -46,6 +51,14 @@
 		mixins: [config],
 		data() {
 			return {
+				pageScrollable: true,
+				pageScrollTop: 0,
+				old:{
+					pageScrollTop: 0
+				},
+				
+				goTopButtonShow: false,
+				
 				xgNavBarProgress: 0,
 				
 				carouselIndex: 0,
@@ -54,7 +67,9 @@
 				cateNavIndex:0,
 				
 				productListTabCurrentIndex: 0,
-				productListTabData: []
+				productListTabData: [],
+				productListTabScrollable: false,
+				
 			}
 		},
 		onLoad() {
@@ -64,9 +79,6 @@
 			
 			// this.productListTabData[0] = data.productListTab(0);
 			this.$set(this.productListTabData, 0, data.productListTab(0))
-		},
-		onPageScroll(e) {
-			this.xgNavBarProgress = between(e.scrollTop/100, 0, 1);
 		},
 		methods: {
 			toPx(value) {
@@ -80,6 +92,30 @@
 				}
 				
 			},
+			
+			goTop() {
+				this.$refs['product-list-tab'].goTop();
+				
+				this.pageScrollTop = this.old.pageScrollTop;
+				
+				setTimeout(() => {
+					this.pageScrollTop = 0;
+				}, 10);
+			},
+			pageScroll(e) {
+				this.old.pageScrollTop = e.detail.scrollTop;
+				
+				this.xgNavBarProgress = between(e.detail.scrollTop/100, 0, 1);
+				
+				this.goTopButtonShow = (e.detail.scrollTop > 100);
+			},
+			pageScrollToLower(e) {
+				this.productListTabScrollable = true;
+				
+				this.pageScrollable = false;
+			},
+			
+			
 			xgNavBarIconTap(e) {
 				console.log('点击了导航栏图标：', e);
 			},
@@ -108,6 +144,10 @@
 				this.productListTabCurrentIndex = currentIndex;
 				
 				this.$set(this.productListTabData, currentIndex, data.productListTab(currentIndex))
+			},
+			productListTabScrolltoupper(e) {
+				this.pageScrollable = true;
+				this.productListTabScrollable = false;
 			}
 			
 		},
@@ -123,6 +163,25 @@
 	$uni-spacing-row-base: 24rpx !default;
 	$uni-spacing-col-base: 20rpx !default;
 	$uni-border-radius-lg: 24rpx !default;
+	
+	/* #ifndef APP-PLUS-NVUE */
+	page {
+		height: 100%;
+	}
+	/* #endif */
+	.page {
+		/* #ifndef APP-PLUS-NVUE */
+		height: 100%;
+		/* #endif */
+		
+	}
+	
+	.go-top-button {
+		/* #ifndef APP-PLUS-NVUE */
+		z-index: 10000;
+		/* #endif */
+		position: fixed;
+	}
 	
 	.xg-nav-bar-bg-img {
 		position: absolute;
@@ -156,4 +215,7 @@
 	
 	
 	
+	.product-list-tab {
+		height: 600px;
+	}
 </style>

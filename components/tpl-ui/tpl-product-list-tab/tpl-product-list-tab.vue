@@ -1,7 +1,7 @@
 <template>
-	<swiper class="product-list-tab-card" :style="{height: height}" @change="productListTabChange">
+	<swiper class="product-list-tab-card" @change="productListTabChange">
 		<swiper-item v-for="(productListTabCard, index) of productListTabData" :key="index">
-			<scroll-view class="product-list-tab-card-scroll" scroll-y="true">
+			<scroll-view class="product-list-tab-card-scroll" upper-threshold="3" :scroll-y="scrollable" :show-scrollbar="false" :scroll-top="scrollTop[index]" @scrolltoupper="scrolltoupper" @scrolltolower="scrolltolower" @scroll="scroll(index, $event)">
 				<xg-waterfall :columnCount="columnCount" :columnGap="columnGap" :leftGap="leftGap" :rightGap="rightGap" @getWaterfallItemWidth="getproductListTabCardItemWidth">
 					<xg-waterfall-item v-for="(product, index) of productListTabCard" :key="index">
 						<tpl-product :style="{'margin-bottom': rowGap}" :size="productListTabCardItemWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount"></tpl-product>
@@ -14,13 +14,17 @@
 
 <script>
 	/**
+	 * goTop方法 所有tab返回顶部，在组件外部使用ref调用，形如this.$refs[组件的ref属性值].goTop()
+	 * 
 	 * @change
+	 * @scrolltoupper
+	 * @scrolltolower
 	 */
 	export default {
 		props: {
-			height: {
-				type: String,
-				required: true
+			scrollable: {
+				type: Boolean,
+				default: false
 			},
 			//productListData赋值时尽可能使用vm.$set
 			productListTabData: {
@@ -60,14 +64,38 @@
 		data() {
 			return {
 				productListTabCardItemWidth: undefined,
+				
+				scrollTop: [],
+				old:{
+					scrollTop: []
+				},
 			}
 		},
 		methods: {
+			scrolltoupper(e) {
+				this.$emit('scrolltoupper', e);
+			},
+			scrolltolower(e) {
+				this.$emit('scrolltolower', e);
+			},
+			scroll(index, event) {
+				this.old.scrollTop[index] = event.detail.scrollTop;
+			},
+						
+			productListTabChange(e) {
+				this.$emit('change', e.detail.current)
+			},
+			
 			getproductListTabCardItemWidth(e) {
 				this.productListTabCardItemWidth = e;
 			},
-			productListTabChange(e) {
-				this.$emit('change', e.detail.current)
+			
+			goTop() {
+				this.scrollTop = [...this.old.scrollTop];
+				
+				this.$nextTick(function () {
+					this.scrollTop = [...this.old.scrollTop.fill(0)];
+				})
 			}
 		},
 	}
@@ -82,8 +110,5 @@
 	}
 	.product-list-tab-card-scroll {
 		flex: 1;
-		// height: 800rpx;
-		border-width: 5px;
-		border-color: red;
 	}
 </style>
