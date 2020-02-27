@@ -73,5 +73,7 @@
 		display: flex;
 		/* #endif */
 		flex-direction: row;
+		justify-content: space-between;
+		/* border-width: 1px; */
 	}
 </style>

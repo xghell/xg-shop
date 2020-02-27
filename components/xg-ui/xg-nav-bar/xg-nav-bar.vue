@@ -2,7 +2,7 @@
 	<view class="nav-bar-wrap" :style="{height: navBarWrapHeight + 'px'}">
 		<view class="nav-bar" :style="{position: fixed ? 'fixed' : 'relative'}">
 			<!-- 默认插槽，可作为背景使用 -->
-			<slot name="default"></slot>
+			<slot></slot>
 			
 			<view class="status-bar" v-if="statusBar" :style="{height: statusBarHeight + 'px'}"></view>
 			
@@ -11,25 +11,25 @@
 					<view class="left-section" :style="{opacity: opacity}">
 						<slot name="left">
 							<!-- <text>左侧区域</text> -->
-							<xg-icon v-for="(icon, index) of left.iconList" :key="index" @iconTap="iconTap" :id="icon.id" :iconStyle="left.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||left.fontFamily" :text="icon.text" :textStyle="left.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="left.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="left.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="left.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
+							<xg-icon v-for="(icon, index) of left.iconList" :key="index" @iconTap="iconTap" :index="icon.id" :iconStyle="left.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||left.fontFamily" :text="icon.text" :textStyle="left.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="left.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="left.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="left.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
 						</slot>
 					</view>
 					<view v-if="hasCenter" class="center-section" :style="{opacity: opacity}">
 						<slot name="center">
 							<!-- <text>中间区域</text> -->
-							<xg-icon v-for="(icon, index) of center.iconList" :key="index" @iconTap="iconTap" :id="icon.id" :iconStyle="center.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||center.fontFamily" :text="icon.text" :textStyle="center.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="center.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="center.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="center.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
+							<xg-icon v-for="(icon, index) of center.iconList" :key="index" @iconTap="iconTap" :index="icon.id" :iconStyle="center.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||center.fontFamily" :text="icon.text" :textStyle="center.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="center.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="center.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="center.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
 						</slot>
 					</view>
 					<view ref="right-section" class="right-section">
 						<slot name="right">
 							<!-- <text>右侧区域</text> -->
-							<xg-icon v-for="(icon, index) of right.iconList" :key="index" @iconTap="iconTap" :id="icon.id" :iconStyle="right.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||right.fontFamily" :text="icon.text" :textStyle="right.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="right.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="right.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="right.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
+							<xg-icon v-for="(icon, index) of right.iconList" :key="index" @iconTap="iconTap" :index="icon.id" :iconStyle="right.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||right.fontFamily" :text="icon.text" :textStyle="right.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="right.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="right.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="right.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
 						</slot>
 					</view>
 					<view v-if="hasTitle" class="title-section">
 						<slot name="title">
 							<!-- <text>标题区域</text> -->
-							<xg-icon v-for="(icon, index) of title.iconList" :key="index" @iconTap="iconTap" :id="icon.id" :iconStyle="title.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||title.fontFamily" :text="icon.text" :textStyle="title.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="title.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="title.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="title.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
+							<xg-icon v-for="(icon, index) of title.iconList" :key="index" @iconTap="iconTap" :index="icon.id" :iconStyle="title.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||title.fontFamily" :text="icon.text" :textStyle="title.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="title.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="title.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="title.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
 						</slot>
 					</view>
 				</view>
@@ -78,6 +78,8 @@
 	 * @confirm
 	 * @searchInputleftIconTap
 	 * @searchInputrightIconTap
+	 * @getNavBarMinHeight
+	 * @getNavBarMaxHeight
 	 */
 	export default {
 		name: 'XgNavBar',
@@ -212,7 +214,7 @@
 			}
 		},
 		created() {
-			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight;
+			this.statusBarHeight = this.statusBar ? uni.getSystemInfoSync().statusBarHeight : 0;
 		},
 		methods: {
 			// #ifdef APP-PLUS-NVUE
@@ -293,7 +295,8 @@
 					},{immediate: true});
 				}
 				
-				
+				this.$emit('getNavBarMinHeight', Math.max(changeableHeight + minChangeableTop + this.statusBarHeight, rightHeight));
+				this.$emit('getNavBarMaxHeight', maxChangeableTop + changeableHeight + this.statusBarHeight);
 				
 				// #endif
 				
@@ -330,6 +333,9 @@
 							this.opacity = 1 - this.progress;
 						},{immediate: true});
 					}
+					
+					this.$emit('getNavBarMinHeight', Math.max(changeableHeight + minChangeableTop + this.statusBarHeight, rightHeight));
+					this.$emit('getNavBarMaxHeight', maxChangeableTop + changeableHeight + this.statusBarHeight);
 				})
 				// #endif
 			})
@@ -345,7 +351,7 @@
 	.nav-bar {
 		// position: relative;
 		// border-style: solid;border-width: 1px;
-		z-index: 10000;
+		z-index: 100000;
 		overflow: hidden;
 	}
 	.nav-bar-inner {

@@ -1,0 +1,44 @@
+<template>
+	<view>
+		<swiper  class="cate-nav" :style="{'border-width': '1px'}">
+			<swiper-item v-for="(cateNavData, cateNavIndex) of cateNavPagesData" :key="cateNavIndex">
+				<uni-grid :showBorder="false" :square="false" :column="cateNav.column">
+					<uni-grid-item v-for="(cate, index) of cateNavData" :key="index">
+						<xg-icon :index="cate.id" :iconStyle="cateNav.iconStyle" :thumb="cate.thumb" :thumbStyle="cateNav.thumbStyle" :subtitle="cate.subtitle" :subtitleStyle="cateNav.subtitleStyle"></xg-icon>
+					</uni-grid-item>
+				</uni-grid>
+			</swiper-item>
+		</swiper>
+	</view>
+</template>
+
+<script>
+	import config from '@/config/index/index.js';
+	export default {
+		mixins: [config],
+		data() {
+			return {
+				iconList: []
+			}
+		},
+		onLoad() {
+		},
+		computed: {
+			cateNavPagesData() {
+				const pageCount = Math.ceil(this.cateNav.cateList.length/(this.cateNav.column*this.cateNav.row))
+				
+				const cateNavPagesData = [];
+				
+				for (let i = 0; i < pageCount; ++i) {
+					cateNavPagesData[i] = this.cateNav.cateList.slice(this.cateNav.column * this.cateNav.row * i, this.cateNav.column * this.cateNav.row * (i + 1))
+				}
+				
+				return cateNavPagesData;
+			},
+		},
+	}
+</script>
+
+<style scoped>
+
+</style>

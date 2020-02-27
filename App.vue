@@ -1,17 +1,5 @@
 <script>
 	export default {
-		globalData: {  
-			currentLang: 'zh_CN',
-			lang : {
-				lang(property) {
-					if (!property) {
-						// throw new ReferenceError(`lang函数参数传入了未定义在变量`)
-						return '';
-					}
-					return property[getApp({allowDefault: true}).globalData.currentLang] || property['zh_CN'] || property;
-				}
-			}
-		},
 		onLaunch: function() {
 			// console.log('App Launch')
 			

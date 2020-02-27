@@ -9,10 +9,10 @@
 		inject: ['tabBar'],
 		props: {
 			//唯一标识
-			id: {
-				type: String|Number,
-				required: true
-			},
+			// id: {
+			// 	type: String|Number,
+			// 	required: true
+			// },
 		},
 		data() {
 			return {
@@ -24,6 +24,18 @@
 			}
 		},
 		methods: {
+			// #ifdef APP-NVUE
+			getComponentRect(ref) {
+				
+				const dom = uni.requireNativePlugin('dom');
+				
+				return new Promise(function (resolve, reject) {
+					dom.getComponentRect(ref, data => {
+						resolve(data);
+					})
+				})
+			},
+			// #endif
 			itemTap() {
 				this.tabBar.scrollLeft = this.shouldScrollLeft;
 				this.tabBar.scrollTop = this.shouldScrollTop;
@@ -69,7 +81,7 @@
 
 <style scoped>
 	.tab-bar-item {
-		height: 100rpx;
-		border-width: 1px;
+		/* height: 100rpx; */
+		/* border-width: 1px; */
 	}
 </style>

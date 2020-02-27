@@ -83,7 +83,7 @@
 				setTimeout(()=> {
 					this.waterfallHeight = Math.max(...this.columnsHeight);
 					this.$emit('getWaterfallHeight', this.waterfallHeight);
-				}, 200);
+				}, 350);
 			})
 		},
 		mounted() {

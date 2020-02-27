@@ -1,7 +1,7 @@
 <template>
 	<view :style="searchInputStyle">
 		<input class="center" type="text" placeholder-class="placeholder"
-			:style="`${inputStyle};${inputStyleInner}`"
+			:style="inputStyle + ';' + inputStyleInner"
 			:value="value"
 			:placeholder="placeholder"
 			:placeholder-style="placeholderStyle"

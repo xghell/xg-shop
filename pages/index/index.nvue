@@ -1,13 +1,13 @@
 <template>
-	<scroll-view class="page" lower-threshold="3" :scrollTop="pageScrollTop" :scroll-y="pageScrollable" @scrolltolower="pageScrollToLower" @scroll="pageScroll">
+	<scroll-view class="pageScroll" scroll-with-animation lower-threshold="10" :scrollTop="pageScrollTop" :scroll-y="pageScrollable" @scrolltolower="pageScrollToLower" @scroll="pageScroll">
 		<view>
 			<!-- 返回顶部按钮 -->
 			<image v-if="goTopButtonShow" class="go-top-button" :src="goTopButton.image" :style="{width: goTopButton.size, height: goTopButton.size, bottom: goTopButton.bottom, right: goTopButton.right}" @tap="goTop"></image>
 			
 			<!-- 顶部导航栏及背景 -->
-			<image class="xg-nav-bar-bg-img" :src="lang(xgNavBar.backgroundImage)"></image>
-			<xg-nav-bar status-bar fixed hasChangeable :progress="xgNavBarProgress" :left="lang(xgNavBar.left)" :right="lang(xgNavBar.right)" :searchInput="lang(xgNavBar.searchInput)" @iconTap="xgNavBarIconTap" @searchInputRightIconTap="xgNavBarSearchInputRightIconTap" @focus="xgNavBarSearchInputFocus">
-				<image class="xg-nav-bar-bg-img" :src="lang(xgNavBar.backgroundImage)"></image>
+			<image class="xg-nav-bar-bg-img" :src="xgNavBar.backgroundImage"></image>
+			<xg-nav-bar status-bar fixed hasChangeable :progress="xgNavBarProgress" :left="xgNavBar.left" :right="xgNavBar.right" :searchInput="xgNavBar.searchInput" @getNavBarMinHeight="getNavBarMinHeight" @iconTap="xgNavBarIconTap" @searchInputRightIconTap="xgNavBarSearchInputRightIconTap" @focus="xgNavBarSearchInputFocus">
+				<image class="xg-nav-bar-bg-img" :src="xgNavBar.backgroundImage"></image>
 			</xg-nav-bar>
 			
 			<!-- 导航栏下的轮播图 -->
@@ -22,12 +22,12 @@
 			</uni-swiper-dot>
 			
 			<!-- 轮播图下的分类导航 -->
-			<uni-swiper-dot :info="cateNavPages" :current="cateNavIndex" mode="default">
+			<uni-swiper-dot :info="cateNavPagesData" :current="cateNavIndex" mode="default">
 				<swiper  class="cate-nav" @change="cateNavIndexChange">
-					<swiper-item v-for="(item, index) of cateNavPages" :key="index">
+					<swiper-item v-for="(cateNavData, cateNavIndex) of cateNavPagesData" :key="cateNavIndex">
 						<uni-grid :showBorder="false" :square="false" :column="cateNav.column">
-							<uni-grid-item v-for="(cate, index) of lang(cateNav.cateList).slice(cateNav.column*cateNav.row*index, cateNav.column*cateNav.row*(index + 1))" :key="index">
-								<xg-icon :id="cate.id" :iconStyle="cateNav.iconStyle" :thumb="cate.thumb" :thumbStyle="cateNav.thumbStyle" :subtitle="cate.subtitle" :subtitleStyle="cateNav.subtitleStyle"></xg-icon>
+							<uni-grid-item v-for="(cate, index) of cateNavData" :key="index">
+								<xg-icon :index="cate.id" :iconStyle="cateNav.iconStyle" :thumb="cate.thumb" :thumbStyle="cateNav.thumbStyle" :subtitle="cate.subtitle" :subtitleStyle="cateNav.subtitleStyle"></xg-icon>
 							</uni-grid-item>
 						</uni-grid>
 					</swiper-item>
@@ -36,8 +36,26 @@
 			
 			
 			<!-- 产品列表tab -->
-			<tpl-product-list-tab ref='product-list-tab' class="product-list-tab" :scrollable="productListTabScrollable" :columnCount="productListTab.columnCount" :rowGap="productListTab.rowGap" :columnGap="productListTab.columnGap" :leftGap="productListTab.leftGap" :rightGap="productListTab.rightGap" :productListTabData="productListTabData" @change="productListTabChange" @scrolltoupper="productListTabScrolltoupper"></tpl-product-list-tab>
-			
+			<view class="product-list-tab-section" :style="{height: productListTabSectionHeight + 'px'}">
+				<xg-tab-bar class="product-list-tab-bar">
+					<xg-tab-bar-item v-for="(icon, index) of productListTabBar.iconList" :key="index">
+						<xg-icon :selected="productListTabCurrentIndex === index" :iconStyle="productListTabBar.iconStyle" :title="icon.title" :selectedTitleStyle="productListTabBar.selectedTitleStyle" :subtitle="icon.subtitle" :subtitleStyle="productListTabBar.subtitleStyle" :selectedSubtitleStyle="productListTabBar.selectedSubtitleStyle" @iconTap="productListTabBarIconTap(index)"></xg-icon>
+					</xg-tab-bar-item>
+				</xg-tab-bar>
+				<swiper class="product-list-tab" :current="productListTabCurrentIndex" @change="productListTabChange">
+					<swiper-item v-for="(productListTabCard, productListTabDataIndex) of productListTabData" :key="productListTabDataIndex">
+						<scroll-view class="product-list-tab-scroll" upper-threshold="10" :scroll-y="productListTabScrollable" :show-scrollbar="false" scroll-with-animation :scroll-top="productListTabScrollTop[productListTabDataIndex]" @scrolltoupper="productListTabScrolltoupper" @scroll="productListTabScroll(productListTabDataIndex, $event)">
+							
+							<xg-waterfall :columnCount="productListTab.columnCount" :columnGap="productListTab.columnGap" :leftGap="productListTab.leftGap" :rightGap="productListTab.rightGap" @getWaterfallItemWidth="getproductListTabCardItemWidth">
+								<xg-waterfall-item v-for="(product, index) of productListTabCard" :key="index">
+									<tpl-product :style="{'margin-bottom': productListTab.rowGap}" :size="productListTabCardItemWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount"></tpl-product>
+								</xg-waterfall-item>
+							</xg-waterfall>
+						</scroll-view>
+					</swiper-item>
+				</swiper>
+				
+			</view>
 		</view>
 	</scroll-view>
 </template>
@@ -47,38 +65,54 @@
 	import config from '@/config/index/index.js';
 	import data from '@/data/index/index.js';
 	
+	const windowHeight = uni.getSystemInfoSync()['windowHeight'];
+	const customData = {
+		inertiaCoefficient: 7, //惯性系数，决定靠惯性滚动的距离，值越大滚动越远
+		pageScrollDeltaY: 0, //页面滚动速度
+		productListTabScrollDeltaY: 0, //产品列表滚动速度
+	};
+	
 	export default {
 		mixins: [config],
 		data() {
 			return {
-				pageScrollable: true,
-				pageScrollTop: 0,
 				old:{
-					pageScrollTop: 0
+					pageScrollTop: 0,
+					productListTabScrollTop: [],
 				},
 				
-				goTopButtonShow: false,
+				//页面级
+				pageScrollable: true,
+				pageScrollTop: 0,
+				goTopButtonShow: false, //是否显示返回顶部按钮
 				
+				//顶部导航栏
 				xgNavBarProgress: 0,
+				xgNavBarMinHeight: 0,
 				
+				//轮播图
 				carouselIndex: 0,
 				carouselList: [],
 				
+				//分类导航
 				cateNavIndex:0,
 				
+				//产品列表
 				productListTabCurrentIndex: 0,
 				productListTabData: [],
 				productListTabScrollable: false,
-				
+				productListTabScrollTop: [],
+				productListTabCardItemWidth: undefined,
+				productListTabAgentStarted: false,
 			}
 		},
-		onLoad() {
+		async onLoad() {
 			this.carouselList = data.carouselList();
+			this.productListTabData = (new Array(this.productListTabBar.iconList.length)).fill([]);
+			this.old.productListTabScrollTop = (new Array(this.productListTabBar.iconList.length)).fill(0);
+			this.productListTabScrollTop = (new Array(this.productListTabBar.iconList.length)).fill(0);
 			
-			this.productListTabData = (new Array(2)).fill([]);
-			
-			// this.productListTabData[0] = data.productListTab(0);
-			this.$set(this.productListTabData, 0, data.productListTab(0))
+			this.$set(this.productListTabData, 0, await data.productListTab(0))
 		},
 		methods: {
 			toPx(value) {
@@ -93,16 +127,24 @@
 				
 			},
 			
+			//页面部分
 			goTop() {
-				this.$refs['product-list-tab'].goTop();
+				this.productListTabGoTop();
 				
 				this.pageScrollTop = this.old.pageScrollTop;
 				
-				setTimeout(() => {
-					this.pageScrollTop = 0;
-				}, 10);
+				this.$nextTick(function () {
+					
+					setTimeout(() => {
+						this.productListTabScrollable = false;
+						this.pageScrollable = true;
+						this.pageScrollTop = 0;
+					}, 10);
+					
+				})
 			},
 			pageScroll(e) {
+				customData.pageScrollDeltaY = e.detail.deltaY;
 				this.old.pageScrollTop = e.detail.scrollTop;
 				
 				this.xgNavBarProgress = between(e.detail.scrollTop/100, 0, 1);
@@ -110,14 +152,28 @@
 				this.goTopButtonShow = (e.detail.scrollTop > 100);
 			},
 			pageScrollToLower(e) {
+				//TODO
 				this.productListTabScrollable = true;
-				
 				this.pageScrollable = false;
+				
+				//TODO
+				// #ifdef APP-PLUS-NVUE
+				this.productListTabScrollTop[this.productListTabCurrentIndex] = -customData.pageScrollDeltaY*customData.inertiaCoefficient;
+				// #endif
 			},
 			
-			
+			//顶部自定义导航栏
+			getNavBarMinHeight(e) {
+				this.xgNavBarMinHeight = e;
+			},
 			xgNavBarIconTap(e) {
 				console.log('点击了导航栏图标：', e);
+				uni.navigateTo({
+					url: '/pages/test/test',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
 			},
 			xgNavBarSearchInputRightIconTap(e) {
 				console.log('点击导航栏右侧按钮');
@@ -127,6 +183,7 @@
 				uni.navigateTo({url: '/pages/search/search'});
 			},
 			
+			//轮播图区域
 			carouselTap(url) {
 				uni.navigateTo({url: url});
 			},
@@ -134,26 +191,61 @@
 				this.carouselIndex = e.detail.current;
 			},
 			
+			//菜单导航栏
 			cateNavIndexChange(e) {
 				this.cateNavIndex = e.detail.current;
 			},
 			
-			
-			productListTabChange(e) {
-				const currentIndex = e;
+			//嵌套滚动的产品列表
+			async productListTabBarIconTap(index) {
+				this.productListTabCurrentIndex = index;
+				this.$set(this.productListTabData, index, await data.productListTab(index))
+			},
+			async productListTabChange(e) {
+				const currentIndex = e.detail.current;
 				this.productListTabCurrentIndex = currentIndex;
 				
-				this.$set(this.productListTabData, currentIndex, data.productListTab(currentIndex))
+				this.$set(this.productListTabData, currentIndex, await data.productListTab(currentIndex))
 			},
 			productListTabScrolltoupper(e) {
 				this.pageScrollable = true;
 				this.productListTabScrollable = false;
+				
+				// #ifdef APP-PLUS-NVUE
+				this.pageScrollTop = (this.pageScrollTop === 0 ? 0 : this.old.pageScrollTop - customData.productListTabScrollDeltaY*customData.inertiaCoefficient);
+				// #endif
+			},
+			productListTabScroll(index, e) {
+				customData.productListTabScrollDeltaY = e.detail.deltaY;
+				this.old.productListTabScrollTop[index] = e.detail.scrollTop;
+			},
+			getproductListTabCardItemWidth(e) {
+				this.productListTabCardItemWidth = e;
+			},
+			productListTabGoTop() {
+				this.productListTabScrollTop = [...this.old.productListTabScrollTop];
+				
+				this.$nextTick(function () {
+					this.productListTabScrollTop = [...this.old.productListTabScrollTop.fill(0)];
+				})
 			}
 			
 		},
 		computed: {
-			cateNavPages() {
-				return new Array(Math.ceil(this.lang(this.cateNav.cateList).length/(this.cateNav.column*this.cateNav.row)));
+			cateNavPagesData() {
+				const pageCount = Math.ceil(this.cateNav.cateList.length/(this.cateNav.column*this.cateNav.row))
+				
+				const cateNavPagesData = [];
+				
+				for (let i = 0; i < pageCount; ++i) {
+					cateNavPagesData[i] = this.cateNav.cateList.slice(this.cateNav.column * this.cateNav.row * i, this.cateNav.column * this.cateNav.row * (i + 1))
+				}
+				
+				return cateNavPagesData;
+			},
+			
+			productListTabSectionHeight() {
+				return windowHeight - this.xgNavBarMinHeight;
 			}
 		},
 	}
@@ -164,16 +256,15 @@
 	$uni-spacing-col-base: 20rpx !default;
 	$uni-border-radius-lg: 24rpx !default;
 	
-	/* #ifndef APP-PLUS-NVUE */
-	page {
-		height: 100%;
-	}
-	/* #endif */
-	.page {
-		/* #ifndef APP-PLUS-NVUE */
-		height: 100%;
-		/* #endif */
+	.pageScroll {
+		// border-width: 3px;
+		// border-color: red;
 		
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
 	}
 	
 	.go-top-button {
@@ -214,8 +305,37 @@
 	}
 	
 	
-	
+	.product-list-tab-section {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+	}
+	.product-list-tab-bar {
+		margin-top: $uni-spacing-row-sm;
+		margin-bottom: $uni-spacing-row-sm;
+		padding-left: $uni-spacing-col-base;
+		padding-right: $uni-spacing-col-base;
+	}
 	.product-list-tab {
-		height: 600px;
+		position: relative;
+		flex: 1;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+	}
+	.product-list-tab-scroll {
+		
+		flex: 1;
+	}
+	.product-list-tab-scroll-agent {
+		z-index: 100000;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background-color: rgba(0, 0, 0, 0.3);
 	}
 </style>
