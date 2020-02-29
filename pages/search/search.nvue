@@ -1,16 +1,16 @@
 <template>
 	<view class="page">
-		<xg-nav-bar status-bar fixed hasCenter :left="lang(xgNavBar.left)" :right="lang(xgNavBar.right)" @iconTap="xgNavBarIconTap">
-			<view class="nav-bar-search-input" slot="center">
-				<xg-search-input :leftIcon="lang(xgNavBar.searchInput.leftIcon)" :rightIcon="lang(xgNavBar.searchInput.rightIcon)" :searchInputStyle="lang(xgNavBar.searchInput.searchInputStyle)" :inputStyle="lang(xgNavBar.searchInput.inputStyle)" :placeholder="lang(xgNavBar.searchInput.placeholder)" @rightTap="xgNavBarSearchInputRightIconTap"></xg-search-input>
+		<xg-nav-bar status-bar fixed hasCenter :left="xgNavBar.left" :right="xgNavBar.right" @iconTap="xgNavBarIconTap">
+			<view slot="center">
+				<xg-search-input :leftIcon="xgNavBar.searchInput.leftIcon" :rightIcon="xgNavBar.searchInput.rightIcon" :searchInputStyle="xgNavBar.searchInput.searchInputStyle" :inputStyle="xgNavBar.searchInput.inputStyle" :placeholder="xgNavBar.searchInput.placeholder" @rightTap="xgNavBarSearchInputRightIconTap"></xg-search-input>
 			</view>
 		</xg-nav-bar>
 		
 		<view class="">
 			<view class="history-section">
 				<view class="history-section-title">
-					<text>{{lang(historySection.title)}}</text>
-					<text :style="{'font-family':lang(historySection.icon.fontFamily)}">{{lang(historySection.icon.text)}}</text>
+					<text>{{historySection.title}}</text>
+					<text :style="{'font-family':historySection.icon.fontFamily}">{{historySection.icon.text}}</text>
 				</view>
 				
 				<view class="history-section-content">
@@ -23,11 +23,11 @@
 			<view class="find-section">
 				<view class="find-section-title">
 					<view class="find-section-title-text">
-						<view class="find-section-title-item" v-for="(title, index) of lang(findSection.titleList)" :key="index" @tap="findSectionTitleTap(title.id)">
+						<view class="find-section-title-item" v-for="(title, index) of findSection.titleList" :key="index" @tap="findSectionTitleTap(title.id)">
 							<text>{{title.text}}</text>
 						</view>
 					</view>
-					<text :style="{'font-family': findSection.icon.fontFamily}">{{lang(findSection.icon.text)}}</text>
+					<text :style="{'font-family': findSection.icon.fontFamily}">{{findSection.icon.text}}</text>
 				</view>
 			</view>
 		</view>
@@ -76,10 +76,6 @@
 	$uni-spacing-row-base: 20upx !default;
 	$uni-spacing-col-base: 16upx !default;
 	$uni-font-size-base:14px !default;
-	
-	.nav-bar-search-input {
-		width: 100%;
-	}
 	
 	.history-section {
 		

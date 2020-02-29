@@ -1,9 +1,9 @@
 import style from '@/common/style.js';
 
-const search = {
+const cate = {
 	data() {
 		return {
-			xgNavBar: {
+			navBar: {
 				searchInput: {
 					placeholder: '请输入要搜索的商品',
 					searchInputStyle:  `height: 60rpx;
@@ -17,70 +17,42 @@ const search = {
 					inputStyle: `font-size: ${style.UNI_FONT_SIZE_BASE};`,
 					leftIcon: {
 						fontFamily: 'xg-iconfont',
-						text: '\ue651'
+						text: '\ue651',
+						iconColor: `${style.UNI_TEXT_COLOR_GREY}`,
 					},
 					rightIcon: {
 						fontFamily: 'xg-iconfont',
-						text: '\ue623'
+						text: '\ue623',
+						iconColor: `${style.UNI_TEXT_COLOR_GREY}`,
 					}
 				},
 				left: {
 					fontFamily: 'xg-iconfont',
 					iconStyle: `margin-left: ${style.UNI_SPACING_COL_BASE};`,
-					textStyle: `color:${style.UNI_TEXT_COLOR_GREY}`,
+					textStyle: `font-size:${style.UNI_ICON_SIZE_MI};`,
 					iconList: [
 						{
-							id: 'back',
-							text: '\ue638',
+							id: 'scan',
+							text: '\ue60c',
 						},
 					]
 				},
 				right: {
 					fontFamily: 'xg-iconfont',
-					textStyle: `margin-bottom: ${style.UNI_SPACING_ROW_SM}; 
-								margin-top: ${style.UNI_SPACING_ROW_SM}; 
-								margin-right: ${style.UNI_SPACING_COL_BASE};
-								font-size: ${style.UNI_FONT_SIZE_BASE};
-								color:${style.UNI_TEXT_COLOR_GREY};`,
+					textStyle: `margin-right: ${style.UNI_SPACING_COL_BASE};
+								font-size: ${style.UNI_ICON_SIZE_MI};
+								`,
 					iconList: [
 						{
-							id: 'search',
-							text: '搜索',
+							id: 'message',
+							text: '\ue624',
 						}
 					],
 				}
 					
 			},
-			
-			historySection: {
-				title: '搜索历史',
-				icon: {
-					//垃圾桶图标
-					fontFamily: 'xg-iconfont',
-					text: '\ue6a0'
-				}
-			},
-			findSection: {
-				titleList: [
-				
-					{
-						id: 'find',
-						text: '搜索发现',
-					},
-					{
-						id: 'hot',
-						text: '热搜榜'
-					}
-				
-				],
-				icon: {
-					//眼睛
-					fontFamily: 'xg-iconfont',
-					text: '\ue61a'
-				}
-			}
-		}
+		}	
 	},
 }
 
-export default search;
+export default cate;

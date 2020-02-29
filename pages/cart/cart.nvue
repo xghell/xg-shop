@@ -1,0 +1,28 @@
+<template>
+	<view class="page">
+		
+		<home-tab-bar></home-tab-bar>
+	</view>
+</template>
+
+<script>
+	import homeTabBar from '@/pages/tab-bar/home-tab-bar.vue';
+	
+	export default {
+		components: {
+			homeTabBar
+		},
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			
+		}
+	}
+</script>
+
+<style>
+
+</style>

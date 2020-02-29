@@ -265,25 +265,24 @@
 				const fixedResult = this.getComponentRect(this.$refs['fixed-section']);
 				
 				let changeableResult = 0;
+				let changeableHeight = 0;
 				
 				if (this.hasChangeable) {
 					changeableResult = this.getComponentRect(this.$refs['changeable-section']);
+					const changeableData = await changeableResult;
+					changeableHeight = changeableData.size.height;
 				}
 				
 				const rightData = await rightResult;
 				const fixedRData = await fixedResult;
-				const changeableData = await changeableResult;
+				
 				
 				const rightHeight = rightData.size.height;
-				const changeableHeight = changeableData.size.height;
+				
 				maxChangeableRight = rightData.size.width;
 				maxChangeableTop = fixedRData.size.height;
 				
 				minChangeableTop = rightHeight/2 - changeableHeight/2;
-				
-				if (true !== this.float) {
-					this.navBarWrapHeight = maxChangeableTop + changeableHeight + this.statusBarHeight;
-				}
 				
 				if (this.hasChangeable) {
 					this.$watch('progress', ()=>{
@@ -293,6 +292,10 @@
 						this.opacity = 1 - this.progress;
 						
 					},{immediate: true});
+				}
+				
+				if (true !== this.float) {
+					this.navBarWrapHeight = maxChangeableTop + changeableHeight + this.statusBarHeight;
 				}
 				
 				this.$emit('getNavBarMinHeight', Math.max(changeableHeight + minChangeableTop + this.statusBarHeight, rightHeight));
@@ -320,11 +323,6 @@
 					maxChangeableTop = data[0].height;
 					maxChangeableRight = data[1].width;
 					
-					if (true !== this.float) {
-						this.navBarWrapHeight = maxChangeableTop + changeableHeight + this.statusBarHeight;
-					}
-					
-					
 					if (this.hasChangeable) {
 						this.$watch('progress', ()=>{
 							this.changeableTop = minChangeableTop + (maxChangeableTop - minChangeableTop) * (this.progress < 0.5 ? 0.5 : (1 - this.progress)) * 2;
@@ -332,6 +330,10 @@
 							this.navBarInnerHeight = Math.max(changeableHeight + this.changeableTop, rightHeight);
 							this.opacity = 1 - this.progress;
 						},{immediate: true});
+					}
+					
+					if (true !== this.float) {
+						this.navBarWrapHeight = maxChangeableTop + changeableHeight + this.statusBarHeight;
 					}
 					
 					this.$emit('getNavBarMinHeight', Math.max(changeableHeight + minChangeableTop + this.statusBarHeight, rightHeight));
@@ -395,12 +397,6 @@
 		// border-width: 1px;
 		position: relative;
 		flex: 1;
-		/* #ifndef APP-PLUS-NVUE */
-		display: flex;
-		/* #endif */
-		flex-direction: row;
-		align-items: center;
-		justify-content: center;
 	}
 	
 	.right-section {

@@ -17,8 +17,8 @@
 		data() {
 			return {
 				index: 0,
-				shouldScrollLeft: 0,
-				tabBarItemWidth: undefined,
+				shouldScrollTop: 0,
+				tabBarItemHeight: undefined,
 			}
 		},
 		methods: {
@@ -35,7 +35,7 @@
 			},
 			// #endif
 			itemTap() {
-				this.tabBar.scrollLeft = this.shouldScrollLeft;
+				this.tabBar.scrollTop = this.shouldScrollTop;
 			}
 		},
 		created() {
@@ -48,21 +48,21 @@
 					const selector = uni.createSelectorQuery().in(this);
 					selector.select('.tab-bar-item').fields({size: true});
 					selector.exec(data => {
-						const tabBarItemWidth = data[0].width;
+						const tabBarItemHeight = data[0].height;
 						
-						this.tabBar.tabBarItemWidthSum += tabBarItemWidth;
+						this.tabBar.tabBarItemHeightSum += tabBarItemHeight;
 						
-						this.shouldScrollLeft = this.tabBar.tabBarItemWidthSum - this.tabBar.tabBarWidth/2;
+						this.shouldScrollTop = this.tabBar.tabBarItemHeightSum - this.tabBar.tabBarHeight/2;
 					})
 					// #endif
 					
 					// #ifdef APP-PLUS-NVUE
 					const tabBarItemData = await this.getComponentRect(this.$refs['tab-bar-item']);
-					const tabBarItemWidth = tabBarItemData.size.width;
+					const tabBarItemHeight = tabBarItemData.size.height;
 					
-					this.tabBar.tabBarItemWidthSum += tabBarItemWidth;
+					this.tabBar.tabBarItemHeightSum += tabBarItemHeight;
 					
-					this.shouldScrollLeft = this.tabBar.tabBarItemWidthSum - this.tabBar.tabBarWidth/2;
+					this.shouldScrollTop = this.tabBar.tabBarItemHeightSum - this.tabBar.tabBarHeight/2;
 					// #endif
 				}, 10);
 			})

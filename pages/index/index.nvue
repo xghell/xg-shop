@@ -1,66 +1,71 @@
 <template>
-	<scroll-view class="pageScroll" scroll-with-animation lower-threshold="10" :scrollTop="pageScrollTop" :scroll-y="pageScrollable" @scrolltolower="pageScrollToLower" @scroll="pageScroll">
-		<view>
-			<!-- 返回顶部按钮 -->
-			<image v-if="goTopButtonShow" class="go-top-button" :src="goTopButton.image" :style="{width: goTopButton.size, height: goTopButton.size, bottom: goTopButton.bottom, right: goTopButton.right}" @tap="goTop"></image>
-			
-			<!-- 顶部导航栏及背景 -->
-			<image class="xg-nav-bar-bg-img" :src="xgNavBar.backgroundImage"></image>
-			<xg-nav-bar status-bar fixed hasChangeable :progress="xgNavBarProgress" :left="xgNavBar.left" :right="xgNavBar.right" :searchInput="xgNavBar.searchInput" @getNavBarMinHeight="getNavBarMinHeight" @iconTap="xgNavBarIconTap" @searchInputRightIconTap="xgNavBarSearchInputRightIconTap" @focus="xgNavBarSearchInputFocus">
-				<image class="xg-nav-bar-bg-img" :src="xgNavBar.backgroundImage"></image>
-			</xg-nav-bar>
-			
-			<!-- 导航栏下的轮播图 -->
-			<uni-swiper-dot :info="carouselList" :current="carouselIndex" mode="default" :dotsStyles="{backgroundColor: '#999', selectedBackgroundColor: '#FFF', width: 8}">
-				<swiper class="carousel" circular autoplay :interval="5000" :duration="500" @change="carouselChange">
-					<swiper-item v-for="(carousel, index) of carouselList" :key="index">
-						<view class="carousel-image-wrap">
-							<image class="carousel-image" :src="carousel.image" @tap="carouselTap(carousel.url)"></image>
-						</view>
-					</swiper-item>
-				</swiper>
-			</uni-swiper-dot>
-			
-			<!-- 轮播图下的分类导航 -->
-			<uni-swiper-dot :info="cateNavPagesData" :current="cateNavIndex" mode="default">
-				<swiper  class="cate-nav" @change="cateNavIndexChange">
-					<swiper-item v-for="(cateNavData, cateNavIndex) of cateNavPagesData" :key="cateNavIndex">
-						<uni-grid :showBorder="false" :square="false" :column="cateNav.column">
-							<uni-grid-item v-for="(cate, index) of cateNavData" :key="index">
-								<xg-icon :index="cate.id" :iconStyle="cateNav.iconStyle" :thumb="cate.thumb" :thumbStyle="cateNav.thumbStyle" :subtitle="cate.subtitle" :subtitleStyle="cateNav.subtitleStyle"></xg-icon>
-							</uni-grid-item>
-						</uni-grid>
-					</swiper-item>
-				</swiper>
-			</uni-swiper-dot>
-			
-			
-			<!-- 产品列表tab -->
-			<view class="product-list-tab-section" :style="{height: productListTabSectionHeight + 'px'}">
-				<xg-tab-bar class="product-list-tab-bar">
-					<xg-tab-bar-item v-for="(icon, index) of productListTabBar.iconList" :key="index">
-						<xg-icon :selected="productListTabCurrentIndex === index" :iconStyle="productListTabBar.iconStyle" :title="icon.title" :selectedTitleStyle="productListTabBar.selectedTitleStyle" :subtitle="icon.subtitle" :subtitleStyle="productListTabBar.subtitleStyle" :selectedSubtitleStyle="productListTabBar.selectedSubtitleStyle" @iconTap="productListTabBarIconTap(index)"></xg-icon>
-					</xg-tab-bar-item>
-				</xg-tab-bar>
-				<swiper class="product-list-tab" :current="productListTabCurrentIndex" @change="productListTabChange">
-					<swiper-item v-for="(productListTabCard, productListTabDataIndex) of productListTabData" :key="productListTabDataIndex">
-						<scroll-view class="product-list-tab-scroll" upper-threshold="10" :scroll-y="productListTabScrollable" :show-scrollbar="false" scroll-with-animation :scroll-top="productListTabScrollTop[productListTabDataIndex]" @scrolltoupper="productListTabScrolltoupper" @scroll="productListTabScroll(productListTabDataIndex, $event)">
-							
-							<xg-waterfall :columnCount="productListTab.columnCount" :columnGap="productListTab.columnGap" :leftGap="productListTab.leftGap" :rightGap="productListTab.rightGap" @getWaterfallItemWidth="getproductListTabCardItemWidth">
-								<xg-waterfall-item v-for="(product, index) of productListTabCard" :key="index">
-									<tpl-product :style="{'margin-bottom': productListTab.rowGap}" :size="productListTabCardItemWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount"></tpl-product>
-								</xg-waterfall-item>
-							</xg-waterfall>
-						</scroll-view>
-					</swiper-item>
-				</swiper>
+	<view class="page">
+		<scroll-view class="pageScroll" scroll-with-animation lower-threshold="10" :scrollTop="pageScrollTop" :scroll-y="pageScrollable" @scrolltolower="pageScrollToLower" @scroll="pageScroll">
+			<view>
+				<!-- 返回顶部按钮 -->
+				<image v-if="goTopButtonShow" class="go-top-button" :src="goTopButton.image" :style="{width: goTopButton.size, height: goTopButton.size, bottom: goTopButton.bottom, right: goTopButton.right}" @tap="goTop"></image>
 				
+				<!-- 顶部导航栏及背景 -->
+				<image class="xg-nav-bar-bg-img" :src="xgNavBar.backgroundImage"></image>
+				<xg-nav-bar status-bar fixed hasChangeable :progress="xgNavBarProgress" :left="xgNavBar.left" :right="xgNavBar.right" :searchInput="xgNavBar.searchInput" @getNavBarMinHeight="getNavBarMinHeight" @iconTap="xgNavBarIconTap" @searchInputRightIconTap="xgNavBarSearchInputRightIconTap" @focus="xgNavBarSearchInputFocus">
+					<image class="xg-nav-bar-bg-img" :src="xgNavBar.backgroundImage"></image>
+				</xg-nav-bar>
+				
+				<!-- 导航栏下的轮播图 -->
+				<uni-swiper-dot :info="carouselList" :current="carouselIndex" mode="default" :dotsStyles="{backgroundColor: '#999', selectedBackgroundColor: '#FFF', width: 8}">
+					<swiper class="carousel" circular autoplay :interval="5000" :duration="500" @change="carouselChange">
+						<swiper-item v-for="(carousel, index) of carouselList" :key="index">
+							<view class="carousel-image-wrap">
+								<image class="carousel-image" :src="carousel.image" @tap="carouselTap(carousel.url)"></image>
+							</view>
+						</swiper-item>
+					</swiper>
+				</uni-swiper-dot>
+				
+				<!-- 轮播图下的分类导航 -->
+				<uni-swiper-dot :info="cateNavPagesData" :current="cateNavIndex" mode="default">
+					<swiper  class="cate-nav" @change="cateNavIndexChange">
+						<swiper-item v-for="(cateNavData, cateNavIndex) of cateNavPagesData" :key="cateNavIndex">
+							<uni-grid :showBorder="false" :square="false" :column="cateNav.column">
+								<uni-grid-item v-for="(cate, index) of cateNavData" :key="index">
+									<xg-icon :index="cate.id" :iconStyle="cateNav.iconStyle" :thumb="cate.thumb" :thumbStyle="cateNav.thumbStyle" :subtitle="cate.subtitle" :subtitleStyle="cateNav.subtitleStyle"></xg-icon>
+								</uni-grid-item>
+							</uni-grid>
+						</swiper-item>
+					</swiper>
+				</uni-swiper-dot>
+				
+				
+				<!-- 产品列表tab -->
+				<view class="product-list-tab-section" :style="{height: productListTabSectionHeight + 'px'}">
+					<xg-tab-bar class="product-list-tab-bar">
+						<xg-tab-bar-item v-for="(icon, index) of productListTabBar.iconList" :key="index">
+							<xg-icon :selected="productListTabCurrentIndex === index" :iconStyle="productListTabBar.iconStyle" :title="icon.title" :selectedTitleStyle="productListTabBar.selectedTitleStyle" :subtitle="icon.subtitle" :subtitleStyle="productListTabBar.subtitleStyle" :selectedSubtitleStyle="productListTabBar.selectedSubtitleStyle" @iconTap="productListTabBarIconTap(index)"></xg-icon>
+						</xg-tab-bar-item>
+					</xg-tab-bar>
+					<swiper class="product-list-tab" :current="productListTabCurrentIndex" @change="productListTabChange">
+						<swiper-item v-for="(productListTabCard, productListTabDataIndex) of productListTabData" :key="productListTabDataIndex">
+							<scroll-view class="product-list-tab-scroll" upper-threshold="10" :scroll-y="productListTabScrollable" :show-scrollbar="false" scroll-with-animation :scroll-top="productListTabScrollTop[productListTabDataIndex]" @scrolltoupper="productListTabScrolltoupper" @scroll="productListTabScroll(productListTabDataIndex, $event)">
+								
+								<xg-waterfall :columnCount="productListTab.columnCount" :columnGap="productListTab.columnGap" :leftGap="productListTab.leftGap" :rightGap="productListTab.rightGap" @getWaterfallItemWidth="getproductListTabCardItemWidth">
+									<xg-waterfall-item v-for="(product, index) of productListTabCard" :key="index">
+										<tpl-product :style="{'margin-bottom': productListTab.rowGap}" :size="productListTabCardItemWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount"></tpl-product>
+									</xg-waterfall-item>
+								</xg-waterfall>
+							</scroll-view>
+						</swiper-item>
+					</swiper>
+					
+				</view>
 			</view>
-		</view>
-	</scroll-view>
+		</scroll-view>
+		<home-tab-bar @getHomeTabBarHeight="getHomeTabBarHeight"></home-tab-bar>
+	</view>
 </template>
 
 <script>
+	import homeTabBar from '@/pages/tab-bar/home-tab-bar.vue';
+	
 	import {between} from '@/common/helper.js';
 	import config from '@/config/index/index.js';
 	import data from '@/data/index/index.js';
@@ -74,6 +79,9 @@
 	
 	export default {
 		mixins: [config],
+		components: {
+			homeTabBar
+		},
 		data() {
 			return {
 				old:{
@@ -103,7 +111,9 @@
 				productListTabScrollable: false,
 				productListTabScrollTop: [],
 				productListTabCardItemWidth: undefined,
-				productListTabAgentStarted: false,
+				
+				//tabbar
+				homeTabBarHeight: 0,
 			}
 		},
 		async onLoad() {
@@ -149,7 +159,7 @@
 				
 				this.xgNavBarProgress = between(e.detail.scrollTop/100, 0, 1);
 				
-				this.goTopButtonShow = (e.detail.scrollTop > 100);
+				this.goTopButtonShow = (e.detail.scrollTop > 200);
 			},
 			pageScrollToLower(e) {
 				//TODO
@@ -228,8 +238,11 @@
 				this.$nextTick(function () {
 					this.productListTabScrollTop = [...this.old.productListTabScrollTop.fill(0)];
 				})
-			}
+			},
 			
+			getHomeTabBarHeight(e) {
+				this.homeTabBarHeight = e;
+			}
 		},
 		computed: {
 			cateNavPagesData() {
@@ -245,7 +258,7 @@
 			},
 			
 			productListTabSectionHeight() {
-				return windowHeight - this.xgNavBarMinHeight;
+				return windowHeight - this.xgNavBarMinHeight - this.homeTabBarHeight;
 			}
 		},
 	}
@@ -256,15 +269,23 @@
 	$uni-spacing-col-base: 20rpx !default;
 	$uni-border-radius-lg: 24rpx !default;
 	
-	.pageScroll {
-		// border-width: 3px;
-		// border-color: red;
-		
+	.page {
 		position: fixed;
 		top: 0;
 		right: 0;
 		bottom: 0;
 		left: 0;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+	}
+	.pageScroll {
+		// border-width: 3px;
+		// border-color: red;
+		
+		flex: 1;
 	}
 	
 	.go-top-button {
@@ -302,6 +323,7 @@
 	.cate-nav {
 		// border-width: 1px;
 		margin-top: $uni-spacing-row-base;
+		height: 300rpx;
 	}
 	
 	

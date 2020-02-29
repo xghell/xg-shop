@@ -7,15 +7,17 @@ $uni-font-size-mx: 20px;
 $uni-text-color-red: #ed1c24;
 
 /* 图标尺寸 */
-$uni-icon-size-mi: 20px;
-$uni-icon-size-sm: 30px;
-$uni-icon-size-base: 40px;
-$uni-icon-size-lg: 50px;
-$uni-icon-size-hg: 60px;
-$uni-icon-size-mx: 70px;
+$uni-icon-size-mi: 40rpx;
+$uni-icon-size-sm: 60rpx;
+$uni-icon-size-base: 80rpx;
+$uni-icon-size-lg: 100rpx;
+$uni-icon-size-hg: 120rpx;
+$uni-icon-size-mx: 140rpx;
 
-/* 图标颜色 */
-$uni-icon-color-base: #333;
-$uni-icon-color-white: #FFF;
-$uni-icon-color-title: #333;
-$uni-icon-color-subtitle: #999;
+/* 水平间距 */
+$uni-spacing-row-mi: 8rpx;
+$uni-spacing-row-hg: 48rpx;
+
+/* 垂直间距 */
+$uni-spacing-col-mi: 6rpx;
+$uni-spacing-col-hg: 40rpx;

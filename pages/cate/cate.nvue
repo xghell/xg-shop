@@ -1,0 +1,176 @@
+<template>
+	<view class="page">
+		<xg-nav-bar status-bar fixed hasCenter :navBarStyle="navBar.navBarStyle" :left="navBar.left" :right="navBar.right" @iconTap="navBarIconTap">
+			<view class="nav-bar-bg"></view>
+			<view class="nav-bar-search-input" slot="center">
+				<xg-search-input :leftIcon="navBar.searchInput.leftIcon" :rightIcon="navBar.searchInput.rightIcon" :searchInputStyle="navBar.searchInput.searchInputStyle" :inputStyle="navBar.searchInput.inputStyle" :placeholder="navBar.searchInput.placeholder" @rightTap="navBarSearchInputRightIconTap"></xg-search-input>
+			</view>
+		</xg-nav-bar>
+		<view class="page-content">
+			<xg-tab-bar-vertical class="tab-bar">
+				<xg-tab-bar-vertical-item v-for="(name, index) of tabBarList()" :key="index">
+					<view class="tab-bar-name-common" :class="currentIndex === index ? 'selected-tab-bar-name' : 'tab-bar-name'" @tap="tabBarItemTap(index)">
+						<text :class="currentIndex === index ? 'selected-tab-bar-name-text' : 'tab-bar-name-text'">{{name}}</text>
+					</view>
+				</xg-tab-bar-vertical-item>
+			</xg-tab-bar-vertical>
+			
+			<scroll-view class="cate-content-scroll" :scroll-y="true">
+				<view>
+					<view class="cate-card" v-for="(cateCard, cateCardIndex) of cateList(currentIndex)" :key="cateCardIndex">
+						<view>
+							<text class="cate-card-title">{{cateCard.name}}</text>
+						</view>
+						<uni-grid :column="3" :square="false" :showBorder="false" :highlight="false">
+							<block v-for="(cate, cateIndex) of cateCard.children" :key="cateIndex">
+								<uni-grid-item>
+									<view class="cate-card-item">
+										<image class="cate-card-item-image" :src="cate.image"></image>
+										<text class="cate-card-item-name">{{cate.name}}</text>
+									</view>
+								</uni-grid-item>
+							</block>
+						</uni-grid>
+						
+					</view>
+				</view>
+			</scroll-view>
+		</view>
+		
+		<home-tab-bar></home-tab-bar>
+	</view>
+</template>
+
+<script>
+	import homeTabBar from '@/pages/tab-bar/home-tab-bar.vue';
+	
+	import config from '@/config/cate/cate.js';
+	import data from '@/data/cate/cate.js';
+	
+	export default {
+		mixins: [data,config],
+		components: {
+			homeTabBar
+		},
+		data() {
+			return {
+				currentIndex: 0,
+			};
+		},
+		methods: {
+			navBarIconTap(e) {
+				const action = {
+					scan() {
+						console.log('点击了扫描按钮');
+					},
+					message() {
+						console.log('点击了消息按钮');
+					}
+				}
+				
+				action[e]();
+			},
+			navBarSearchInputRightIconTap(e) {
+				console.log('点击搜索框右侧按钮');
+			},
+			tabBarItemTap(index) {
+				this.currentIndex = index;
+			}
+		},
+	}
+</script>
+
+<style lang="scss">
+	.page {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+	}
+	
+	.page-content {
+		// border-width: 1px;
+		flex: 1;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+	}
+	
+	.nav-bar-bg {
+		background-color: $uni-bg-color;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+	}
+	
+	.tab-bar {
+		width: 200rpx;
+	}
+	.tab-bar-name-common {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		width: 200rpx;
+		height: 100rpx;
+	}
+	.tab-bar-name {
+		color: $uni-text-color-grey;
+	}
+	.selected-tab-bar-name {
+		background-color: $uni-bg-color;
+	}
+	.tab-bar-name-text {
+		font-size: $uni-font-size-base;
+	}
+	.selected-tab-bar-name-text {
+		font-size: $uni-font-size-lg;
+		font-weight: bold;
+	}
+	
+	
+	.cate-content-scroll {
+		flex: 1;
+		background-color: $uni-bg-color;
+	}
+	.cate-card {
+		margin-top: $uni-spacing-row-mi;
+		margin-left: $uni-spacing-col-base;
+		margin-right: $uni-spacing-col-sm;
+		box-shadow: -1px 0px 3px 0px #EEEEEE;
+	}
+	.cate-card-title {
+		font-size: $uni-font-size-sm;
+		font-weight: bold;
+		margin-top: $uni-spacing-row-lg;
+		margin-bottom: $uni-spacing-row-base;
+	}
+	.cate-card-item {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	.cate-card-item-image {
+		width: $uni-img-size-base;
+		height: $uni-img-size-base;
+	}
+	.cate-card-item-name {
+		font-size: $uni-font-size-mi;
+		margin-top: $uni-spacing-row-base;
+		margin-bottom: $uni-spacing-row-base;
+	}
+</style>

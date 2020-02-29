@@ -9,7 +9,7 @@
 
 <script>
 	/**
-	 * @tap
+	 * @iconTap
 	 */
 	export default {
 		name: 'XgIcon',

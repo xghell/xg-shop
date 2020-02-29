@@ -1,5 +1,5 @@
 <template>
-	<scroll-view :show-scrollbar="false" :scroll-x="true" :scroll-left="scrollLeft">
+	<scroll-view :show-scrollbar="false" :scroll-y="true" :scroll-top="scrollTop">
 		<view ref="tab-bar" class="tab-bar">
 			<slot></slot>
 		</view>
@@ -22,10 +22,10 @@
 		},
 		data() {
 			return {
-				scrollLeft: 0,
-				tabBarWidth: undefined,
+				scrollTop: 0,
+				tabBarHeight: undefined,
 				itemIndex: 0,  //子组件索引，将在子组件中引用
-				tabBarItemWidthSum: 0,
+				tabBarItemHeightSum: 0,
 			}
 		},
 		mounted() {
@@ -34,14 +34,14 @@
 				const selector = uni.createSelectorQuery().in(this);
 				selector.select('.tab-bar').fields({size: true});
 				selector.exec(data => {
-					this.tabBarWidth = data[0].width;
+					this.tabBarHeight = data[0].height;
 				})
 				// #endif
 				
 				
 				// #ifdef APP-PLUS-NVUE
 				const tabBarData = await this.getComponentRect(this.$refs['tab-bar']);
-				this.tabBarWidth = tabBarData.size.width;
+				this.tabBarHeight = tabBarData.size.height;
 				// #endif
 			})
 		},
@@ -67,8 +67,7 @@
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
-		flex-direction: row;
-		justify-content: space-between;
+		flex-direction: column;
 		/* border-width: 1px; */
 	}
 </style>
