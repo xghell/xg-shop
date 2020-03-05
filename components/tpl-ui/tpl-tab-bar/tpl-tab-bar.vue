@@ -1,7 +1,7 @@
 <template>
-	<view class="tab-bar">
+	<view class="tpl-tab-bar">
 		<block v-for="(icon, index) of iconList" :key="index">
-			<xg-icon :selected="currentIndex === index" :fontFamily="icon.fontFamily||fontFamily" :iconStyle="iconStyle + ';' + icon.iconStyle" :selectedIconStyle="selectedIconStyle + ';' + icon.selectedIconStyle" :textStyle="textStyle + ';' + icon.textStyle" :selectedTextStyle="selectedTextStyle + ';' + icon.selectedTextStyle" :titleStyle="titleStyle + ';' + icon.titleStyle" :selectedTitleStyle="selectedTitleStyle + ';' + icon.selectedTitleStyle" :text="icon.text" :selectedText="icon.selectedText" :title="icon.title" :selectedTitle="icon.selectedTitle" @iconTap="iconTap(index, icon.url)"></xg-icon>
+			<xg-icon :selected="currentIndex === index" :fontFamily="icon.fontFamily||fontFamily" :iconStyle="iconStyle + ';' + icon.iconStyle" :selectedIconStyle="selectedIconStyle + ';' + icon.selectedIconStyle" :textStyle="textStyle + ';' + icon.textStyle" :selectedTextStyle="selectedTextStyle + ';' + icon.selectedTextStyle" :titleStyle="titleStyle + ';' + icon.titleStyle" :selectedTitleStyle="selectedTitleStyle + ';' + icon.selectedTitleStyle" :text="icon.text" :selectedText="icon.selectedText" :title="icon.title" :selectedTitle="icon.selectedTitle" @iconTap="iconTap(index)"></xg-icon>
 		</block>
 	</view>
 </template>
@@ -61,20 +61,20 @@
 			iconTap(index, url) {
 				this.$emit('itemTap', index);
 				
-				uni.navigateTo({
-					url: url,
-					animationType: 'none',
-					success: res => {},
-					fail: () => {},
-					complete: () => {}
-				});
+				// uni.navigateTo({
+				// 	url: url,
+				// 	animationType: 'none',
+				// 	success: res => {},
+				// 	fail: () => {},
+				// 	complete: () => {}
+				// });
 			}
 		}
 	}
 </script>
 
-<style lang="scss">
-	.tab-bar {
+<style lang="scss" scoped>
+	.tpl-tab-bar {
 		width: 750rpx;
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;

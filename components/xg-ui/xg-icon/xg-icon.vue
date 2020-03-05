@@ -1,9 +1,9 @@
 <template>
 	<view class="icon" :style="(selected ? selectedIconStyle||iconStyle : iconStyle) + ';flex-direction: '+ (vertical ? 'column' : 'row')" @tap="iconTap">
-		<text v-if="text" class="iconfont" :style="'font-family:' + (selected ? selectedFontFamily||fontFamily : fontFamily) + ';' + (selected ? selectedTextStyle||textStyle : textStyle)">{{selected ? selectedText||text : text}}</text>
-		<image v-if="thumb" class="thumb" :style="selected? selectedThumbStyle||thumbStyle : thumbStyle" :src="selected? selectedThumb||thumb : thumb"></image>
-		<text v-if="title" class="title" :style="'font-family: ' + (selected ? selectedFontFamily||fontFamily : fontFamily) + ';' + (selected ? selectedTitleStyle||titleStyle : titleStyle)">{{selected ? selectedTitle||title : title}}</text>
-		<text v-if="subtitle" class="subtitle" :style="'font-family: ' + (selected ? selectedFontFamily||fontFamily : fontFamily) + ';' + (selected ? selectedSubtitleStyle||subtitleStyle : subtitleStyle)">{{selected ? selectedSubtitle||subtitle : subtitle}}</text>
+		<text v-if="text||selectedText" class="iconfont text" :style="'font-family:' + (selected ? selectedFontFamily||fontFamily : fontFamily) + ';' + (selected ? selectedTextStyle||textStyle : textStyle)">{{selected ? selectedText||text : text}}</text>
+		<image v-if="thumb||selectedThumb" class="thumb" :style="selected? selectedThumbStyle||thumbStyle : thumbStyle" :src="selected? selectedThumb||thumb : thumb"></image>
+		<text v-if="title||selectedTitle" class="title text" :style="'font-family: ' + (selected ? selectedFontFamily||fontFamily : fontFamily) + ';' + (selected ? selectedTitleStyle||titleStyle : titleStyle)">{{selected ? selectedTitle||title : title}}</text>
+		<text v-if="subtitle||selectedSubtitle" class="subtitle text" :style="'font-family: ' + (selected ? selectedFontFamily||fontFamily : fontFamily) + ';' + (selected ? selectedSubtitleStyle||subtitleStyle : subtitleStyle)">{{selected ? selectedSubtitle||subtitle : subtitle}}</text>
 	</view>
 </template>
 
@@ -92,6 +92,7 @@
 			iconTap() {
 				// console.log('xg-icon', id);
 				this.$emit('iconTap', this.index);
+				// console.log('font-family: ' + (this.selected ? this.selectedFontFamily||this.fontFamily : this.fontFamily) + ';' + (this.selected ? this.selectedSubtitleStyle||this.subtitleStyle : this.subtitleStyle));
 			}
 		},
 	}
@@ -105,13 +106,24 @@
 	$uni-icon-size-mi: 20px !default;
 	$uni-icon-size-sm: 30px !default;
 	
+	.text {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		/* #ifndef APP-PLUS-NVUE */
+		white-space: nowrap;
+		/* #endif */
+	}
 	.icon {
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
 		flex-direction: column;
 		align-items: center;
-		justify-content: flex-end;
+		justify-content: center;
 	}
 	.iconfont {
 		font-size: $uni-icon-size-mi;

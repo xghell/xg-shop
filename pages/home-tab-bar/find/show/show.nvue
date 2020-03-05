@@ -1,0 +1,155 @@
+<template>
+	<scroll-view class="page-scroll" scroll-y="true" @scroll="pageScroll">
+		<view>
+			<view class="dock-placeholder" :style="{height: finddockHeight + 'px'}"></view>
+			
+			<xg-waterfall :columnCount="waterfallConfig.columnCount" :columnGap="waterfallConfig.columnGap" :leftGap="waterfallConfig.leftGap" :rightGap="waterfallConfig.rightGap" @getWaterfallItemWidth="getWaterfallItemWidth">
+				<xg-waterfall-item v-for="(showItem, showIndex) of showList" :key="showIndex">
+					<view class="show">
+						<image class="show-image" :style="{width: waterfallItemWidth + 'px'}" :src="showItem.image" mode="widthFix"></image>
+						<text class="show-title line-limit">{{showItem.title||showItem.desc}}</text>
+						<view class="user-and-thumb-up">
+							<view class="user-info">
+								<image class="avatar" :src="showItem.user.avatar" mode=""></image>
+								<text class="username">{{showItem.user.username}}</text>
+							</view>
+							<view class="thumb-up">
+								<text class="thumb-up-icon" :style="{'font-family': thumbUpIconConfig.fontFamily}">{{thumbUpIconConfig.text}}</text>
+								<text class="thumb-up-number">{{showItem.thumb_up_number}}</text>
+							</view>
+						</view>
+					</view>
+				</xg-waterfall-item>
+			</xg-waterfall>
+			
+			
+			
+		</view>
+	</scroll-view>
+</template>
+
+<script>
+	import data from '@/data/find/show/show.js';
+	import config from '@/config/find/show/show.js';
+	
+	export default {
+		mixins: [config],
+		inject: ['find'],
+		data() {
+			return {
+				waterfallItemWidth: 0,
+				showList: []
+			}
+		},
+		async created() {
+			const showListData = data.showList();
+			this.showList = await showListData;
+		},
+		computed: {
+			finddockHeight() {
+				// console.log(this.find.dockHeight);
+				return this.find.dockHeight;
+			}
+		},
+		methods: {
+			pageScroll(e) {
+				this.$emit('showScroll', e.detail.scrollTop);
+			},
+			
+			getWaterfallItemWidth(e) {
+				this.waterfallItemWidth = e;
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page-scroll {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+	
+	.dock-placeholder {
+		margin-bottom: $uni-spacing-row-base;
+	}
+	
+	.show {
+		// width: 300rpx;
+		margin-bottom: $uni-spacing-row-base;
+		border-radius: $uni-border-radius-base;
+		background-color: $uni-bg-color;
+	}
+	.show-image {
+		border-top-left-radius: $uni-border-radius-base;
+		border-top-left-radius: $uni-border-radius-base;
+	}
+	.line-limit {
+		text-overflow: ellipsis;
+		/* #ifdef APP-PLUS-NVUE */
+		lines: 2;
+		/* #endif */
+		
+		/* #ifndef APP-PLUS-NVUE */
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		/* #endif */
+	}
+	.show-title {
+		margin-left: $uni-spacing-col-base;
+		margin-right: $uni-spacing-col-base;
+		margin-top: $uni-spacing-row-base;
+		font-size: $uni-font-size-sm;
+	}
+	
+	.user-and-thumb-up {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		margin-left: $uni-spacing-col-base;
+		margin-right: $uni-spacing-col-base;
+	}
+	
+	.user-info {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		margin-top: $uni-spacing-row-base;
+		margin-bottom: $uni-spacing-row-base;
+	}
+	.avatar {
+		width: $uni-icon-size-mi;
+		height: $uni-icon-size-mi;
+		border-radius: $uni-border-radius-circle;
+		margin-right: $uni-spacing-col-base;
+	}
+	.username {
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-grey;
+	}
+	
+	.thumb-up {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.thumb-up-icon {
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-grey;
+	}
+	.thumb-up-number {
+		font-size: $uni-font-size-sm;
+		margin-left: $uni-spacing-col-sm;
+	}
+</style>

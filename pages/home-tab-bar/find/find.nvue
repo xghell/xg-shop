@@ -1,0 +1,143 @@
+<template>
+	<view class="page">
+		
+		<swiper class="page-content" :duration="100" :current="tabCurrentIndex" @change="pageIndexChange">
+			<swiper-item>
+				<concern-page @concernScroll="pageScroll"></concern-page>
+			</swiper-item>
+			<swiper-item>
+				<show-page @showScroll="pageScroll"></show-page>
+			</swiper-item>
+			<swiper-item>
+				<live-page @showScroll="pageScroll"></live-page>
+			</swiper-item>
+			<swiper-item>
+				<video-page @showScroll="pageScroll"></video-page>
+			</swiper-item>
+		</swiper>
+		
+		<view class="dock">
+			<xg-dock status-bar :scrollTop="pageScrollTop" :threshold="navBarHeight + 'px'" @getDockHeight="getDockHeight" @dockScroll="dockScroll">
+				<image class="top-bg-image" :src="topBgImage" mode=""></image>
+				
+				<xg-nav-bar :style="{opacity: navBarOpacity}"  hasTitle :left="navBar.left" :right="navBar.right" :title="navBar.title" @getNavBarMinHeight="getNavBarMinHeight"></xg-nav-bar>
+				
+				<xg-tab-bar class="tab-bar">
+					<xg-tab-bar-item v-for="(icon, index) of tabBar.iconList" :key="index">
+						<view class="tab-bar-item">
+							<xg-icon :selected="tabCurrentIndex === index" :iconStyle="tabBar.iconStyle" :fontFamily="icon.fontFamily||tabBar.fontFamily" :title="icon.title" :titleStyle="tabBar.titleStyle" :subtitleStyle="tabBar.subtitleStyle" :selectedSubtitle="tabBar.selectedSubtitle" :selectedSubtitleStyle="tabBar.selectedSubtitleStyle" @iconTap="tabBarIconTap(index)"></xg-icon>
+						</view>
+					</xg-tab-bar-item>
+				</xg-tab-bar>
+			</xg-dock>
+		</view>
+	</view>
+</template>
+
+<script>
+	import config from '@/config/find/find.js';
+	
+	import concernPage from './concern/concern.nvue';
+	import showPage from './show/show.nvue';
+	import livePage from './live/live.nvue';
+	import videoPage from './video/video.nvue';
+	
+	export default {
+		mixins: [config],
+		provide() {
+			return {
+				find: this
+			}
+		},
+		components: {
+			concernPage,
+			showPage,
+			livePage,
+			videoPage,
+		},
+		data() {
+			return {
+				navBarOpacity: 1,
+				pageScrollTop: 0,
+				tabCurrentIndex: 0,
+				navBarHeight: 0,
+				dockHeight: 0,
+			};
+		},
+		
+		methods: {
+			pageScroll(e) {
+				this.pageScrollTop = e;
+			},
+			pageIndexChange(e) {
+				this.tabCurrentIndex = e.detail.current;
+			},
+			//嵌套滚动的产品列表
+			tabBarIconTap(index) {
+				this.tabCurrentIndex = index;
+			},
+			getNavBarMinHeight(e) {
+				this.navBarHeight = e;
+			},
+			getDockHeight(e) {
+				this.dockHeight = e;
+				// console.log(e);
+			},
+			dockScroll(e) {
+				// this.navBarOpacity = 1 - e / this.navBarHeight;
+				if (e > 10) {
+					this.navBarOpacity = 0;
+				} else {
+					this.navBarOpacity = 1;
+				}
+			}
+			
+		},
+	}
+</script>
+
+<style lang="scss">
+	.page {
+		// border-width: 1px;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+	}
+	
+	.page-content {
+		flex: 1;
+		// border-width: 2px;
+		// border-color: red;
+	}
+	
+	.dock {
+		z-index: 1;
+		overflow: hidden;
+		position: absolute;
+	}
+	
+	.top-bg-image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+	.tab-bar {
+		
+	}
+	.tab-bar-item {
+		// border-width: 1px;
+		padding-left: $uni-spacing-col-base;
+		padding-right: $uni-spacing-col-base;
+	}
+	
+	
+	
+</style>

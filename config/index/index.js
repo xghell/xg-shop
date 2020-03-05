@@ -152,10 +152,9 @@ const index = {
 			},
 			
 			productListTabBar: {
-				iconStyle: 'min-height: 40px;',
-				selectedTitleStyle: `color: ${style.UNI_TEXT_COLOR_RED};font-size: ${style.UNI_FONT_SIZE_LG};`,
-				subtitleStyle: `margin-top: ${style.UNI_SPACING_ROW_SM};`,
-				selectedSubtitleStyle: `color: ${style.UNI_TEXT_COLOR_RED};margin-top: ${style.UNI_SPACING_ROW_SM};`,
+				titleStyle: 'height: 30px;',
+				selectedTitleStyle: `height: 30px;color: ${style.UNI_TEXT_COLOR_RED};font-size: ${style.UNI_FONT_SIZE_LG};`,
+				selectedSubtitleStyle: `color: ${style.UNI_TEXT_COLOR_RED};`,
 				iconList: [
 				
 					{

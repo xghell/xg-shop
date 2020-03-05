@@ -1,5 +1,5 @@
 <template>
-	<view ref="waterfall-item" class="waterfall-item" :style="{width: waterfall.realColumnWidth + 'px', left: left + 'px', top: top + 'px'}">
+	<view ref="waterfall-item" class="waterfall-item" :style="{left: left + 'px', top: top + 'px', width: width + 'px'}">
 		<slot></slot>
 	</view>
 </template>
@@ -12,6 +12,11 @@
 			return {
 				top: 0,
 				left: 0,
+			}
+		},
+		computed: {
+			width() {
+				return this.waterfall.realColumnWidth;
 			}
 		},
 		mounted() {
@@ -35,6 +40,7 @@
 					selector.select('.waterfall-item').fields({size: true});
 					selector.exec(data => {
 						const waterfallItemHeight = data[0].height;
+						console.log(this.waterfall.columnsHeight, waterfallItemHeight);
 						
 						const minColumnHeight = Math.min(...this.waterfall.columnsHeight);
 						
@@ -46,7 +52,7 @@
 					})
 					// #endif
 					
-				}, 300);
+				}, 500);
 			})
 		},
 		methods: {
@@ -69,5 +75,6 @@
 <style scoped>
 	.waterfall-item {
 		position: absolute;
+		/* border-width: 1px; */
 	}
 </style>

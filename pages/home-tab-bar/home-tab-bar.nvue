@@ -1,0 +1,137 @@
+<template>
+	<view class="page">
+		<swiper class="page-content" :style="{height: pageContentHeight + 'px'}" :current="currentIndex" :duration="0" disable-touch @change="pageIndexChange">
+			<swiper-item>
+				<index-page v-if="showIndexPage"></index-page>
+			</swiper-item>
+			<swiper-item>
+				<cate-page v-if="showCatePage"></cate-page>
+			</swiper-item>
+			<swiper-item>
+				<find-page v-if="showFindPage"></find-page>
+			</swiper-item>
+			<swiper-item>
+				<cart-page v-if="showCartPage"></cart-page>
+			</swiper-item>
+			<swiper-item>
+				<user-page v-if="showUserPage"></user-page>
+			</swiper-item>
+		</swiper>
+		
+		
+		
+		
+		
+		
+		<view ref="home-tab-bar" class="home-tab-bar">
+			<tpl-tab-bar :currentIndex="currentIndex" :fontFamily="fontFamily" :titleStyle="titleStyle" :selectedTitleStyle="selectedTitleStyle" :textStyle="textStyle" :selectedTextStyle="selectedTextStyle" :iconList="iconList" @itemTap="itemTap"></tpl-tab-bar>
+		</view>
+	</view>
+</template>
+
+<script>
+	import config from '@/config/tab-bar/home-tab-bar.js';
+	import {getComponentRect} from '@/common/helper.js';
+	
+	import indexPage from './index/index.nvue';
+	import catePage from './cate/cate.nvue';
+	import findPage from './find/find.nvue';
+	import cartPage from './cart/cart.nvue';
+	import userPage from './user/user.nvue';
+	
+	const pageHeight = uni.getSystemInfoSync()['windowHeight'];
+	const pageSwitch = ['showIndexPage','showCatePage','showFindPage','showCartPage','showUserPage'];
+	
+	/**
+	 * @getHomeTabBarHeight
+	 */
+	export default {
+		mixins: [config],
+		provide() {
+			return {
+				homeTabBar: this,
+			}
+		},
+		components: {
+			indexPage,
+			catePage,
+			findPage,
+			cartPage,
+			userPage,
+		},
+		data() {
+			return {
+				showIndexPage: true,
+				showCatePage: false,
+				showFindPage: false,
+				showCartPage: false,
+				showUserPage:false,
+				
+				tabBarHeight: 0,
+				currentIndex: 0,
+			}
+		},
+		mounted() {
+			this.$nextTick(async function () {
+				// #ifndef APP-PLUS-NVUE
+				const selector = uni.createSelectorQuery().in(this);
+				selector.select('.home-tab-bar').fields({size: true});
+				selector.exec(data => {
+					this.tabBarHeight = data[0].height;
+				})
+				// #endif
+				
+				// #ifdef APP-PLUS-NVUE
+				const homeTabBarData = await getComponentRect(this.$refs['home-tab-bar']);
+				this.tabBarHeight = homeTabBarData.size.height;
+				// #endif
+			})
+		},
+		computed: {
+			pageContentHeight() {
+				return pageHeight - this.tabBarHeight;
+			}
+		},
+		methods: {
+			itemTap(index) {
+				this.currentIndex = index;
+				
+				this[pageSwitch[this.currentIndex]] = true;
+				
+			},
+			pageIndexChange(e) {
+				this.currentIndex = e.detail.current;
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page {
+		// border-width: 2px;
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+	
+	.page-content {
+		// border-width: 2px;
+		position: relative;
+		width: 750rpx;
+	}
+	
+	
+	.home-tab-bar {
+		position: fixed;
+		bottom: 0;
+		padding-top: $uni-spacing-row-sm;
+		padding-bottom: $uni-spacing-row-sm;
+		
+		background-color: #FFFFFF;
+		
+		border-top-width: 0.5px;
+		border-color: $uni-border-color;
+	}
+</style>

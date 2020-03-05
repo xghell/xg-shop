@@ -14,12 +14,6 @@
 				tabBar: this
 			}
 		},
-		props: {
-			vertical: {
-				type: Boolean,
-				default: false
-			},
-		},
 		data() {
 			return {
 				scrollLeft: 0,

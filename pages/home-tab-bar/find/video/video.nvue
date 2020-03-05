@@ -1,0 +1,36 @@
+<template>
+	<scroll-view class="page-scroll" scroll-y @scroll="pageScroll">
+		<view>
+			<view class="dock-placeholder" :style="{height: finddockHeight + 'px'}"></view>
+			
+			video
+		</view>
+	</scroll-view>
+</template>
+
+<script>
+	export default {
+		inject: ['find'],
+		computed: {
+			finddockHeight() {
+				// console.log(this.find.dockHeight);
+				return this.find.dockHeight;
+			}
+		},
+		methods: {
+			pageScroll(e) {
+				this.$emit('showScroll', e.detail.scrollTop);
+			},
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page-scroll {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+</style>

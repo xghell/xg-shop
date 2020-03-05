@@ -1,43 +1,73 @@
 <template>
-	<view class="product" @tap="productTap">
-		<image class="product-image" :style="{width: size, height: size}" :src="image"></image>
-		<text v-if="title" class="product-title">{{title}}</text>
+	<view class="product" :style="{width: size}" @tap="productTap">
+		<image class="product-image" :style="'width:' + size + ';height:' + size + ';' + imageStyle" :src="image"></image>
+		<text v-if="title" class="product-title" :style="'lines:' + titleLines + ';-webkit-line-clamp:' + titleLines + ';' + titleStyle">{{title}}</text>
 		<view class="price-line">
-			<tpl-price camel :price="price" :currencySymbol="currencySymbol"></tpl-price>
-			<text v-if="priceLabel" class="price-label">{{priceLabel}}</text>
+			<tpl-price :price="price" :integerStyle="priceIntegerStyle" :decimalStyle="priceDecimalStyle" :currencySymbol="currencySymbol" :currencySymbolStyle="priceCurrencySymbolStyle" :precision="precision"></tpl-price>
+			<text v-if="priceLabel" class="price-label" :style="priceLabelStyle">{{priceLabel}}</text>
 		</view>
-		<text v-if="discount" class="discount">{{currencySymbol}}{{Number(discount).toFixed(2)}}</text>
+		<text v-if="discount" class="discount" :style="discountStyle">{{currencySymbol}}{{Number(discount).toFixed(precision)}}</text>
 	</view>
 </template>
 
 <script>
 	export default {
 		props: {
-			size: {
-				type: String,
-				required: true
-			},
 			url: {
 				type: String,
 				default: ''
 			},
+			size: {
+				type: String,
+				required: true
+			},
+			precision: {
+				type: Number,
+				default: 2
+			},
+			
 			image: {
 				type: String,
 				required: true
 			},
+			imageStyle: {
+				type: String,
+			},
 			title: {
 				type: String,
+			},
+			titleStyle: {
+				type: String,
+			},
+			titleLines: {
+				type: Number,
+				default: 2,
 			},
 			price: {
 				type: [Number, String],
 				required: true,
 				default: '0'
 			},
+			priceIntegerStyle: {
+				type: String,
+			},
+			priceDecimalStyle: {
+				type: String,
+			},
+			priceCurrencySymbolStyle: {
+				type: String,
+			},
 			priceLabel: {
 				type: String,
 			},
+			priceLabelStyle: {
+				type: String
+			},
 			discount: {
 				type: String|Number,
+			},
+			discountStyle: {
+				type: String,
 			},
 			
 			currencySymbol: {
@@ -70,12 +100,12 @@
 		/* #endif */
 		flex-direction: column;
 		background-color: $uni-bg-color;
-		border-radius: $uni-border-radius-lg;
+		border-radius: $uni-border-radius-base;
 	}
 	
 	.product-image {
-		border-top-left-radius: $uni-border-radius-lg;
-		border-top-right-radius: $uni-border-radius-lg;
+		border-top-left-radius: $uni-border-radius-base;
+		border-top-right-radius: $uni-border-radius-base;
 	}
 	
 	.product-title {

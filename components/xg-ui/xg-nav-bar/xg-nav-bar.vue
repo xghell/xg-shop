@@ -78,8 +78,8 @@
 	 * @confirm
 	 * @searchInputleftIconTap
 	 * @searchInputrightIconTap
-	 * @getNavBarMinHeight
-	 * @getNavBarMaxHeight
+	 * @getNavBarMinHeight 当hasChangeable为false，导航栏高度需用@getNavBarMaxHeight
+	 * @getNavBarMaxHeight 当hasChangeable为false，导航栏高度需用@getNavBarMaxHeight
 	 */
 	export default {
 		name: 'XgNavBar',
@@ -294,11 +294,11 @@
 					},{immediate: true});
 				}
 				
-				if (true !== this.float) {
+				if (this.fixed && !this.float) {
 					this.navBarWrapHeight = maxChangeableTop + changeableHeight + this.statusBarHeight;
 				}
 				
-				this.$emit('getNavBarMinHeight', Math.max(changeableHeight + minChangeableTop + this.statusBarHeight, rightHeight));
+				this.$emit('getNavBarMinHeight', Math.max(changeableHeight + minChangeableTop, rightHeight) + this.statusBarHeight);
 				this.$emit('getNavBarMaxHeight', maxChangeableTop + changeableHeight + this.statusBarHeight);
 				
 				// #endif
@@ -329,14 +329,15 @@
 							this.changeableRight = minChangeableRight + (maxChangeableRight - minChangeableRight) * (this.progress < 0.5 ? this.progress : 0.5) * 2;
 							this.navBarInnerHeight = Math.max(changeableHeight + this.changeableTop, rightHeight);
 							this.opacity = 1 - this.progress;
+							
 						},{immediate: true});
 					}
 					
-					if (true !== this.float) {
+					if (this.fixed && !this.float) {
 						this.navBarWrapHeight = maxChangeableTop + changeableHeight + this.statusBarHeight;
 					}
 					
-					this.$emit('getNavBarMinHeight', Math.max(changeableHeight + minChangeableTop + this.statusBarHeight, rightHeight));
+					this.$emit('getNavBarMinHeight', Math.max(changeableHeight + minChangeableTop, rightHeight) + this.statusBarHeight);
 					this.$emit('getNavBarMaxHeight', maxChangeableTop + changeableHeight + this.statusBarHeight);
 				})
 				// #endif
@@ -368,19 +369,21 @@
 		/* #endif */
 		flex-direction: row;
 		justify-content: space-between;
-		align-items: stretch;
+		align-items: center;
 	}
 	
 	.title-section {
 		position: absolute;
+		top: 0;
 		left: 0;
 		right: 0;
-		
+		bottom: 0;
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
 		flex-direction: row;
 		align-items: center;
+		justify-content: center;
 	}
 	
 	.left-section {

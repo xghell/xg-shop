@@ -1,6 +1,6 @@
 <template>
 	<view :style="{height: contentHeight + 'px'}">
-		<view ref="content" class="content" :style="{top: initTopInner + 'px', transform: `translateY(${-translateY}px)`}">
+		<view ref="content" class="dock-content" :style="{position: fixed ? 'fixed' : 'relative',top: initTopInner + 'px', transform: `translateY(${-translateY}px)`}">
 			<view class="status-bar" v-if="statusBar" :style="{height: statusBarHeight + 'px'}"></view>
 			<slot></slot>
 		</view>
@@ -11,6 +11,10 @@
 	export default {
 		name: 'XgDock',
 		props: {
+			fixed: {
+				type: Boolean,
+				default: false,
+			},
 			statusBar: {
 				type: Boolean,
 				default: false
@@ -27,6 +31,10 @@
 			initTop: {
 				type: String,
 				default: '0rpx'
+			},
+			threshold: {
+				type: String,
+				default: '0px'
 			}
 		},
 		data() {
@@ -43,7 +51,9 @@
 		},
 		watch: {
 			scrollTop(newTop, oldTop) {
-				this.translateY = Math.min(this.contentHeight, Math.max(0, this.translateY + (newTop - oldTop)));
+				this.translateY = Math.min(this.toPx(this.threshold)||this.contentHeight, Math.max(0, this.translateY + (newTop - oldTop)));
+				this.$emit('dockScroll', this.translateY);
+				// console.log(this.threshold);
 			}
 		},
 		methods: {
@@ -61,7 +71,8 @@
 			},
 			// #endif
 			toPx(value) {
-				const result = /(\d+)(\w+)/.exec(value);
+				const result = /(\d+\.?\d*)(\w+)/.exec(value);
+				
 				if ('rpx' === result[2].trim()) {
 					return uni.getSystemInfoSync().screenWidth * Number(result[1]) / 750;
 				} else if('px' === result[2].trim()) {
@@ -81,12 +92,14 @@
 				const data = await this.getComponentRect(this.$refs.content)
 				this.contentHeight = data.size.height;
 				// console.log(this.contentHeight);
+				this.$emit('getDockHeight', this.contentHeight);
 				// #endif
 				
 				// #ifndef APP-PLUS-NVUE
-				uni.createSelectorQuery().in(this).select('.content').fields({size: true}).exec(data=>{
+				uni.createSelectorQuery().in(this).select('.dock-content').fields({size: true}).exec(data=>{
 					this.contentHeight = data[0].height;
 					// console.log(this.contentHeight);
+					this.$emit('getDockHeight', this.contentHeight);
 				})
 				// #endif
 			})
@@ -96,10 +109,13 @@
 </script>
 
 <style lang="scss" scoped>
-	.content {
+	.dock-content {
 		// border-width: 1px;
-		position: fixed;
+		/* #ifndef APP-PLUS-NVUE */
+		// z-index: 100000;
+		/* #endif */
 		
+		overflow: hidden;
 		width: 750rpx;
 	}
 </style>

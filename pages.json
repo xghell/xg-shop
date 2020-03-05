@@ -1,12 +1,12 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/index",
+			"path": "pages/home-tab-bar/home-tab-bar",
 			"style": {
 				"navigationStyle": "custom"
 			}
-		}
-	    ,{
+		},
+	    {
             "path" : "pages/search/search",
             "style" : {
 				"navigationStyle": "custom"
@@ -15,30 +15,6 @@
         ,{
             "path" : "pages/test/test",
             "style" : {}
-        }
-        ,{
-            "path" : "pages/cate/cate",
-            "style" : {
-				"navigationStyle": "custom"
-			}
-        }
-        ,{
-            "path" : "pages/find/find",
-            "style" : {
-				"navigationStyle": "custom"
-			}
-        }
-        ,{
-            "path" : "pages/cart/cart",
-            "style" : {
-				"navigationStyle": "custom"
-			}
-        }
-        ,{
-            "path" : "pages/user/user",
-            "style" : {
-				"navigationStyle": "custom"
-			}
         }
     ],
 	"globalStyle": {
@@ -61,11 +37,6 @@
 			{
 				"name": "test", //模式名称
 				"path": "pages/test/test", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
-			},
-			{
-				"name": "cate", //模式名称
-				"path": "pages/cate/cate", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]

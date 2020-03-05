@@ -1,0 +1,211 @@
+<template>
+	<scroll-view class="page-scroll" scroll-y @scroll="pageScroll">
+		<view class="dock-placeholder" :style="{height: finddockHeight + 'px'}"></view>
+		
+		<view>
+			<view class="concerned-shop-section">
+				<view class="shop" v-for="(shop, shopIndex) of concernedShopList" :class="shopIndex" :key="shopIndex">
+					<view class="shop-title-section">
+						<view class="shop-title">
+							<image class="shop-logo" :src="shop.logo" mode=""></image>
+							<text class="shop-name">{{shop.name}}</text>
+						</view>
+						<view @tap="concernedButtonTap(shopIndex)">
+							<view class="concern-button" v-if="shop.concerned">
+								<text class="concern-button-text">已关注</text>
+							</view>
+							<view class="concern-button unconcern-button" v-if="!shop.concerned">
+								<text class="unconcern-button-text" :style="{'font-family': 'xg-iconfont'}">&#xe674;</text>
+								<text class="unconcern-button-text">关注</text>
+							</view>
+						</view>
+					</view>
+					
+					<scroll-view scroll-x>
+						<view class="product-list">
+							<view class="product" v-for="(product, productIndex) of shop.productList" :key="productIndex">
+								<tpl-product :precision="shopConfig.product.precision" :size="shopConfig.product.size" :titleLines="1" :url="product.url" :image="product.image" :title="product.title" :titleStyle="shopConfig.product.titleStyle" :price="product.price" :priceIntegerStyle="shopConfig.product.priceIntegerStyle"  :discount="product.discount" :discountStyle="shopConfig.product.discountStyle"></tpl-product>
+							</view>
+							
+							<xg-icon :iconStyle="shopConfig.seeMore.iconStyle" :fontFamily="shopConfig.seeMore.fontFamily" :text="shopConfig.seeMore.text" :textStyle="shopConfig.seeMore.textStyle" :title="shopConfig.seeMore.title" :titleStyle="shopConfig.seeMore.titleStyle" :subtitle="shopConfig.seeMore.subtitle" :subtitleStyle="shopConfig.seeMore.subtitleStyle"></xg-icon>
+						</view>
+					</scroll-view>
+				</view>
+			</view>
+			
+			<view class="guess-you-like">
+				<text class="guess-you-like-text">猜你喜欢</text>
+			</view>
+			<view class="unconcerned-shop-section">
+				<view class="shop" v-for="(shop, shopIndex) of unconcernedShopList" :class="shopIndex" :key="shopIndex">
+					<view class="shop-title-section">
+						<view class="shop-title">
+							<image class="shop-logo" :src="shop.logo" mode=""></image>
+							<text class="shop-name">{{shop.name}}</text>
+						</view>
+						<view @tap="unconcernedButtonTap(shopIndex)">
+							<view class="concern-button" v-if="shop.concerned">
+								<text class="concern-button-text">已关注</text>
+							</view>
+							<view class="concern-button unconcern-button" v-if="!shop.concerned">
+								<text class="unconcern-button-text" :style="{'font-family': 'xg-iconfont'}">&#xe674;</text>
+								<text class="unconcern-button-text">关注</text>
+							</view>
+						</view>
+					</view>
+					
+					<scroll-view scroll-x>
+						<view class="product-list">
+							<view class="product" v-for="(product, productIndex) of shop.productList" :key="productIndex">
+								<tpl-product :precision="shopConfig.product.precision" :size="shopConfig.product.size" :titleLines="1" :url="product.url" :image="product.image" :title="product.title" :titleStyle="shopConfig.product.titleStyle" :price="product.price" :priceIntegerStyle="shopConfig.product.priceIntegerStyle"  :discount="product.discount" :discountStyle="shopConfig.product.discountStyle"></tpl-product>
+							</view>
+							
+							<xg-icon :iconStyle="shopConfig.seeMore.iconStyle" :fontFamily="shopConfig.seeMore.fontFamily" :text="shopConfig.seeMore.text" :textStyle="shopConfig.seeMore.textStyle" :title="shopConfig.seeMore.title" :titleStyle="shopConfig.seeMore.titleStyle" :subtitle="shopConfig.seeMore.subtitle" :subtitleStyle="shopConfig.seeMore.subtitleStyle"></xg-icon>
+						</view>
+					</scroll-view>
+				</view>
+			</view>
+		</view>
+	</scroll-view>
+</template>
+
+<script>
+	import config from '@/config/find/concern/concern.js';
+	import data from '@/data/find/concern/concern.js';
+		
+		
+	export default {
+		mixins: [config],
+		inject: ['find'],
+		data() {
+			return {
+				concernedShopList: [],
+				unconcernedShopList: [],
+			}
+		},
+		async created() {
+			const conceredShopListData = data.concernedShopList();
+			const unconcernedShopListData = data.unconcernedShopList();
+			this.concernedShopList = await conceredShopListData;
+			this.unconcernedShopList = await unconcernedShopListData;
+		},
+		computed: {
+			finddockHeight() {
+				// console.log(this.find.dockHeight);
+				return this.find.dockHeight;
+			}
+		},
+		methods: {
+			pageScroll(e) {
+				// this.pageScrollTop = e.detail.scrollTop;
+				this.$emit('concernScroll', e.detail.scrollTop);
+			},
+			concernedButtonTap(shopIndex) {
+				this.$set(this.concernedShopList[shopIndex], 'concerned', !this.concernedShopList[shopIndex].concerned);
+			},
+			unconcernedButtonTap(shopIndex) {
+				this.$set(this.unconcernedShopList[shopIndex], 'concerned', !this.unconcernedShopList[shopIndex].concerned);
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page-scroll {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+	
+	.shop {
+		background-color: $uni-bg-color;
+		padding-top: $uni-spacing-row-base;
+		padding-bottom: $uni-spacing-row-base;
+		margin-top: $uni-spacing-row-base;
+		margin-left: $uni-spacing-col-sm;
+		margin-right: $uni-spacing-col-sm;
+		border-radius: $uni-border-radius-base;
+	}
+	.shop-title-section {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: $uni-spacing-row-base;
+	}
+	.shop-title {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.shop-logo {
+		width: $uni-icon-size-sm;
+		height: $uni-icon-size-sm;
+		border-radius: $uni-border-radius-circle;
+		margin-left: $uni-spacing-col-base;
+		margin-right: $uni-spacing-col-base;
+		border-width: 1px;
+		border-style: solid;
+		border-color: $uni-border-color;
+	}
+	.shop-name {
+		font-size: $uni-font-size-base;
+		font-weight: bold;
+	}
+	.concern-button {
+		margin-right: $uni-spacing-col-base;
+		padding-left: $uni-spacing-col-base;
+		padding-right: $uni-spacing-col-base;
+		width: 140rpx;
+		height: 60rpx;
+		border-width: 1px;
+		border-style: solid;
+		border-color: $uni-border-color;
+		border-radius: 10000px;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.concern-button-text {
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-grey;
+	}
+	.unconcern-button {
+		border-width: 0;
+		background-color: $uni-bg-color-red;
+	}
+	.unconcern-button-text {
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-white;
+	}
+	
+	.product-list {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		
+	}
+	.product {
+		margin-left: $uni-spacing-col-base;
+	}
+	
+	.guess-you-like {
+		margin-top: $uni-spacing-row-base;
+		margin-left: $uni-spacing-col-sm;
+	}
+	.guess-you-like-text {
+		font-size: $uni-font-size-base;
+		font-weight: bold;
+	}
+</style>

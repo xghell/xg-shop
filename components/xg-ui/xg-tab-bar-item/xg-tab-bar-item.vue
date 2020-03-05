@@ -19,6 +19,7 @@
 				index: 0,
 				shouldScrollLeft: 0,
 				tabBarItemWidth: undefined,
+				lastTabBarItemWidthSum: 0,
 			}
 		},
 		methods: {
@@ -35,7 +36,7 @@
 			},
 			// #endif
 			itemTap() {
-				this.tabBar.scrollLeft = this.shouldScrollLeft;
+				this.tabBar.scrollLeft = this.lastTabBarItemWidthSum - this.tabBar.tabBarWidth/2 + this.tabBarItemWidth/2;
 			}
 		},
 		created() {
@@ -45,24 +46,28 @@
 			this.$nextTick(function () {
 				setTimeout(async () => {
 					// #ifndef APP-PLUS-NVUE
+					this.lastTabBarItemWidthSum = this.tabBar.tabBarItemWidthSum;
+					
 					const selector = uni.createSelectorQuery().in(this);
 					selector.select('.tab-bar-item').fields({size: true});
 					selector.exec(data => {
-						const tabBarItemWidth = data[0].width;
+						this.tabBarItemWidth = data[0].width;
 						
-						this.tabBar.tabBarItemWidthSum += tabBarItemWidth;
 						
-						this.shouldScrollLeft = this.tabBar.tabBarItemWidthSum - this.tabBar.tabBarWidth/2;
+						this.tabBar.tabBarItemWidthSum += this.tabBarItemWidth;
+						
 					})
 					// #endif
 					
 					// #ifdef APP-PLUS-NVUE
+					this.lastTabBarItemWidthSum = this.tabBar.tabBarItemWidthSum;
+					
 					const tabBarItemData = await this.getComponentRect(this.$refs['tab-bar-item']);
-					const tabBarItemWidth = tabBarItemData.size.width;
+					this.tabBarItemWidth = tabBarItemData.size.width;
 					
-					this.tabBar.tabBarItemWidthSum += tabBarItemWidth;
 					
-					this.shouldScrollLeft = this.tabBar.tabBarItemWidthSum - this.tabBar.tabBarWidth/2;
+					this.tabBar.tabBarItemWidthSum += this.tabBarItemWidth;
+					
 					// #endif
 				}, 10);
 			})

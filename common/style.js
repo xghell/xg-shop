@@ -8,6 +8,7 @@ const style = {
 	
 	//文字颜色
 	UNI_TEXT_COLOR_RED: '#ed1c24',
+	UNI_TEXT_COLOR_WHITE: '#FFFFFF',
 	
 	//图标尺寸
 	UNI_ICON_SIZE_MI: '40rpx',
@@ -38,6 +39,7 @@ const style = {
 	UNI_BG_COLOR_GREY: '#f8f8f8',
 	UNI_BG_COLOR_HOVER: '#F1F1F1',
 	UNI_BG_COLOR_MASK: 'rgba(0, 0, 0, 0.4)',
+	UNI_BG_COLOR_PINK: 'pink',
 	
 	//边框颜色
 	UNI_BORDER_COLOR: '#c8c7cc',
@@ -55,9 +57,9 @@ const style = {
 	UNI_IMG_SIZE_LG: '80rpx',
 	
 	// Border Radius 
-	UNI_BORDER_RADIUS_SM: '4rpx',
-	UNI_BORDER_RADIUS_BASE: '6rpx',
-	UNI_BORDER_RADIUS_LG: '12rpx',
+	UNI_BORDER_RADIUS_SM: '6rpx',
+	UNI_BORDER_RADIUS_BASE: '12rpx',
+	UNI_BORDER_RADIUS_LG: '24rpx',
 	UNI_BORDER_RADIUS_CIRCLE: '50%',
 	
 	// 水平间距 

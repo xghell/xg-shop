@@ -1,5 +1,5 @@
 <template>
-	<view ref="tab-bar-item" class="tab-bar-item" @tap="itemTap">
+	<view ref="tab-bar-item" class="tab-bar-item" :style="{height: height}" @tap="itemTap">
 		<slot></slot>
 	</view>
 </template>
@@ -13,65 +13,46 @@
 			// 	type: String|Number,
 			// 	required: true
 			// },
+			height: {
+				type: String,
+				required: true
+			}
 		},
 		data() {
 			return {
 				index: 0,
-				shouldScrollTop: 0,
-				tabBarItemHeight: undefined,
+			}
+		},
+		computed: {
+			itemHeight() {
+				return this.toPx(this.height);
 			}
 		},
 		methods: {
-			// #ifdef APP-NVUE
-			getComponentRect(ref) {
+			toPx(value) {
+				const result = /(\d+\.?\d+)(\w+)/.exec(value);
+				if ('rpx' === result[2].trim()) {
+					return uni.getSystemInfoSync().screenWidth * Number(result[1]) / 750;
+				} else if('px' === result[2].trim()) {
+					return Number(result[1]);
+				} else {
+					throw new TypeError(`${value}单位格式不正确`);
+				}
 				
-				const dom = uni.requireNativePlugin('dom');
-				
-				return new Promise(function (resolve, reject) {
-					dom.getComponentRect(ref, data => {
-						resolve(data);
-					})
-				})
 			},
-			// #endif
 			itemTap() {
-				this.tabBar.scrollTop = this.shouldScrollTop;
+				this.tabBar.scrollTop = this.itemHeight * this.index - this.toPx(this.tabBar.height)/2 + this.itemHeight/2;
 			}
 		},
 		created() {
 			this.index = this.tabBar.itemIndex++;
 		},
-		mounted() {
-			this.$nextTick(function () {
-				setTimeout(async () => {
-					// #ifndef APP-PLUS-NVUE
-					const selector = uni.createSelectorQuery().in(this);
-					selector.select('.tab-bar-item').fields({size: true});
-					selector.exec(data => {
-						const tabBarItemHeight = data[0].height;
-						
-						this.tabBar.tabBarItemHeightSum += tabBarItemHeight;
-						
-						this.shouldScrollTop = this.tabBar.tabBarItemHeightSum - this.tabBar.tabBarHeight/2;
-					})
-					// #endif
-					
-					// #ifdef APP-PLUS-NVUE
-					const tabBarItemData = await this.getComponentRect(this.$refs['tab-bar-item']);
-					const tabBarItemHeight = tabBarItemData.size.height;
-					
-					this.tabBar.tabBarItemHeightSum += tabBarItemHeight;
-					
-					this.shouldScrollTop = this.tabBar.tabBarItemHeightSum - this.tabBar.tabBarHeight/2;
-					// #endif
-				}, 10);
-			})
-		}
 	}
 </script>
 
 <style scoped>
 	.tab-bar-item {
+		position: relative;
 		/* height: 100rpx; */
 		/* border-width: 1px; */
 	}

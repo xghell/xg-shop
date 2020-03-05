@@ -2,7 +2,7 @@
 	<view class="xg-price-component">
 		<text class="price-icon" :style="currencySymbolStyle">{{currencySymbol}}</text>
 		<text class="price-integer" :style="integerStyle">{{priceArray[0]}}</text>
-		<text class="price-dot">.</text>
+		<text class="price-dot" v-if="precision">.</text>
 		<text class="price-decimal" :style="decimalStyle">{{priceArray[1]}}</text>
 	</view>
 </template>

@@ -1,0 +1,58 @@
+<template>
+	<scroll-view class="page-scroll" scroll-y @scroll="pageScroll">
+		<view>
+			<view class="dock-placeholder" :style="{height: finddockHeight + 'px'}"></view>
+			
+			<view class="room" v-for="(room, roomIndex) of roomList" :key="roomIndex">
+				<image class="room-bg-img" :src="room.bgImage" mode="widthFix"></image>
+				<view class="room-title">
+					<image class="room-avatar" :src="room.avatar" mode="widthFix"></image>
+					<view class="room-status">
+						<xg-dynamic-wave :started="true"></xg-dynamic-wave>
+						<text>{{room.personCount > 10000 ? room.personCount/10000 + '万' : room.personCount}}人</text>
+					</view>
+				</view>
+			</view>
+			
+			
+		</view>
+	</scroll-view>
+</template>
+
+<script>
+	import data from '@/data/find/live/live.js';
+	
+	export default {
+		inject: ['find'],
+		data() {
+			return {
+				roomList: [],
+			}
+		},
+		async created() {
+			const roomListData = data.roomList();
+			this.roomList = await roomListData;
+		},
+		computed: {
+			finddockHeight() {
+				// console.log(this.find.dockHeight);
+				return this.find.dockHeight;
+			}
+		},
+		methods: {
+			pageScroll(e) {
+				this.$emit('showScroll', e.detail.scrollTop);
+			},
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page-scroll {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+</style>

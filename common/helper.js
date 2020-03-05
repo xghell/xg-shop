@@ -48,7 +48,7 @@ function getComponentRect(ref) {
  * @param {String} vaule
  */
 function toPx(value) {
-	const result = /(\d+)(\w+)/.exec(value);
+	const result = /(\d+\.?\d*)(\w+)/.exec(value);
 	if ('rpx' === result[2].trim()) {
 		return uni.getSystemInfoSync().screenWidth * Number(result[1]) / 750;
 	} else if('px' === result[2].trim()) {

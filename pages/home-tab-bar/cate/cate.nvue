@@ -1,23 +1,22 @@
 <template>
-	<view class="page">
-		<xg-nav-bar status-bar fixed hasCenter :navBarStyle="navBar.navBarStyle" :left="navBar.left" :right="navBar.right" @iconTap="navBarIconTap">
+	<view class="cate">
+		<xg-nav-bar status-bar hasCenter :navBarStyle="navBar.navBarStyle" :left="navBar.left" :right="navBar.right" @getNavBarMaxHeight="getNavBarHeight" @iconTap="navBarIconTap">
 			<view class="nav-bar-bg"></view>
 			<view class="nav-bar-search-input" slot="center">
 				<xg-search-input :leftIcon="navBar.searchInput.leftIcon" :rightIcon="navBar.searchInput.rightIcon" :searchInputStyle="navBar.searchInput.searchInputStyle" :inputStyle="navBar.searchInput.inputStyle" :placeholder="navBar.searchInput.placeholder" @rightTap="navBarSearchInputRightIconTap"></xg-search-input>
 			</view>
 		</xg-nav-bar>
 		<view class="page-content">
-			<xg-tab-bar-vertical class="tab-bar">
-				<xg-tab-bar-vertical-item v-for="(name, index) of tabBarList()" :key="index">
+			<xg-tab-bar-vertical class="tab-bar" :height="pageContentHeight + 'px'">
+				<xg-tab-bar-vertical-item v-for="(name, index) of tabBarList" :key="index" height="100rpx">
 					<view class="tab-bar-name-common" :class="currentIndex === index ? 'selected-tab-bar-name' : 'tab-bar-name'" @tap="tabBarItemTap(index)">
 						<text :class="currentIndex === index ? 'selected-tab-bar-name-text' : 'tab-bar-name-text'">{{name}}</text>
 					</view>
 				</xg-tab-bar-vertical-item>
 			</xg-tab-bar-vertical>
-			
-			<scroll-view class="cate-content-scroll" :scroll-y="true">
+			<scroll-view class="cate-content-scroll" :scroll-y="true" :style="{height: pageContentHeight + 'px'}">
 				<view>
-					<view class="cate-card" v-for="(cateCard, cateCardIndex) of cateList(currentIndex)" :key="cateCardIndex">
+					<view class="cate-card" v-for="(cateCard, cateCardIndex) of cateList" :key="cateCardIndex">
 						<view>
 							<text class="cate-card-title">{{cateCard.name}}</text>
 						</view>
@@ -37,27 +36,34 @@
 			</scroll-view>
 		</view>
 		
-		<home-tab-bar></home-tab-bar>
 	</view>
 </template>
 
 <script>
-	import homeTabBar from '@/pages/tab-bar/home-tab-bar.vue';
-	
 	import config from '@/config/cate/cate.js';
 	import data from '@/data/cate/cate.js';
 	
 	export default {
-		mixins: [data,config],
-		components: {
-			homeTabBar
-		},
+		mixins: [config],
+		inject: ['homeTabBar'],
 		data() {
 			return {
+				navBarHeight: 0,
 				currentIndex: 0,
+				tabBarList: [],
+				cateList: []
 			};
 		},
+		async created() {
+			const tabBarList = await data.tabBarList();
+			const cateList = await data.cateList(this.currentIndex);
+			this.tabBarList = tabBarList;
+			this.cateList = cateList;
+		},
 		methods: {
+			getNavBarHeight(e) {
+				this.navBarHeight = e;
+			},
 			navBarIconTap(e) {
 				const action = {
 					scan() {
@@ -73,35 +79,21 @@
 			navBarSearchInputRightIconTap(e) {
 				console.log('点击搜索框右侧按钮');
 			},
-			tabBarItemTap(index) {
+			async tabBarItemTap(index) {
 				this.currentIndex = index;
+				this.cateList = await data.cateList(this.currentIndex);
+			}
+		},
+		computed: {
+			pageContentHeight() {
+				// console.log( this.homeTabBar.pageContentHeight , this.navBarHeight);
+				return this.homeTabBar.pageContentHeight - this.navBarHeight;
 			}
 		},
 	}
 </script>
 
 <style lang="scss">
-	.page {
-		position: fixed;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		
-		/* #ifndef APP-PLUS-NVUE */
-		display: flex;
-		/* #endif */
-		flex-direction: column;
-	}
-	
-	.page-content {
-		// border-width: 1px;
-		flex: 1;
-		/* #ifndef APP-PLUS-NVUE */
-		display: flex;
-		/* #endif */
-		flex-direction: row;
-	}
 	
 	.nav-bar-bg {
 		background-color: $uni-bg-color;
@@ -112,7 +104,32 @@
 		left: 0;
 	}
 	
+	.cate {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+	}
+	
+	.page-content {
+		position: relative;
+		flex: 1;
+		// border-width: 3px;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+	}
+	
+	
 	.tab-bar {
+		// border-width: 3px;
+		// border-color: red;
 		width: 200rpx;
 	}
 	.tab-bar-name-common {
@@ -123,7 +140,12 @@
 		justify-content: center;
 		align-items: center;
 		width: 200rpx;
-		height: 100rpx;
+		
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
 	}
 	.tab-bar-name {
 		color: $uni-text-color-grey;
@@ -141,8 +163,9 @@
 	
 	
 	.cate-content-scroll {
-		flex: 1;
+		overflow: hidden;
 		background-color: $uni-bg-color;
+		flex: 1;
 	}
 	.cate-card {
 		margin-top: $uni-spacing-row-mi;
