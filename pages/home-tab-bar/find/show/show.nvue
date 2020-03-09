@@ -84,7 +84,7 @@
 	}
 	.show-image {
 		border-top-left-radius: $uni-border-radius-base;
-		border-top-left-radius: $uni-border-radius-base;
+		border-top-right-radius: $uni-border-radius-base;
 	}
 	.line-limit {
 		text-overflow: ellipsis;

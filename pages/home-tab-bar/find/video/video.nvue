@@ -3,24 +3,62 @@
 		<view>
 			<view class="dock-placeholder" :style="{height: finddockHeight + 'px'}"></view>
 			
-			video
+			<xg-waterfall :columnCount="waterfallConfig.columnCount" :columnGap="waterfallConfig.columnGap" :leftGap="waterfallConfig.leftGap" :rightGap="waterfallConfig.rightGap" @getWaterfallItemWidth="getWaterfallItemWidth">
+				<xg-waterfall-item v-for="(video, videoIndex) of videoList" :key="videoIndex">
+					<view class="video">
+						<image class="video-cover-image" :style="{width: waterfallItemWidth + 'px'}" :src="video.coverImage" mode="widthFix"></image>
+						<view class="video-info">
+							<view class="video-desc">{{video.desc}}</view>
+							<view class="user-and-like">
+								<view class="user-info">
+									<image class="user-avatar" :src="video.avatar"></image>
+									<text class="user-nickname">{{video.nickname}}</text>
+								</view>
+								<view class="like">
+									<text class="like-icon" :style="{'font-family': thumbUpIconConfig.fontFamily}">{{thumbUpIconConfig.text}}</text>
+									<text class="like-count">{{video.likeCount}}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+				</xg-waterfall-item>
+			</xg-waterfall>
 		</view>
 	</scroll-view>
 </template>
 
 <script>
+	import data from '@/data/find/video/video.js';
+	import config from '@/config/find/show/show.js';
+	
 	export default {
+		mixins: [config],
 		inject: ['find'],
+		data() {
+			return {
+				waterfallItemWidth: 0,
+				videoList: [],
+			}
+		},
 		computed: {
 			finddockHeight() {
 				// console.log(this.find.dockHeight);
 				return this.find.dockHeight;
 			}
 		},
+		async created() {
+			const videoListData = data.videoList();
+			
+			this.videoList = await videoListData;
+		},
 		methods: {
 			pageScroll(e) {
 				this.$emit('showScroll', e.detail.scrollTop);
 			},
+			
+			getWaterfallItemWidth(e) {
+				this.waterfallItemWidth = e;
+			}
 		},
 	}
 </script>
@@ -32,5 +70,67 @@
 		right: 0;
 		bottom: 0;
 		left: 0;
+	}
+	
+	.video {
+		background-color: $uni-bg-color;
+		border-radius: $uni-border-radius-base;
+		margin-top: $uni-spacing-row-base;
+	}
+	.video-cover-image {
+		border-top-left-radius: $uni-border-radius-base;
+		border-top-right-radius: $uni-border-radius-base;
+	}
+	.video-info {
+		padding-left: $uni-spacing-col-base;
+		padding-right: $uni-spacing-col-base;
+	}
+	.video-desc {
+		font-size: $uni-font-size-base;
+		margin-top: $uni-spacing-row-base;
+	}
+	.user-and-like {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		
+		margin-top: $uni-spacing-row-base;
+		margin-bottom: $uni-spacing-row-base;
+	}
+	.user-info {
+		// border-width: 1px;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		
+	}
+	.user-avatar {
+		width: $uni-icon-size-sm;
+		height: $uni-icon-size-sm;
+		border-radius: $uni-border-radius-circle;
+	}
+	.user-nickname {
+		font-size: $uni-font-size-sm;
+		margin-left: $uni-spacing-col-sm;
+	}
+	.like {
+		// border-width: 1px;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.like-icon {
+		font-size: $uni-font-size-sm;
+	}
+	.like-count {
+		font-size: $uni-font-size-sm;
+		margin-left: $uni-spacing-col-sm;
 	}
 </style>

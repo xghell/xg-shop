@@ -21,38 +21,9 @@
 		},
 		mounted() {
 			this.$nextTick(function () {
-				setTimeout(async () => {
-					// #ifdef APP-PLUS-NVUE
-					const data = await this.getComponentRect(this.$refs['waterfall-item']);
-					const waterfallItemHeight = data.size.height;
-					
-					const minColumnHeight = Math.min(...this.waterfall.columnsHeight);
-					const minColumnIndex = this.waterfall.columnsHeight.indexOf(minColumnHeight);
-					
-					this.top = minColumnHeight;
-					this.waterfall.columnsHeight[minColumnIndex] += waterfallItemHeight;
-					this.left = this.waterfall.columnsLeft[minColumnIndex];
-					// console.log(this.waterfall.columnsHeight);
-					// #endif
-					
-					// #ifndef APP-PLUS-NVUE
-					const selector = uni.createSelectorQuery().in(this);
-					selector.select('.waterfall-item').fields({size: true});
-					selector.exec(data => {
-						const waterfallItemHeight = data[0].height;
-						console.log(this.waterfall.columnsHeight, waterfallItemHeight);
-						
-						const minColumnHeight = Math.min(...this.waterfall.columnsHeight);
-						
-						const minColumnIndex = this.waterfall.columnsHeight.indexOf(minColumnHeight);
-						
-						this.top = minColumnHeight;
-						this.waterfall.columnsHeight[minColumnIndex] += waterfallItemHeight;
-						this.left = this.waterfall.columnsLeft[minColumnIndex];
-					})
-					// #endif
-					
-				}, 500);
+				setTimeout(() => {
+					this.calculateLayout();
+				}, 600);
 			})
 		},
 		methods: {
@@ -66,8 +37,39 @@
 						resolve(data);
 					})
 				})
-			}
+			},
 			// #endif
+			async calculateLayout() {
+				// #ifdef APP-PLUS-NVUE
+				const data = await this.getComponentRect(this.$refs['waterfall-item']);
+				const waterfallItemHeight = data.size.height;
+				
+				const minColumnHeight = Math.min(...this.waterfall.columnsHeight);
+				const minColumnIndex = this.waterfall.columnsHeight.indexOf(minColumnHeight);
+				
+				this.top = minColumnHeight;
+				this.waterfall.columnsHeight[minColumnIndex] += waterfallItemHeight;
+				this.left = this.waterfall.columnsLeft[minColumnIndex];
+				// console.log(this.waterfall.columnsHeight);
+				// #endif
+				
+				// #ifndef APP-PLUS-NVUE
+				const selector = uni.createSelectorQuery().in(this);
+				selector.select('.waterfall-item').fields({size: true});
+				selector.exec(data => {
+					const waterfallItemHeight = data[0].height;
+					// console.log(this.waterfall.columnsHeight, waterfallItemHeight);
+					
+					const minColumnHeight = Math.min(...this.waterfall.columnsHeight);
+					
+					const minColumnIndex = this.waterfall.columnsHeight.indexOf(minColumnHeight);
+					
+					this.top = minColumnHeight;
+					this.waterfall.columnsHeight[minColumnIndex] += waterfallItemHeight;
+					this.left = this.waterfall.columnsLeft[minColumnIndex];
+				})
+				// #endif
+			}
 		},
 	}
 </script>

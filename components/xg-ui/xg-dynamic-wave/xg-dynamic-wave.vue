@@ -1,5 +1,5 @@
 <template>
-	<view class="pillar-list">
+	<view class="pillar-list" :style="{height: pillarMaxHeight}">
 		<view v-for="(item, index) of pillarCount" :key="index" :style="{height: pillarHeightList[index] + 'px', width: pillarWidth, 'background-color': pillarColor, 'margin-left': index === 0 || pillarGap}"></view>
 	</view>
 </template>
@@ -23,15 +23,15 @@
 			},
 			pillarWidth: {
 				type: String,
-				default: '3px'
+				default: '2px'
 			},
 			pillarMixHeight: {
 				type: String,
-				default: '6rpx'
+				default: '1px'
 			},
 			pillarMaxHeight: {
 				type: String,
-				default: '60rpx'
+				default: '14px'
 			},
 			pillarColor: {
 				type: String,
@@ -61,14 +61,13 @@
 			}
 		},
 		created() {
-			
 			this.$watch('started', (newValue, oldValue) => {
 				if (newValue) {
 					this.start();
 				} else {
 					this.stop();
 				}
-			})
+			}, {immediate: true})
 		},
 		methods: {
 			toPx(value) {
