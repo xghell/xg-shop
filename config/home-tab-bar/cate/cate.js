@@ -29,7 +29,7 @@ const cate = {
 				left: {
 					fontFamily: 'xg-iconfont',
 					iconStyle: `margin-left: ${style.UNI_SPACING_COL_BASE};`,
-					textStyle: `font-size:${style.UNI_ICON_SIZE_MI};`,
+					textStyle: `font-size:${style.UNI_ICON_SIZE_SM};`,
 					iconList: [
 						{
 							id: 'scan',
@@ -40,7 +40,7 @@ const cate = {
 				right: {
 					fontFamily: 'xg-iconfont',
 					textStyle: `margin-right: ${style.UNI_SPACING_COL_BASE};
-								font-size: ${style.UNI_ICON_SIZE_MI};
+								font-size: ${style.UNI_ICON_SIZE_SM};
 								`,
 					iconList: [
 						{

@@ -1,23 +1,262 @@
 <template>
 	<view class="page">
-		userpage
+		<view class="nav-bar">
+			<xg-nav-bar status-bar hasTitle :title="navBarConfig.title" :left="navBarConfig.left" :right="navBarConfig.right" @getNavBarMaxHeight="getNavBarHeight" @iconTap="navBarItemTap"></xg-nav-bar>
+		</view>
+		<scroll-view class="page-scroll" :scroll-y="true" >
+			<view>
+				<view class="nav-section">
+					<image class="nav-bg-img" :src="navBgImageConfig" mode="widthFix"></image>
+					
+					<view class="nav-bar-placeholder" :style="{height: navBarHeight + 'px'}"></view>
+					
+					<view class="user-section">
+						<view class="user-info">
+							<image class="avatar" :src="userInfo.avatar" mode=""></image>
+							<text class="nickname">{{userInfo.nickname}}</text>
+						</view>
+						<view class="user-track">
+							<view class="concern-item">
+								<text class="concern-title">{{userInfo.concerned_product_count}}</text>
+								<text class="concern-subtitle">商品关注</text>
+							</view>
+							<view class="concern-item">
+								<text class="concern-title">{{userInfo.concerned_shop_count}}</text>
+								<text class="concern-subtitle">店铺关注</text>
+							</view>
+							<view class="concern-item">
+								<text class="concern-title">{{userInfo.like_count}}</text>
+								<text class="concern-subtitle">喜欢的内容</text>
+							</view>
+							<view class="concern-item">
+								<text class="concern-title">{{userInfo.history_count}}</text>
+								<text class="concern-subtitle">浏览记录</text>
+							</view>
+						</view>
+					</view>
+				</view>
+				
+				<view class="order-section">
+					<view class="order-item" v-for="(icon, iconIndex) of orderSectionConfig.iconList" :key="iconIndex">
+						<xg-icon :fontFamily="orderSectionConfig.fontFamily" :text="icon.text" :textStyle="orderSectionConfig.textStyle + ';' + icon.textStyle" :title="icon.title" :titleStyle="orderSectionConfig.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="orderSectionConfig.subtitleStyle"></xg-icon>
+					</view>
+				</view>
+				
+				<view class="service-section">
+					<view class="service-label">
+						<view class="service-title">工具与服务</view>
+						<view class="more">
+							<text class="more-text">查看更多</text>
+							<text class="more-icon" :style="{'font-family': 'xg-iconfont'}">&#xe601;</text>
+						</view>
+					</view>
+					
+					<view class="service-list">
+						<uni-grid :showBorder="false" :square="false" :highlight="false" :column="4">
+							<uni-grid-item v-for="(icon, iconIndex) of serviceListConfig.iconList" :key="iconIndex">
+								<view class="service-item">
+									<xg-icon :fontFamily="serviceListConfig.fontFamily" :thumb="icon.thumb" :thumbStyle="serviceListConfig.thumbStyle"  :title="icon.title" :titleStyle="serviceListConfig.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="serviceListConfig.subtitleStyle"></xg-icon>
+								</view>
+							</uni-grid-item>
+						</uni-grid>
+						
+					</view>
+				</view>
+				
+				
+			</view>
+		</scroll-view>
 	</view>
 </template>
 
 <script>
+	import config from '@/config/home-tab-bar/user/user.js';
+	import data from '@/data/home-tab-bar/user/user.js';
 	
 	export default {
+		mixins: [config],
 		data() {
 			return {
-				
+				navBarHeight: 0,
+				userInfo: {},
 			}
 		},
+		async created() {
+			const userInfoData = data.userInfo();
+			this.userInfo = await userInfoData;
+		},
 		methods: {
-			
+			getNavBarHeight(e) {
+				this.navBarHeight = e;
+			},
+			navBarItemTap(e) {
+				console.log('点击了导航栏',e);
+				const aciton = {
+					setting() {
+						uni.navigateTo({url: '/pages/setting/setting'})
+					}
+				}
+				
+				aciton[e]();
+			}
 		}
 	}
 </script>
 
-<style>
-
+<style lang="scss">
+	.page {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+	}
+	.page-scroll {
+		flex: 1;
+	}
+	
+	.nav-section {
+		overflow: hidden;
+		position: relative;
+	}
+	.nav-bg-img {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+	}
+	
+	.nav-bar {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+	}
+	
+	.user-section {
+		
+	}
+	.user-info {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		margin-left: $uni-spacing-col-lg;
+		margin-right: $uni-spacing-col-lg;
+	}
+	.avatar {
+		width: $uni-icon-size-lg;
+		height: $uni-icon-size-lg;
+		border-radius: $uni-border-radius-circle;
+		border-width: 2px;
+		border-style: solid;
+		border-color: #FFF;
+	}
+	.nickname {
+		font-size: $uni-font-size-lg;
+		margin-left: $uni-spacing-col-base;
+		color: $uni-text-color-white;
+	}
+	
+	.user-track {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: space-between;
+		
+		margin-top: $uni-spacing-row-base;
+		margin-bottom: $uni-spacing-row-base;
+		margin-left: $uni-spacing-col-lg;
+		margin-right: $uni-spacing-col-lg;
+	}
+	.concern-item {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+		align-items: center;
+	}
+	.concern-title {
+		font-size: $uni-font-size-lg;
+		font-weight: bold;
+		color: $uni-text-color-white;
+	}
+	.concern-subtitle {
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-white;
+	}
+	
+	.order-section {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: space-between;
+		margin-top: $uni-spacing-row-base;
+		padding-top: $uni-spacing-row-base;
+		padding-bottom: $uni-spacing-row-base;
+		padding-left: $uni-spacing-col-lg;
+		padding-right: $uni-spacing-col-lg;
+		background-color: $uni-bg-color;
+		border-radius: $uni-border-radius-base;
+	}
+	.order-item {
+		
+	}
+	
+	.more {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.more-text {
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-grey;
+	}
+	.more-icon {
+		font-size: $uni-font-size-mi;
+		color: $uni-text-color-grey;
+		font-weight: bold;
+		margin-left: $uni-spacing-col-mi;
+	}
+	.service-section {
+		background-color: $uni-bg-color;
+		margin-top: $uni-spacing-row-base;
+		border-radius: $uni-border-radius-base;
+	}
+	.service-label {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: space-between;
+		padding-top: $uni-spacing-row-base;
+		padding-bottom: $uni-spacing-row-base;
+		padding-left: $uni-spacing-col-base;
+		padding-right: $uni-spacing-col-base;
+		border-bottom-width: 0.5px;
+		border-style: solid;
+		border-color: $uni-border-color;
+	}
+	.service-title {
+		font-size: $uni-font-size-base;
+		// font-weight: bold;
+	}
+	
+	.service-list {
+		
+	}
+	.service-item {
+		margin-bottom: $uni-spacing-row-base;
+		margin-top: $uni-spacing-row-base;
+	}
 </style>

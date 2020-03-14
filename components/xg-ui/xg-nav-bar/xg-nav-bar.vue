@@ -7,31 +7,33 @@
 			<view class="status-bar" v-if="statusBar" :style="{height: statusBarHeight + 'px'}"></view>
 			
 			<view class="nav-bar-inner" :style="{height: navBarInnerHeight + 'px'}">
-				<view  ref="fixed-section" class="fixed-section">
+				<view  ref="fixed-section" class="fixed-section" :style="{height: fixedHeight}">
+					<view v-if="hasTitle" class="title-section">
+						<slot name="title">
+							<!-- <text>标题区域</text> -->
+							<xg-icon v-for="(icon, index) of title.iconList" :key="index" @iconTap="iconTap" :vertical="icon.vertical" :index="icon.id" :iconStyle="title.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||title.fontFamily" :text="icon.text" :textStyle="title.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="title.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="title.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="title.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
+						</slot>
+					</view>
+					
 					<view class="left-section" :style="{opacity: opacity}">
 						<slot name="left">
 							<!-- <text>左侧区域</text> -->
-							<xg-icon v-for="(icon, index) of left.iconList" :key="index" @iconTap="iconTap" :index="icon.id" :iconStyle="left.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||left.fontFamily" :text="icon.text" :textStyle="left.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="left.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="left.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="left.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
+							<xg-icon v-for="(icon, index) of left.iconList" :key="index" @iconTap="iconTap" :vertical="icon.vertical" :index="icon.id" :iconStyle="left.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||left.fontFamily" :text="icon.text" :textStyle="left.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="left.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="left.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="left.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
 						</slot>
 					</view>
 					<view v-if="hasCenter" class="center-section" :style="{opacity: opacity}">
 						<slot name="center">
 							<!-- <text>中间区域</text> -->
-							<xg-icon v-for="(icon, index) of center.iconList" :key="index" @iconTap="iconTap" :index="icon.id" :iconStyle="center.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||center.fontFamily" :text="icon.text" :textStyle="center.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="center.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="center.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="center.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
+							<xg-icon v-for="(icon, index) of center.iconList" :key="index" @iconTap="iconTap" :vertical="icon.vertical" :index="icon.id" :iconStyle="center.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||center.fontFamily" :text="icon.text" :textStyle="center.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="center.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="center.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="center.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
 						</slot>
 					</view>
 					<view ref="right-section" class="right-section">
 						<slot name="right">
 							<!-- <text>右侧区域</text> -->
-							<xg-icon v-for="(icon, index) of right.iconList" :key="index" @iconTap="iconTap" :index="icon.id" :iconStyle="right.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||right.fontFamily" :text="icon.text" :textStyle="right.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="right.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="right.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="right.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
+							<xg-icon v-for="(icon, index) of right.iconList" :key="index" @iconTap="iconTap" :vertical="icon.vertical" :index="icon.id" :iconStyle="right.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||right.fontFamily" :text="icon.text" :textStyle="right.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="right.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="right.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="right.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
 						</slot>
 					</view>
-					<view v-if="hasTitle" class="title-section">
-						<slot name="title">
-							<!-- <text>标题区域</text> -->
-							<xg-icon v-for="(icon, index) of title.iconList" :key="index" @iconTap="iconTap" :index="icon.id" :iconStyle="title.iconStyle + ';' + icon.iconStyle" :fontFamily="icon.fontFamily||title.fontFamily" :text="icon.text" :textStyle="title.textStyle + ';' + icon.textStyle" :thumb="icon.thumb" :thumbStyle="title.thumbStyle + ';' +icon.thumbStyle" :title="icon.title" :titleStyle="title.titleStyle + ';' +icon.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="title.subtitleStyle + ';' + icon.subtitleStyle"></xg-icon>
-						</slot>
-					</view>
+					
 				</view>
 				
 				<view v-if="hasChangeable" ref="changeable-section" class="changeable-section" :style="{top: changeableTop + 'px', right: changeableRight + 'px'}">
@@ -84,6 +86,9 @@
 	export default {
 		name: 'XgNavBar',
 		props: {
+			fixedHeight: {
+				type: String
+			},
 			hasCenter: {
 				type: Boolean
 			},
@@ -128,17 +133,18 @@
 						subtitleStyle: '',
 						iconList: [
 							{
-							id: '',
-							iconStyle: '',
-							fontFamily: '',
-							text: '',
-							textStyle: '',
-							thumb: '',
-							thumbStyle: '',
-							title: '',
-							titleStyle: '',
-							subtitle: '',
-							subtitleStyle: ''
+								vertical: true,
+								id: '',
+								iconStyle: '',
+								fontFamily: '',
+								text: '',
+								textStyle: '',
+								thumb: '',
+								thumbStyle: '',
+								title: '',
+								titleStyle: '',
+								subtitle: '',
+								subtitleStyle: ''
 							},
 						]
 					}

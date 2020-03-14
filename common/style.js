@@ -11,12 +11,13 @@ const style = {
 	UNI_TEXT_COLOR_WHITE: '#FFFFFF',
 	
 	//图标尺寸
-	UNI_ICON_SIZE_MI: '40rpx',
-	UNI_ICON_SIZE_SM: '60rpx',
+	UNI_ICON_SIZE_MI: '20rpx',
+	UNI_ICON_SIZE_SM: '40rpx',
+	UNI_ICON_SIZE_MD: '60rpx',
 	UNI_ICON_SIZE_BASE: '80rpx',
-	UNI_ICON_SIZE_LG: '100rpx',
-	UNI_ICON_SIZE_HG: '120rpx',
-	UNI_ICON_SIZE_MX: '140rpx',
+	UNI_ICON_SIZE_LG: '120rpx',
+	UNI_ICON_SIZE_HG: '160rpx',
+	UNI_ICON_SIZE_MX: '200rpx',
 	
 	
 	/* 对应@/uni.scss文件样式 */
@@ -40,6 +41,9 @@ const style = {
 	UNI_BG_COLOR_HOVER: '#F1F1F1',
 	UNI_BG_COLOR_MASK: 'rgba(0, 0, 0, 0.4)',
 	UNI_BG_COLOR_PINK: 'pink',
+	UNI_BG_COLOR_RED: 'red',
+	UNI_BG_COLOR_BLUE: 'blue',
+	UNI_BG_COLOR_BLACK: 'black',
 	
 	//边框颜色
 	UNI_BORDER_COLOR: '#c8c7cc',
@@ -68,6 +72,7 @@ const style = {
 	UNI_SPACING_ROW_BASE: '24rpx',
 	UNI_SPACING_ROW_LG: '36rpx',
 	UNI_SPACING_ROW_HG: '48rpx',
+	UNI_SPACING_ROW_MX: '60rpx',
 	
 	// 垂直间距
 	UNI_SPACING_COL_MI: '6rpx',
@@ -75,6 +80,7 @@ const style = {
 	UNI_SPACING_COL_BASE: '20rpx',
 	UNI_SPACING_COL_LG: '30rpx',
 	UNI_SPACING_COL_HG: '40rpx',
+	UNI_SPACING_COL_MX: '50rpx',
 	
 	//透明度 
 	UNI_OPACITY_DISABLED: 0.3,

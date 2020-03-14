@@ -1,5 +1,5 @@
 <template>
-	<scroll-view class="page-scroll" scroll-y @scroll="pageScroll">
+	<scroll-view class="page-scroll" scroll-y :scroll-top="pageScrollTop" @scroll="pageScroll">
 		<view class="dock-placeholder" :style="{height: finddockHeight + 'px'}"></view>
 		
 		<view>
@@ -70,15 +70,21 @@
 </template>
 
 <script>
-	import config from '@/config/find/concern/concern.js';
-	import data from '@/data/find/concern/concern.js';
-		
+	import config from '@/config/home-tab-bar/find/concern/concern.js';
+	import data from '@/data/home-tab-bar/find/concern/concern.js';
+	
+	const customData = {
+		old: {
+			pageScrollTop: 0,
+		}
+	}	
 		
 	export default {
 		mixins: [config],
 		inject: ['find'],
 		data() {
 			return {
+				pageScrollTop: 0,
 				concernedShopList: [],
 				unconcernedShopList: [],
 			}
@@ -97,9 +103,15 @@
 		},
 		methods: {
 			pageScroll(e) {
-				// this.pageScrollTop = e.detail.scrollTop;
-				this.$emit('concernScroll', e.detail.scrollTop);
+				customData.old.pageScrollTop = e.detail.scrollTop;
+				// console.log(e);
+				this.$emit('scrollDeltaY', e.detail.deltaY);
 			},
+			//页面切换时设置滚动位置，需使用this.$refs引用
+			scrollDeltaYTo(deltaY) {
+				this.pageScrollTop = customData.old.pageScrollTop + deltaY;
+			},
+			
 			concernedButtonTap(shopIndex) {
 				this.$set(this.concernedShopList[shopIndex], 'concerned', !this.concernedShopList[shopIndex].concerned);
 			},

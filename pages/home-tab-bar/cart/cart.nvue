@@ -1,23 +1,183 @@
 <template>
 	<view class="page">
-		cartpage
+		<scroll-view class="page-scroll" scroll-y="true" @scroll="pageScroll">
+			<view>
+				<view class="dock-placeholder" :style="{height: dockHeight + 'px'}"></view>
+				
+				<view v-if="isEmptyCart" class="empty-cart">
+					<view class="empty-cart-label">
+						<image class="empty-cart-icon" :src="emptyCartConfig.icon"></image>
+						<text class="empty-cart-text">{{emptyCartConfig.text}}</text>
+					</view>
+					
+					<view class="nav-btn-list">
+						<text class="btn" v-for="(btn, btnIndex) of emptyCartConfig.navBtnList" :key="btnIndex" @tap="emptyCartNavBtn(btn.url)">{{btn.text}}</text>
+					</view>
+				</view>
+				
+				
+				<view class="recommended-product-list-title">
+					<xg-icon :fontFamily="recommendedProductListTitleConfig.lineIcon.fontFamily" :text="recommendedProductListTitleConfig.lineIcon.text" :textStyle="recommendedProductListTitleConfig.lineIcon.textStyle"></xg-icon>
+					<xg-icon :vertical="false" :fontFamily="recommendedProductListTitleConfig.recommendIcon.fontFamily" :thumb="recommendedProductListTitleConfig.recommendIcon.thumb" :title="recommendedProductListTitleConfig.recommendIcon.title" :iconStyle="recommendedProductListTitleConfig.recommendIcon.iconStyle" :titleStyle="recommendedProductListTitleConfig.recommendIcon.titleStyle"></xg-icon>
+					<xg-icon :fontFamily="recommendedProductListTitleConfig.lineIcon.fontFamily" :text="recommendedProductListTitleConfig.lineIcon.text" :textStyle="recommendedProductListTitleConfig.lineIcon.textStyle"></xg-icon>
+				</view>
+				
+				<xg-waterfall class="recommended-product-list" :columnCount="recommendedProductListConfig.columnCount" :columnGap="recommendedProductListConfig.columnGap" :leftGap="recommendedProductListConfig.leftGap" :rightGap="recommendedProductListConfig.rightGap" @getWaterfallItemWidth="getWaterFallItemWidth">
+					<xg-waterfall-item v-for="(product, index) of recommendedProductList" :key="index">
+						<tpl-product :style="{'margin-bottom': recommendedProductListConfig.rowGap}" :size="waterFallItemWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount"></tpl-product>
+					</xg-waterfall-item>
+				</xg-waterfall>
+			</view>
+		</scroll-view>
+		
+		<view class="dock">
+			<xg-dock ref="dock" status-bar  @getDockHeight="getDockHeight">
+				<xg-nav-bar hasTitle :fixedHeight="navBarConfig.fixedHeight" :title="navBarConfig.title" :right="navBarConfig.right">
+					<view class="nav-bar-bg"></view>
+				</xg-nav-bar>
+			</xg-dock>
+		</view>
 	</view>
 </template>
 
 <script>
+	import config from '@/config/home-tab-bar/cart/cart.js';
+	import data from "@/data/home-tab-bar/cart/cart.js";
 	
 	export default {
+		mixins: [config],
 		data() {
 			return {
+				dockHeight: 0,
 				
+				isEmptyCart: true,
+				
+				recommendedProductList: [],
+				waterFallItemWidth: 0,
 			}
 		},
+		async created() {
+			const recommendedProductListData = data.recommendedProductList();
+			this.recommendedProductList = await recommendedProductListData;
+		},
 		methods: {
+			getDockHeight(e) {
+				this.dockHeight = e;
+			},
 			
+			pageScroll(e) {
+				this.$refs['dock'].scrollDeltaTo(e.detail.deltaY);
+			},
+			
+			emptyCartNavBtn(url) {
+				uni.navigateTo({
+					url: url
+				});
+			},
+			
+			getWaterFallItemWidth(e) {
+				this.waterFallItemWidth = e;
+			}
 		}
 	}
 </script>
 
-<style>
-
+<style lang="scss">
+	.page {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+	}
+	
+	.page-scroll {
+		flex: 1;
+	}
+	
+	.dock {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+	}
+	
+	.nav-bar-bg {
+		position: absolute;
+		background-color: $uni-bg-color;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+	
+	.empty-cart {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+		align-items: center;
+		
+		margin-top: 1px;
+		padding-top: $uni-spacing-row-hg;
+		padding-bottom: $uni-spacing-row-lg;
+		background-color: $uni-bg-color;
+	}
+	.empty-cart-label {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.empty-cart-icon {
+		width: $uni-icon-size-base;
+		height: $uni-icon-size-base;
+	}
+	.empty-cart-text {
+		font-size: $uni-font-size-base;
+		color: $uni-text-color-grey;
+		margin-left: $uni-spacing-col-base;
+	}
+	
+	.nav-btn-list {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		margin-top: $uni-spacing-row-lg;
+	}
+	.btn {
+		border-width: 1px;
+		border-style: solid;
+		border-color: $uni-border-color;
+		border-radius: 10000px;
+		padding-left: $uni-spacing-col-hg;
+		padding-right: $uni-spacing-col-hg;
+		margin-left: $uni-spacing-col-base;
+		margin-right: $uni-spacing-col-base;
+		font-size: $uni-font-size-base;
+		padding-top: $uni-spacing-row-sm;
+		padding-bottom: $uni-spacing-row-sm;
+	}
+	
+	.recommended-product-list-title {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		
+		margin-top: $uni-spacing-row-base;
+	}
+	.recommended-product-list {
+		margin-top: $uni-spacing-row-sm;
+	}
 </style>

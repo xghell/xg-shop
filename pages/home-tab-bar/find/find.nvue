@@ -3,21 +3,21 @@
 		
 		<swiper class="page-content" :duration="100" :current="tabCurrentIndex" @change="pageIndexChange">
 			<swiper-item>
-				<concern-page @concernScroll="pageScroll"></concern-page>
+				<concern-page ref="concern-page" @scrollDeltaY="pageScroll"></concern-page>
 			</swiper-item>
 			<swiper-item>
-				<show-page @showScroll="pageScroll"></show-page>
+				<show-page ref="show-page" @scrollDeltaY="pageScroll"></show-page>
 			</swiper-item>
 			<swiper-item>
-				<live-page @showScroll="pageScroll"></live-page>
+				<live-page ref="live-page" @scrollDeltaY="pageScroll"></live-page>
 			</swiper-item>
 			<swiper-item>
-				<video-page @showScroll="pageScroll"></video-page>
+				<video-page ref="video-page" @scrollDeltaY="pageScroll"></video-page>
 			</swiper-item>
 		</swiper>
 		
 		<view class="dock">
-			<xg-dock status-bar :scrollTop="pageScrollTop" :threshold="navBarHeight + 'px'" @getDockHeight="getDockHeight" @dockScroll="dockScroll">
+			<xg-dock ref="dock" status-bar :threshold="navBarHeight + 'px'" @getDockHeight="getDockHeight" @dockScroll="dockScroll">
 				<image class="top-bg-image" :src="topBgImage" mode=""></image>
 				
 				<xg-nav-bar :style="{opacity: navBarOpacity}"  hasTitle :left="navBar.left" :right="navBar.right" :title="navBar.title" @getNavBarMinHeight="getNavBarMinHeight"></xg-nav-bar>
@@ -35,12 +35,18 @@
 </template>
 
 <script>
-	import config from '@/config/find/find.js';
+	import config from '@/config/home-tab-bar/find/find.js';
 	
 	import concernPage from './concern/concern.nvue';
 	import showPage from './show/show.nvue';
 	import livePage from './live/live.nvue';
 	import videoPage from './video/video.nvue';
+	
+	const customData = {
+		pageRefList: ['concern-page', 'show-page', 'live-page', 'video-page'],
+		dockScrollDeltaY: 0,
+		pageScrollDeltaYList: [],
+	}
 	
 	export default {
 		mixins: [config],
@@ -58,7 +64,6 @@
 		data() {
 			return {
 				navBarOpacity: 1,
-				pageScrollTop: 0,
 				tabCurrentIndex: 0,
 				navBarHeight: 0,
 				dockHeight: 0,
@@ -67,10 +72,13 @@
 		
 		methods: {
 			pageScroll(e) {
-				this.pageScrollTop = e;
+				this.$refs['dock'].scrollDeltaTo(e);
+				// console.log(e);
 			},
 			pageIndexChange(e) {
 				this.tabCurrentIndex = e.detail.current;
+				
+				this.$refs[customData.pageRefList[this.tabCurrentIndex]].scrollDeltaYTo(customData.dockScrollDeltaY - (customData.pageScrollDeltaYList[this.tabCurrentIndex]||0));
 			},
 			//嵌套滚动的产品列表
 			tabBarIconTap(index) {
@@ -84,6 +92,9 @@
 				// console.log(e);
 			},
 			dockScroll(e) {
+				customData.dockScrollDeltaY = e;
+				customData.pageScrollDeltaYList[this.tabCurrentIndex] = e;
+				
 				// this.navBarOpacity = 1 - e / this.navBarHeight;
 				if (e > 10) {
 					this.navBarOpacity = 0;

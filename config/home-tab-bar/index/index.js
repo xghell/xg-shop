@@ -5,16 +5,22 @@ const index = {
 		return {
 			goTopButton: {
 				image: '/static/index/go-top.png',
-				size: '80rpx',
-				right: '30rpx',
-				bottom: '80rpx',
+				size: `${style.UNI_ICON_SIZE_BASE}`,
+				right: `${style.UNI_SPACING_COL_LG}`,
+				bottom: `${style.UNI_SPACING_COL_HG}`,
 			},
 			xgNavBar: {
 				backgroundImage: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2346819948,4073569407&fm=26&gp=0.jpg',
 				searchInput: {
 				
-					searchInputStyle: 'height: 60rpx;background-color: #FFF;border-radius: 1000px;margin-bottom: 10rpx;margin-left: 16rpx;margin-right: 16rpx;',
-					inputStyle: 'font-size: 14px;',
+					searchInputStyle: `height: 60rpx;
+										background-color: ${style.UNI_BG_COLOR};
+										border-radius: 1000px;
+										margin-top: ${style.UNI_SPACING_ROW_SM};
+										margin-bottom: ${style.UNI_SPACING_ROW_SM};
+										margin-left: ${style.UNI_SPACING_COL_BASE};
+										margin-right: ${style.UNI_SPACING_COL_BASE};`,
+					inputStyle: `font-size: ${style.UNI_FONT_SIZE_BASE};`,
 					leftIcon: {
 						fontFamily: 'xg-iconfont',
 						text: '\ue651'
@@ -28,13 +34,13 @@ const index = {
 				left: {
 				
 					fontFamily: 'xg-iconfont',
-					iconStyle: 'margin-left: 16rpx;',
-					textStyle: 'color:#FFF;',
+					iconStyle: `margin-left: ${style.UNI_SPACING_COL_BASE};`,
+					textStyle: `color: ${style.UNI_TEXT_COLOR_WHITE}`,
 					iconList: [
 						{
 							id: 'run',
 							text: '\ue76f',
-							textStyle: 'font-size: 26px;',
+							textStyle: `font-size: ${style.UNI_ICON_SIZE_SM};`,
 						},
 						{
 							id: 'rise',
@@ -48,9 +54,13 @@ const index = {
 				right: {
 				
 					fontFamily: 'xg-iconfont',
-					iconStyle: 'margin-right: 16rpx;',
-					textStyle: 'margin-bottom: 10rpx; margin-top: 10rpx; color:#FFF',
-					subtitleStyle: 'margin-bottom: 10rpx;color:#FFF;',
+					iconStyle: `margin-right: ${style.UNI_SPACING_COL_BASE};`,
+					textStyle: `margin-bottom: ${style.UNI_SPACING_ROW_SM};
+								margin-top: ${style.UNI_SPACING_ROW_SM};
+								font-size: ${style.UNI_ICON_SIZE_SM};
+								color: ${style.UNI_TEXT_COLOR_WHITE}`,
+					subtitleStyle: `margin-bottom: ${style.UNI_SPACING_ROW_SM};
+									color: ${style.UNI_TEXT_COLOR_WHITE}`,
 					iconList: [
 						{
 							id: 'scan',
@@ -152,8 +162,8 @@ const index = {
 			},
 			
 			productListTabBar: {
-				titleStyle: 'height: 30px;',
-				selectedTitleStyle: `height: 30px;color: ${style.UNI_TEXT_COLOR_RED};font-size: ${style.UNI_FONT_SIZE_LG};`,
+				titleStyle: `height: ${style.UNI_FONT_SIZE_LG};margin-bottom: ${style.UNI_SPACING_ROW_BASE};`,
+				selectedTitleStyle: `height: ${style.UNI_FONT_SIZE_LG};color: ${style.UNI_TEXT_COLOR_RED};font-size: ${style.UNI_FONT_SIZE_LG};margin-bottom: ${style.UNI_SPACING_ROW_BASE};`,
 				selectedSubtitleStyle: `color: ${style.UNI_TEXT_COLOR_RED};`,
 				iconList: [
 				

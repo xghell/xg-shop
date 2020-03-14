@@ -69,8 +69,8 @@
 
 <script>
 	import {between, getComponentRect} from '@/common/helper.js';
-	import config from '@/config/index/index.js';
-	import data from '@/data/index/index.js';
+	import config from '@/config/home-tab-bar/index/index.js';
+	import data from '@/data/home-tab-bar/index/index.js';
 	
 	const customData = {
 		inertiaCoefficient: 7, //惯性系数，决定靠惯性滚动的距离，值越大滚动越远
@@ -194,12 +194,6 @@
 			},
 			xgNavBarIconTap(e) {
 				console.log('点击了导航栏图标：', e);
-				uni.navigateTo({
-					url: '/pages/test/test',
-					success: res => {},
-					fail: () => {},
-					complete: () => {}
-				});
 			},
 			xgNavBarSearchInputRightIconTap(e) {
 				console.log('点击导航栏右侧按钮');
@@ -343,13 +337,14 @@
 	
 	
 	.product-list-tab-section {
+		// border-width: 1px;
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
 		flex-direction: column;
 	}
 	.product-list-tab-bar {
-		margin-top: $uni-spacing-row-sm;
+		// margin-top: $uni-spacing-row-sm;
 		margin-bottom: $uni-spacing-row-sm;
 		padding-left: $uni-spacing-col-base;
 		padding-right: $uni-spacing-col-base;

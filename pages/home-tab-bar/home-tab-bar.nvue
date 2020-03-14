@@ -30,7 +30,7 @@
 </template>
 
 <script>
-	import config from '@/config/tab-bar/home-tab-bar.js';
+	import config from '@/config/home-tab-bar/home-tab-bar.js';
 	import {getComponentRect} from '@/common/helper.js';
 	
 	import indexPage from './index/index.nvue';

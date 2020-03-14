@@ -90,7 +90,6 @@
 		},
 		methods: {
 			iconTap() {
-				// console.log('xg-icon', id);
 				this.$emit('iconTap', this.index);
 				// console.log('font-family: ' + (this.selected ? this.selectedFontFamily||this.fontFamily : this.fontFamily) + ';' + (this.selected ? this.selectedSubtitleStyle||this.subtitleStyle : this.subtitleStyle));
 			}
@@ -126,11 +125,11 @@
 		justify-content: center;
 	}
 	.iconfont {
-		font-size: $uni-icon-size-mi;
+		font-size: $uni-icon-size-sm;
 	}
 	.thumb {
-		width: $uni-icon-size-mi;
-		height: $uni-icon-size-mi;
+		width: $uni-icon-size-sm;
+		height: $uni-icon-size-sm;
 	}
 	.title {
 		font-size: $uni-font-size-base;

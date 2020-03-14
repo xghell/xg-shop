@@ -7,7 +7,7 @@
 			const domModule = uni.requireNativePlugin('dom');
 			domModule.addRule('fontFace', {
 			    'fontFamily': "xg-iconfont",
-			    'src': "url('https://at.alicdn.com/t/font_1639251_dn44pdagcja.ttf')"
+			    'src': "url('https://at.alicdn.com/t/font_1639251_q6b9nqrqor.ttf')"
 			});
 			// #endif
 			
@@ -26,12 +26,12 @@
 	// 引入字体图标
 	@font-face {
 	  font-family: 'xg-iconfont';  /* project id 1639251 */
-	  src: url('//at.alicdn.com/t/font_1639251_dn44pdagcja.eot');
-	  src: url('//at.alicdn.com/t/font_1639251_dn44pdagcja.eot?#iefix') format('embedded-opentype'),
-	  url('//at.alicdn.com/t/font_1639251_dn44pdagcja.woff2') format('woff2'),
-	  url('//at.alicdn.com/t/font_1639251_dn44pdagcja.woff') format('woff'),
-	  url('//at.alicdn.com/t/font_1639251_dn44pdagcja.ttf') format('truetype'),
-	  url('//at.alicdn.com/t/font_1639251_dn44pdagcja.svg#xg-iconfont') format('svg');
+	  src: url('//at.alicdn.com/t/font_1639251_q6b9nqrqor.eot');
+	  src: url('//at.alicdn.com/t/font_1639251_q6b9nqrqor.eot?#iefix') format('embedded-opentype'),
+	  url('//at.alicdn.com/t/font_1639251_q6b9nqrqor.woff2') format('woff2'),
+	  url('//at.alicdn.com/t/font_1639251_q6b9nqrqor.woff') format('woff'),
+	  url('//at.alicdn.com/t/font_1639251_q6b9nqrqor.ttf') format('truetype'),
+	  url('//at.alicdn.com/t/font_1639251_q6b9nqrqor.svg#xg-iconfont') format('svg');
 	}
 	/* #endif */
 	
@@ -41,5 +41,4 @@
 	.page {
 		background-color: $uni-bg-color-grey;
 	}
-	
 </style>

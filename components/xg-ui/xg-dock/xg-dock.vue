@@ -8,6 +8,9 @@
 </template>
 
 <script>
+	/**
+	 * scrollDeltaTo(deltaY) 控制dock运动，使用this.$refs引用
+	 */
 	export default {
 		name: 'XgDock',
 		props: {
@@ -49,13 +52,13 @@
 				return this.toPx(this.initTop);
 			}
 		},
-		watch: {
-			scrollTop(newTop, oldTop) {
-				this.translateY = Math.min(this.toPx(this.threshold)||this.contentHeight, Math.max(0, this.translateY + (newTop - oldTop)));
-				this.$emit('dockScroll', this.translateY);
-				// console.log(this.threshold);
-			}
-		},
+		// watch: {
+		// 	scrollTop(newTop, oldTop) {
+		// 		this.translateY = Math.min(this.toPx(this.threshold)||this.contentHeight, Math.max(0, this.translateY + (newTop - oldTop)));
+		// 		this.$emit('dockScroll', this.translateY);
+		// 		// console.log(this.threshold);
+		// 	}
+		// },
 		methods: {
 			// #ifdef APP-PLUS-NVUE
 			//封装系统函数
@@ -81,6 +84,11 @@
 					throw new TypeError(`${value}单位格式不正确`);
 				}
 				
+			},
+			scrollDeltaTo(deltaY) {
+				this.translateY = Math.min(this.toPx(this.threshold)||this.contentHeight, Math.max(0, this.translateY - (deltaY||0)));
+				// console.log(this.translateY, (deltaY||0));
+				this.$emit('dockScroll', this.translateY);
 			}
 		},
 		created() {

@@ -40,8 +40,8 @@
 </template>
 
 <script>
-	import config from '@/config/cate/cate.js';
-	import data from '@/data/cate/cate.js';
+	import config from '@/config/home-tab-bar/cate/cate.js';
+	import data from '@/data/home-tab-bar/cate/cate.js';
 	
 	export default {
 		mixins: [config],

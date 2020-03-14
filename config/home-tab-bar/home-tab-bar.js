@@ -4,11 +4,15 @@ const homeTabBar = {
 	data() {
 		return {
 			fontFamily: 'xg-iconfont',
-			titleStyle: `font-size: ${style.UNI_FONT_SIZE_SM};`,
-			selectedTitleStyle: `font-size: ${style.UNI_FONT_SIZE_SM};
+			titleStyle: `
+						font-size: ${style.UNI_FONT_SIZE_MI};
+						margin-top: ${style.UNI_SPACING_ROW_SM};
+						`,
+			selectedTitleStyle: `font-size: ${style.UNI_FONT_SIZE_MI};
+								margin-top: ${style.UNI_SPACING_ROW_SM};
 								color: ${style.UNI_TEXT_COLOR_RED};`,
-			textStyle: `font-size: ${style.UNI_ICON_SIZE_MI};`,
-			selectedTextStyle: `font-size: ${style.UNI_ICON_SIZE_MI};
+			textStyle: `font-size: 55rpx;`,
+			selectedTextStyle: `font-size: 55rpx;
 								color: ${style.UNI_TEXT_COLOR_RED};`,
 			iconList: [
 				{

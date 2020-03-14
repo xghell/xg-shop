@@ -8,21 +8,26 @@ $uni-text-color-red: #ed1c24;
 $uni-text-color-white: #FFFFFF;
 
 /* 图标尺寸 */
-$uni-icon-size-mi: 40rpx;
-$uni-icon-size-sm: 60rpx;
+$uni-icon-size-mi: 20rpx;
+$uni-icon-size-sm: 40rpx;
+$uni-icon-size-md: 40rpx;
 $uni-icon-size-base: 80rpx;
-$uni-icon-size-lg: 100rpx;
-$uni-icon-size-hg: 120rpx;
-$uni-icon-size-mx: 140rpx;
+$uni-icon-size-lg: 120rpx;
+$uni-icon-size-hg: 160rpx;
+$uni-icon-size-mx: 200rpx;
 
 /* 水平间距 */
 $uni-spacing-row-mi: 8rpx;
 $uni-spacing-row-hg: 48rpx;
+$uni-spacing-row-mx: 60rpx;
 
 /* 垂直间距 */
 $uni-spacing-col-mi: 6rpx;
 $uni-spacing-col-hg: 40rpx;
+$uni-spacing-col-mx: 50rpx;
 
 /* 背景颜色 */
 $uni-bg-color-pink: pink;
 $uni-bg-color-red: red;
+$uni-bg-color-blue: blue;
+$uni-bg-color-black: black;

@@ -1,5 +1,5 @@
 <template>
-	<scroll-view class="page-scroll" scroll-y="true" @scroll="pageScroll">
+	<scroll-view class="page-scroll" scroll-y="true" :scroll-top="pageScrollTop" @scroll="pageScroll">
 		<view>
 			<view class="dock-placeholder" :style="{height: finddockHeight + 'px'}"></view>
 			
@@ -29,14 +29,21 @@
 </template>
 
 <script>
-	import data from '@/data/find/show/show.js';
-	import config from '@/config/find/show/show.js';
+	import data from '@/data/home-tab-bar/find/show/show.js';
+	import config from '@/config/home-tab-bar/find/show/show.js';
+	
+	const customData = {
+		old: {
+			pageScrollTop: 0,
+		}
+	};
 	
 	export default {
 		mixins: [config],
 		inject: ['find'],
 		data() {
 			return {
+				pageScrollTop: 0,
 				waterfallItemWidth: 0,
 				showList: []
 			}
@@ -53,7 +60,13 @@
 		},
 		methods: {
 			pageScroll(e) {
-				this.$emit('showScroll', e.detail.scrollTop);
+				customData.old.pageScrollTop = e.detail.scrollTop;
+				// console.log(e);
+				this.$emit('scrollDeltaY', e.detail.deltaY);
+			},
+			//页面切换时设置滚动位置，需使用this.$refs引用
+			scrollDeltaYTo(deltaY) {
+				this.pageScrollTop = customData.old.pageScrollTop + deltaY;
 			},
 			
 			getWaterfallItemWidth(e) {

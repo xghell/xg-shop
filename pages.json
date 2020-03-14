@@ -16,6 +16,27 @@
             "path" : "pages/test/test",
             "style" : {}
         }
+        ,{
+            "path" : "pages/setting/setting",
+            "style" : {
+				"navigationBarTitleText": "账户设置",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+        }
+        ,{
+            "path" : "pages/address/address",
+            "style" : {
+				"navigationBarTitleText": "收货地址",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+        },
+		{
+		    "path" : "pages/address/edit-address",
+		    "style" : {
+				"navigationBarTitleText": "收货地址",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -33,7 +33,7 @@ const find = {
 						{
 							fontFamily: '',
 							text: '发现',
-							textStyle: `font-size: ${style.UNI_ICON_SIZE_MI};color: ${style.UNI_TEXT_COLOR_WHITE};`
+							textStyle: `font-size: ${style.UNI_ICON_SIZE_SM};color: ${style.UNI_TEXT_COLOR_WHITE};`
 						}
 					]
 				},
@@ -45,7 +45,7 @@ const find = {
 				iconStyle: 'min-height: 40px;',
 				titleStyle: `color: ${style.UNI_TEXT_COLOR_WHITE};`,
 				subtitleStyle: `height: 15px;`,
-				selectedSubtitleStyle: `height: 15px;font-size: ${style.UNI_ICON_SIZE_MI};color: ${style.UNI_TEXT_COLOR_WHITE};`,
+				selectedSubtitleStyle: `height: 15px;font-size: ${style.UNI_ICON_SIZE_SM};color: ${style.UNI_TEXT_COLOR_WHITE};`,
 				iconList: [
 				
 					{
