@@ -5,6 +5,9 @@
 </template>
 
 <script>
+	/**
+	 * 必须手动调用 calculateLayout() 方法进行瀑布流，在image组件中建议在load事件触发后调用
+	 */
 	export default {
 		name: 'XgWaterfallItem',
 		inject: ['waterfall'],
@@ -14,43 +17,36 @@
 				left: 0,
 			}
 		},
+		// mounted() {
+		// 	this.$nextTick(function () {
+		// 		// this.calculateLayout();
+		// 	})
+		// },
 		computed: {
 			width() {
 				return this.waterfall.realColumnWidth;
 			}
 		},
-		mounted() {
-			this.$nextTick(function () {
-				setTimeout(() => {
-					this.calculateLayout();
-				}, 600);
-			})
-		},
 		methods: {
-			// #ifdef APP-NVUE
-			getComponentRect(ref) {
-				
-				const dom = uni.requireNativePlugin('dom');
-				
-				return new Promise(function (resolve, reject) {
-					dom.getComponentRect(ref, data => {
-						resolve(data);
-					})
-				})
-			},
-			// #endif
-			async calculateLayout() {
+			calculateLayout() {
+				// console.log('ww');
 				// #ifdef APP-PLUS-NVUE
-				const data = await this.getComponentRect(this.$refs['waterfall-item']);
-				const waterfallItemHeight = data.size.height;
-				
-				const minColumnHeight = Math.min(...this.waterfall.columnsHeight);
-				const minColumnIndex = this.waterfall.columnsHeight.indexOf(minColumnHeight);
-				
-				this.top = minColumnHeight;
-				this.waterfall.columnsHeight[minColumnIndex] += waterfallItemHeight;
-				this.left = this.waterfall.columnsLeft[minColumnIndex];
-				// console.log(this.waterfall.columnsHeight);
+				const dom = uni.requireNativePlugin('dom');
+				dom.getComponentRect(this.$refs['waterfall-item'], data => {
+					const waterfallItemHeight = data.size.height;
+					// console.log(waterfallItemHeight);
+					
+					const minColumnHeight = Math.min(...this.waterfall.columnsHeight);
+					const minColumnIndex = this.waterfall.columnsHeight.indexOf(minColumnHeight);
+					
+					this.top = minColumnHeight;
+					this.waterfall.columnsHeight[minColumnIndex] += waterfallItemHeight;
+					this.left = this.waterfall.columnsLeft[minColumnIndex];
+					
+					this.waterfall.waterfallHeight = Math.max(...this.waterfall.columnsHeight);
+					
+					// console.log(waterfallItemHeight);
+				})
 				// #endif
 				
 				// #ifndef APP-PLUS-NVUE
@@ -67,6 +63,9 @@
 					this.top = minColumnHeight;
 					this.waterfall.columnsHeight[minColumnIndex] += waterfallItemHeight;
 					this.left = this.waterfall.columnsLeft[minColumnIndex];
+					
+					this.waterfall.waterfallHeight = Math.max(...this.waterfall.columnsHeight);
+					// console.log(waterfallItemHeight);
 				})
 				// #endif
 			}
@@ -77,6 +76,7 @@
 <style scoped>
 	.waterfall-item {
 		position: absolute;
-		/* border-width: 1px; */
+		/* border-width: 6px;
+		border-color: red; */
 	}
 </style>

@@ -6,15 +6,15 @@
 			</view>
 		</xg-nav-bar>
 		
-		<view class="">
+		<view class="page-content">
 			<view class="history-section">
 				<view class="history-section-title">
-					<text>{{historySection.title}}</text>
-					<text :style="{'font-family':historySection.icon.fontFamily}">{{historySection.icon.text}}</text>
+					<text class="history-section-title-text">{{historySection.title}}</text>
+					<text class="history-section-title-icon" :style="{'font-family':historySection.icon.fontFamily}">{{historySection.icon.text}}</text>
 				</view>
 				
 				<view class="history-section-content">
-					<view class="history-section-item" v-for="(historyItem, index) of history" :key="index">
+					<view class="history-section-item" v-for="(historyItem, index) of historyList" :key="index">
 						<text  class="history-section-item-text">{{historyItem}}</text>
 					</view>
 				</view>
@@ -22,12 +22,29 @@
 			
 			<view class="find-section">
 				<view class="find-section-title">
-					<view class="find-section-title-text">
-						<view class="find-section-title-item" v-for="(title, index) of findSection.titleList" :key="index" @tap="findSectionTitleTap(title.id)">
-							<text>{{title.text}}</text>
-						</view>
+					<view class="find-section-title-item">
+						<text class="find-section-title-item-text">搜索发现</text>
 					</view>
-					<text :style="{'font-family': findSection.icon.fontFamily}">{{findSection.icon.text}}</text>
+					<text class="find-section-title-icon" :style="{'font-family': findSection.icon.fontFamily}" @tap="findSectionTitleIconTap">{{findSection.icon.text}}</text>
+				</view>
+				
+				<view class="find-content">
+					<uni-grid :column="2" :square="false" :showBorder="false" :highlight="false">
+						<uni-grid-item v-if="!findHidden" v-for="(find ,findIndex) of findList" :key="findIndex">
+							<view class="find-item">
+								<view class="find-item-content">
+									<text class="find-item-content-text">{{find.name}}</text>
+								</view>
+								<view class="find-item-label">
+									<text class="find-item-label-text">{{find.label}}</text>
+								</view>
+							</view>
+						</uni-grid-item>
+					</uni-grid>
+					
+					<view class="hidden-find" v-if="findHidden">
+						<text class="hidden-find-text">已隐藏搜索发现</text>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -42,7 +59,9 @@
 		mixins: [config],
 		data() {
 			return {
-				history: [],
+				historyList: [],
+				findList: [],
+				findHidden: false,
 			}
 		},
 		methods: {
@@ -61,12 +80,17 @@
 			xgNavBarSearchInputRightIconTap(e) {
 				console.log('点击搜索框右侧按钮');
 			},
-			findSectionTitleTap(id) {
-				console.log('点击了搜索发现部分标题', id);
+			
+			findSectionTitleIconTap() {
+				this.findHidden = !this.findHidden;
 			}
 		},
 		async created() {
-			this.history = await data.history();
+			const historyListData = data.historyList();
+			const findListData = data.findList();
+			
+			this.historyList = await historyListData;
+			this.findList = await findListData;
 		}
 	}
 </script>
@@ -77,6 +101,10 @@
 	$uni-spacing-col-base: 16upx !default;
 	$uni-font-size-base:14px !default;
 	
+	.page {
+		background-color: $uni-bg-color;
+	}
+	
 	.history-section {
 		
 	}
@@ -86,8 +114,14 @@
 		/* #endif */
 		flex-direction: row;
 		justify-content: space-between;
-		margin-left: $uni-spacing-col-base;
-		margin-right: $uni-spacing-col-base;
+		margin-left: $uni-spacing-col-lg;
+		margin-right: $uni-spacing-col-lg;
+	}
+	.history-section-title-text {
+		font-size: $uni-font-size-base;
+	}
+	.history-section-title-icon {
+		font-size: $uni-font-size-base;
 	}
 	
 	.history-section-content {
@@ -96,24 +130,28 @@
 		/* #endif */
 		flex-direction: row;
 		flex-wrap: wrap;
+		
+		margin-top: $uni-spacing-row-base;
 	}
 	.history-section-item {
 		background-color: $uni-bg-color-grey;
 		border-radius: 10000px;
 		padding-left: $uni-spacing-col-lg;
 		padding-right: $uni-spacing-col-lg;
-		margin-top: $uni-spacing-row-base;
+		padding-top: $uni-spacing-row-sm;
+		padding-bottom: $uni-spacing-row-sm;
+		margin-top: $uni-spacing-row-sm;
 		margin-bottom: $uni-spacing-row-base;
 		margin-left: $uni-spacing-col-base;
 		margin-right: $uni-spacing-col-base;
 	}
 	.history-section-item-text {
-		line-height: 2;
-		font-size: $uni-font-size-base;
+		font-size: $uni-font-size-sm;
 	}
 	
+	
 	.find-section {
-		
+		margin-top: $uni-spacing-col-base;
 	}
 	.find-section-title {
 		/* #ifndef APP-PLUS-NVUE */
@@ -124,13 +162,59 @@
 		margin-left: $uni-spacing-col-lg;
 		margin-right: $uni-spacing-col-lg;
 	}
-	.find-section-title-text {
+	.find-section-title-item {
+		margin-right: $uni-spacing-col-lg;
+	}
+	.find-section-title-item-text {
+		font-size: $uni-font-size-base;
+	}
+	.find-section-title-icon {
+		font-size: $uni-font-size-base;
+	}
+	
+	.find-content {
+		margin-left: $uni-spacing-col-lg + $uni-spacing-col-base;
+		margin-right: $uni-spacing-col-lg + $uni-spacing-col-base;
+		margin-top: $uni-spacing-row-base;
+	}
+	.find-item {
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
 		flex-direction: row;
+		align-items: center;
+		
+		margin-bottom: $uni-spacing-row-lg;
 	}
-	.find-section-title-item {
-		margin-right: $uni-spacing-col-lg;
+	.find-item-content {
+		
 	}
+	.find-item-content-text {
+		font-size: $uni-font-size-sm;
+	}
+	.find-item-label {
+		background-color: $uni-bg-color-red;
+		border-radius: $uni-border-radius-sm;
+		padding-left: 1px;
+		padding-right: 1px;
+		margin-left: $uni-spacing-col-sm;
+	}
+	.find-item-label-text {
+		font-size: $uni-font-size-mi;
+		color: $uni-text-color-white;
+	}
+	.hidden-find {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		
+		height: 100rpx;
+	}
+	.hidden-find-text {
+		font-size: $uni-font-size-sm;
+	}
+	
 </style>

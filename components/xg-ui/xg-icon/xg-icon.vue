@@ -1,9 +1,9 @@
 <template>
 	<view class="icon" :style="(selected ? selectedIconStyle||iconStyle : iconStyle) + ';flex-direction: '+ (vertical ? 'column' : 'row')" @tap="iconTap">
-		<text v-if="text||selectedText" class="iconfont text" :style="'font-family:' + (selected ? selectedFontFamily||fontFamily : fontFamily) + ';' + (selected ? selectedTextStyle||textStyle : textStyle)">{{selected ? selectedText||text : text}}</text>
+		<text v-if="text||selectedText" class="text iconfont " :style="'font-family:' + (selected ? selectedFontFamily||fontFamily : fontFamily) + ';' + (selected ? selectedTextStyle||textStyle : textStyle)">{{selected ? selectedText||text : text}}</text>
 		<image v-if="thumb||selectedThumb" class="thumb" :style="selected? selectedThumbStyle||thumbStyle : thumbStyle" :src="selected? selectedThumb||thumb : thumb"></image>
-		<text v-if="title||selectedTitle" class="title text" :style="'font-family: ' + (selected ? selectedFontFamily||fontFamily : fontFamily) + ';' + (selected ? selectedTitleStyle||titleStyle : titleStyle)">{{selected ? selectedTitle||title : title}}</text>
-		<text v-if="subtitle||selectedSubtitle" class="subtitle text" :style="'font-family: ' + (selected ? selectedFontFamily||fontFamily : fontFamily) + ';' + (selected ? selectedSubtitleStyle||subtitleStyle : subtitleStyle)">{{selected ? selectedSubtitle||subtitle : subtitle}}</text>
+		<text v-if="title||selectedTitle" class="text title " :style="'font-family: ' + (selected ? selectedFontFamily||fontFamily : fontFamily) + ';' + (selected ? selectedTitleStyle||titleStyle : titleStyle)">{{selected ? selectedTitle||title : title}}</text>
+		<text v-if="subtitle||selectedSubtitle" class="text subtitle " :style="'font-family: ' + (selected ? selectedFontFamily||fontFamily : fontFamily) + ';' + (selected ? selectedSubtitleStyle||subtitleStyle : subtitleStyle)">{{selected ? selectedSubtitle||subtitle : subtitle}}</text>
 	</view>
 </template>
 
@@ -115,6 +115,7 @@
 		/* #ifndef APP-PLUS-NVUE */
 		white-space: nowrap;
 		/* #endif */
+		font-size: $uni-font-size-base;
 	}
 	.icon {
 		/* #ifndef APP-PLUS-NVUE */

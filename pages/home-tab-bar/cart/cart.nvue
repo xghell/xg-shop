@@ -1,40 +1,38 @@
 <template>
 	<view class="page">
 		<scroll-view class="page-scroll" scroll-y="true" @scroll="pageScroll">
-			<view>
-				<view class="dock-placeholder" :style="{height: dockHeight + 'px'}"></view>
-				
-				<view v-if="isEmptyCart" class="empty-cart">
-					<view class="empty-cart-label">
-						<image class="empty-cart-icon" :src="emptyCartConfig.icon"></image>
-						<text class="empty-cart-text">{{emptyCartConfig.text}}</text>
-					</view>
-					
-					<view class="nav-btn-list">
-						<text class="btn" v-for="(btn, btnIndex) of emptyCartConfig.navBtnList" :key="btnIndex" @tap="emptyCartNavBtn(btn.url)">{{btn.text}}</text>
-					</view>
+			<view class="dock-placeholder" :style="{height: dockHeight + 'px'}"></view>
+			
+			<view v-if="isEmptyCart" class="empty-cart">
+				<view class="empty-cart-label">
+					<image class="empty-cart-icon" :src="emptyCartConfig.icon"></image>
+					<text class="empty-cart-text">{{emptyCartConfig.text}}</text>
 				</view>
 				
-				
-				<view class="recommended-product-list-title">
-					<xg-icon :fontFamily="recommendedProductListTitleConfig.lineIcon.fontFamily" :text="recommendedProductListTitleConfig.lineIcon.text" :textStyle="recommendedProductListTitleConfig.lineIcon.textStyle"></xg-icon>
-					<xg-icon :vertical="false" :fontFamily="recommendedProductListTitleConfig.recommendIcon.fontFamily" :thumb="recommendedProductListTitleConfig.recommendIcon.thumb" :title="recommendedProductListTitleConfig.recommendIcon.title" :iconStyle="recommendedProductListTitleConfig.recommendIcon.iconStyle" :titleStyle="recommendedProductListTitleConfig.recommendIcon.titleStyle"></xg-icon>
-					<xg-icon :fontFamily="recommendedProductListTitleConfig.lineIcon.fontFamily" :text="recommendedProductListTitleConfig.lineIcon.text" :textStyle="recommendedProductListTitleConfig.lineIcon.textStyle"></xg-icon>
+				<view class="nav-btn-list">
+					<text class="btn" v-for="(btn, btnIndex) of emptyCartConfig.navBtnList" :key="btnIndex" @tap="emptyCartNavBtn(btn.url)">{{btn.text}}</text>
 				</view>
-				
-				<xg-waterfall class="recommended-product-list" :columnCount="recommendedProductListConfig.columnCount" :columnGap="recommendedProductListConfig.columnGap" :leftGap="recommendedProductListConfig.leftGap" :rightGap="recommendedProductListConfig.rightGap" @getWaterfallItemWidth="getWaterFallItemWidth">
-					<xg-waterfall-item v-for="(product, index) of recommendedProductList" :key="index">
-						<tpl-product :style="{'margin-bottom': recommendedProductListConfig.rowGap}" :size="waterFallItemWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount"></tpl-product>
-					</xg-waterfall-item>
-				</xg-waterfall>
 			</view>
+			
+			
+			<view class="recommended-product-list-title">
+				<xg-icon :fontFamily="recommendedProductListTitleConfig.lineIcon.fontFamily" :text="recommendedProductListTitleConfig.lineIcon.text" :textStyle="recommendedProductListTitleConfig.lineIcon.textStyle"></xg-icon>
+				<xg-icon :vertical="false" :fontFamily="recommendedProductListTitleConfig.recommendIcon.fontFamily" :thumb="recommendedProductListTitleConfig.recommendIcon.thumb" :title="recommendedProductListTitleConfig.recommendIcon.title" :iconStyle="recommendedProductListTitleConfig.recommendIcon.iconStyle" :titleStyle="recommendedProductListTitleConfig.recommendIcon.titleStyle"></xg-icon>
+				<xg-icon :fontFamily="recommendedProductListTitleConfig.lineIcon.fontFamily" :text="recommendedProductListTitleConfig.lineIcon.text" :textStyle="recommendedProductListTitleConfig.lineIcon.textStyle"></xg-icon>
+			</view>
+			
+			<xg-waterfall class="recommended-product-list" :columnCount="recommendedProductListConfig.columnCount" :columnGap="recommendedProductListConfig.columnGap" :leftGap="recommendedProductListConfig.leftGap" :rightGap="recommendedProductListConfig.rightGap" @getWaterfallItemWidth="getWaterFallItemWidth">
+				<xg-waterfall-item :ref="'waterfall-item-' + index" v-for="(product, index) of recommendedProductList" :key="index">
+					<tpl-product :style="{'margin-bottom': recommendedProductListConfig.rowGap}" :size="waterFallItemWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount" @imageLoad="recommendedProductListImageLoad('waterfall-item-' + index)"></tpl-product>
+				</xg-waterfall-item>
+			</xg-waterfall>
 		</scroll-view>
 		
 		<view class="dock">
 			<xg-dock ref="dock" status-bar  @getDockHeight="getDockHeight">
 				<xg-nav-bar hasTitle :fixedHeight="navBarConfig.fixedHeight" :title="navBarConfig.title" :right="navBarConfig.right">
-					<view class="nav-bar-bg"></view>
 				</xg-nav-bar>
+				<view class="dock-bg"></view>
 			</xg-dock>
 		</view>
 	</view>
@@ -77,6 +75,11 @@
 			
 			getWaterFallItemWidth(e) {
 				this.waterFallItemWidth = e;
+			},
+			recommendedProductListImageLoad(ref) {
+				setTimeout(() => {
+					this.$refs[ref][0].calculateLayout();
+				}, 100);
 			}
 		}
 	}
@@ -106,15 +109,16 @@
 		right: 0;
 		left: 0;
 	}
-	
-	.nav-bar-bg {
+	.dock-bg {
 		position: absolute;
-		background-color: $uni-bg-color;
 		top: 0;
 		right: 0;
-		bottom: 0;
 		left: 0;
+		bottom: 0;
+		background-color: $uni-bg-color;
+		// border-width: 1px;
 	}
+	
 	
 	.empty-cart {
 		/* #ifndef APP-PLUS-NVUE */

@@ -118,10 +118,7 @@
 
 <style lang="scss" scoped>
 	.dock-content {
-		// border-width: 1px;
-		/* #ifndef APP-PLUS-NVUE */
-		// z-index: 100000;
-		/* #endif */
+		position: relative;
 		
 		overflow: hidden;
 		width: 750rpx;

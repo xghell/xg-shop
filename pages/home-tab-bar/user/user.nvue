@@ -1,71 +1,69 @@
 <template>
 	<view class="page">
+		
+		<scroll-view class="page-scroll" :scroll-y="true" >
+			<view class="nav-section">
+				<image class="nav-bg-img" :src="navBgImageConfig" mode="widthFix"></image>
+				
+				<view class="nav-bar-placeholder" :style="{height: navBarHeight + 'px'}"></view>
+				
+				<view class="user-section">
+					<view class="user-info">
+						<image class="avatar" :src="userInfo.avatar" mode=""></image>
+						<text class="nickname">{{userInfo.nickname}}</text>
+					</view>
+					<view class="user-track">
+						<view class="concern-item">
+							<text class="concern-title">{{userInfo.concerned_product_count}}</text>
+							<text class="concern-subtitle">商品关注</text>
+						</view>
+						<view class="concern-item">
+							<text class="concern-title">{{userInfo.concerned_shop_count}}</text>
+							<text class="concern-subtitle">店铺关注</text>
+						</view>
+						<view class="concern-item">
+							<text class="concern-title">{{userInfo.like_count}}</text>
+							<text class="concern-subtitle">喜欢的内容</text>
+						</view>
+						<view class="concern-item">
+							<text class="concern-title">{{userInfo.history_count}}</text>
+							<text class="concern-subtitle">浏览记录</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+			<view class="order-section">
+				<view class="order-item" v-for="(icon, iconIndex) of orderSectionConfig.iconList" :key="iconIndex">
+					<xg-icon :fontFamily="orderSectionConfig.fontFamily" :text="icon.text" :textStyle="orderSectionConfig.textStyle + ';' + icon.textStyle" :title="icon.title" :titleStyle="orderSectionConfig.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="orderSectionConfig.subtitleStyle"></xg-icon>
+				</view>
+			</view>
+			
+			<view class="service-section">
+				<view class="service-label">
+					<view class="service-title">工具与服务</view>
+					<view class="more">
+						<text class="more-text">查看更多</text>
+						<text class="more-icon" :style="{'font-family': 'xg-iconfont'}">&#xe601;</text>
+					</view>
+				</view>
+				
+				<view class="service-list">
+					<uni-grid :showBorder="false" :square="false" :highlight="false" :column="4">
+						<uni-grid-item v-for="(icon, iconIndex) of serviceListConfig.iconList" :key="iconIndex">
+							<view class="service-item">
+								<xg-icon :fontFamily="serviceListConfig.fontFamily" :thumb="icon.thumb" :thumbStyle="serviceListConfig.thumbStyle"  :title="icon.title" :titleStyle="serviceListConfig.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="serviceListConfig.subtitleStyle"></xg-icon>
+							</view>
+						</uni-grid-item>
+					</uni-grid>
+					
+				</view>
+			</view>
+		</scroll-view>
+		
 		<view class="nav-bar">
 			<xg-nav-bar status-bar hasTitle :title="navBarConfig.title" :left="navBarConfig.left" :right="navBarConfig.right" @getNavBarMaxHeight="getNavBarHeight" @iconTap="navBarItemTap"></xg-nav-bar>
 		</view>
-		<scroll-view class="page-scroll" :scroll-y="true" >
-			<view>
-				<view class="nav-section">
-					<image class="nav-bg-img" :src="navBgImageConfig" mode="widthFix"></image>
-					
-					<view class="nav-bar-placeholder" :style="{height: navBarHeight + 'px'}"></view>
-					
-					<view class="user-section">
-						<view class="user-info">
-							<image class="avatar" :src="userInfo.avatar" mode=""></image>
-							<text class="nickname">{{userInfo.nickname}}</text>
-						</view>
-						<view class="user-track">
-							<view class="concern-item">
-								<text class="concern-title">{{userInfo.concerned_product_count}}</text>
-								<text class="concern-subtitle">商品关注</text>
-							</view>
-							<view class="concern-item">
-								<text class="concern-title">{{userInfo.concerned_shop_count}}</text>
-								<text class="concern-subtitle">店铺关注</text>
-							</view>
-							<view class="concern-item">
-								<text class="concern-title">{{userInfo.like_count}}</text>
-								<text class="concern-subtitle">喜欢的内容</text>
-							</view>
-							<view class="concern-item">
-								<text class="concern-title">{{userInfo.history_count}}</text>
-								<text class="concern-subtitle">浏览记录</text>
-							</view>
-						</view>
-					</view>
-				</view>
-				
-				<view class="order-section">
-					<view class="order-item" v-for="(icon, iconIndex) of orderSectionConfig.iconList" :key="iconIndex">
-						<xg-icon :fontFamily="orderSectionConfig.fontFamily" :text="icon.text" :textStyle="orderSectionConfig.textStyle + ';' + icon.textStyle" :title="icon.title" :titleStyle="orderSectionConfig.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="orderSectionConfig.subtitleStyle"></xg-icon>
-					</view>
-				</view>
-				
-				<view class="service-section">
-					<view class="service-label">
-						<view class="service-title">工具与服务</view>
-						<view class="more">
-							<text class="more-text">查看更多</text>
-							<text class="more-icon" :style="{'font-family': 'xg-iconfont'}">&#xe601;</text>
-						</view>
-					</view>
-					
-					<view class="service-list">
-						<uni-grid :showBorder="false" :square="false" :highlight="false" :column="4">
-							<uni-grid-item v-for="(icon, iconIndex) of serviceListConfig.iconList" :key="iconIndex">
-								<view class="service-item">
-									<xg-icon :fontFamily="serviceListConfig.fontFamily" :thumb="icon.thumb" :thumbStyle="serviceListConfig.thumbStyle"  :title="icon.title" :titleStyle="serviceListConfig.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="serviceListConfig.subtitleStyle"></xg-icon>
-								</view>
-							</uni-grid-item>
-						</uni-grid>
-						
-					</view>
-				</view>
-				
-				
-			</view>
-		</scroll-view>
 	</view>
 </template>
 
@@ -105,7 +103,7 @@
 
 <style lang="scss">
 	.page {
-		position: fixed;
+		position: absolute;
 		top: 0;
 		right: 0;
 		bottom: 0;

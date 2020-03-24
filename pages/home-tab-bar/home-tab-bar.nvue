@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<swiper class="page-content" :style="{height: pageContentHeight + 'px'}" :current="currentIndex" :duration="0" disable-touch @change="pageIndexChange">
+		<swiper class="page-content" :style="{height: pageContentHeight + 'px'}" :current="currentIndex" :duration="0" disable-touch>
 			<swiper-item>
 				<index-page v-if="showIndexPage"></index-page>
 			</swiper-item>
@@ -99,9 +99,6 @@
 				this[pageSwitch[this.currentIndex]] = true;
 				
 			},
-			pageIndexChange(e) {
-				this.currentIndex = e.detail.current;
-			}
 		},
 	}
 </script>

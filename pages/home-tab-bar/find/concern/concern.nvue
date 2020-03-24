@@ -21,14 +21,18 @@
 						</view>
 					</view>
 					
-					<scroll-view scroll-x>
+					<scroll-view class="product-list" scroll-x>
+						<!-- #ifndef APP-PLUS-NVUE -->
 						<view class="product-list">
+						<!-- #endif -->
 							<view class="product" v-for="(product, productIndex) of shop.productList" :key="productIndex">
 								<tpl-product :precision="shopConfig.product.precision" :size="shopConfig.product.size" :titleLines="1" :url="product.url" :image="product.image" :title="product.title" :titleStyle="shopConfig.product.titleStyle" :price="product.price" :priceIntegerStyle="shopConfig.product.priceIntegerStyle"  :discount="product.discount" :discountStyle="shopConfig.product.discountStyle"></tpl-product>
 							</view>
 							
 							<xg-icon :iconStyle="shopConfig.seeMore.iconStyle" :fontFamily="shopConfig.seeMore.fontFamily" :text="shopConfig.seeMore.text" :textStyle="shopConfig.seeMore.textStyle" :title="shopConfig.seeMore.title" :titleStyle="shopConfig.seeMore.titleStyle" :subtitle="shopConfig.seeMore.subtitle" :subtitleStyle="shopConfig.seeMore.subtitleStyle"></xg-icon>
+						<!-- #ifndef APP-PLUS-NVUE -->
 						</view>
+						<!-- #endif -->
 					</scroll-view>
 				</view>
 			</view>
@@ -54,14 +58,18 @@
 						</view>
 					</view>
 					
-					<scroll-view scroll-x>
+					<scroll-view class="product-list" scroll-x>
+						<!-- #ifndef APP-PLUS-NVUE -->
 						<view class="product-list">
+						<!-- #endif -->
 							<view class="product" v-for="(product, productIndex) of shop.productList" :key="productIndex">
 								<tpl-product :precision="shopConfig.product.precision" :size="shopConfig.product.size" :titleLines="1" :url="product.url" :image="product.image" :title="product.title" :titleStyle="shopConfig.product.titleStyle" :price="product.price" :priceIntegerStyle="shopConfig.product.priceIntegerStyle"  :discount="product.discount" :discountStyle="shopConfig.product.discountStyle"></tpl-product>
 							</view>
 							
 							<xg-icon :iconStyle="shopConfig.seeMore.iconStyle" :fontFamily="shopConfig.seeMore.fontFamily" :text="shopConfig.seeMore.text" :textStyle="shopConfig.seeMore.textStyle" :title="shopConfig.seeMore.title" :titleStyle="shopConfig.seeMore.titleStyle" :subtitle="shopConfig.seeMore.subtitle" :subtitleStyle="shopConfig.seeMore.subtitleStyle"></xg-icon>
+						<!-- #ifndef APP-PLUS-NVUE -->
 						</view>
+						<!-- #endif -->
 					</scroll-view>
 				</view>
 			</view>

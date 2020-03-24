@@ -1,6 +1,9 @@
 <template>
 	<view class="">
-		
+		<view class="main">
+			<view class="sub1" style="background-color: #007AFF;">1</view>
+			<view class="sub2" style="background-color: red;">2</view>
+		</view>
 	</view>
 </template>
 
@@ -10,18 +13,27 @@
 		mixins: [config],
 		data() {
 			return {
-				iconList: []
+				width: 100,
+				aspectArtio1: 1,
+				aspectArtio2: 1,
 			}
 		},
 		onLoad() {
+			
+		},
+		onReady() {
+			
 		},
 		computed: {
+		},
+		methods: {
 		},
 	}
 </script>
 
 <style scoped>
-	.wxg {
-		/* height: 300px; */
+	.sub2 {
+		position: relative;
+		width: 500rpx;
 	}
 </style>

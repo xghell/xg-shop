@@ -1,8 +1,12 @@
 <template>
-	<scroll-view :show-scrollbar="false" :scroll-x="true" :scroll-left="scrollLeft">
-		<view ref="tab-bar" class="tab-bar">
+	<scroll-view ref="tab-bar" class="tab-bar" :show-scrollbar="false" :scroll-x="true" :scroll-left="scrollLeft">
+		<!-- #ifndef APP-PLUS-NVUE -->
+		<view class="tab-bar">
+		<!-- #endif -->
 			<slot></slot>
+		<!-- #ifndef APP-PLUS-NVUE -->
 		</view>
+		<!-- #endif -->
 	</scroll-view>
 </template>
 

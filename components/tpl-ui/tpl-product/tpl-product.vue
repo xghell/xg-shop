@@ -1,6 +1,7 @@
 <template>
 	<view class="product" :style="{width: size}" @tap="productTap">
-		<image class="product-image" :style="'width:' + size + ';height:' + size + ';' + imageStyle" :src="image"></image>
+		<image class="product-image" :style="'width:' + size + ';' + 'height:' + imageHeight + ';' + imageStyle" :src="image" @load="imageLoad"></image>
+		<!-- {{'height:' + size*aspectRatio}} -->
 		<text v-if="title" class="product-title" :style="'lines:' + titleLines + ';-webkit-line-clamp:' + titleLines + ';' + titleStyle">{{title}}</text>
 		<view class="price-line">
 			<tpl-price :price="price" :integerStyle="priceIntegerStyle" :decimalStyle="priceDecimalStyle" :currencySymbol="currencySymbol" :currencySymbolStyle="priceCurrencySymbolStyle" :precision="precision"></tpl-price>
@@ -75,7 +76,34 @@
 				default: '￥'
 			},
 		},
+		data() {
+			return {
+				aspectRatio: 1
+			}
+		},
+		computed: {
+			imageHeight() {
+				return this.toPx(this.size)*this.aspectRatio + 'px';
+			}
+		},
 		methods: {
+			toPx(value) {
+				const result = /(\d+\.?\d*)(\w+)/.exec(value);
+				if ('rpx' === result[2].trim()) {
+					return uni.getSystemInfoSync().screenWidth * Number(result[1]) / 750;
+				} else if('px' === result[2].trim()) {
+					return Number(result[1]);
+				} else {
+					throw new TypeError(`${value}单位格式不正确`);
+				}
+				
+			},
+			
+			imageLoad(e) {
+				this.aspectRatio = e.detail.height/e.detail.width;
+				// console.log(this.aspectRatio);
+				this.$emit('imageLoad')
+			},
 			productTap() {
 				uni.navigateTo({url: this.url});
 			}
@@ -106,9 +134,14 @@
 	.product-image {
 		border-top-left-radius: $uni-border-radius-base;
 		border-top-right-radius: $uni-border-radius-base;
+		margin-bottom: $uni-spacing-row-sm;
 	}
 	
 	.product-title {
+		margin-left: $uni-spacing-col-sm;
+		margin-right: $uni-spacing-col-sm;
+		
+		margin-bottom: $uni-spacing-row-base;
 		font-size: $uni-font-size-base;
 		text-overflow: ellipsis;
 		/* #ifdef APP-PLUS-NVUE */
@@ -124,6 +157,9 @@
 	}
 	
 	.price-line {
+		margin-left: $uni-spacing-col-sm;
+		margin-right: $uni-spacing-col-sm;
+		margin-bottom: $uni-spacing-row-sm;
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
@@ -145,5 +181,8 @@
 		font-size: $uni-font-size-sm;
 		text-decoration: line-through;
 		color: $uni-text-color-disable;
+		margin-bottom: $uni-spacing-row-sm;
+		margin-left: $uni-spacing-col-sm;
+		margin-right: $uni-spacing-col-sm;
 	}
 </style>

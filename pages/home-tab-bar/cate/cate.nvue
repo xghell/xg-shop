@@ -15,23 +15,21 @@
 				</xg-tab-bar-vertical-item>
 			</xg-tab-bar-vertical>
 			<scroll-view class="cate-content-scroll" :scroll-y="true" :style="{height: pageContentHeight + 'px'}">
-				<view>
-					<view class="cate-card" v-for="(cateCard, cateCardIndex) of cateList" :key="cateCardIndex">
-						<view>
-							<text class="cate-card-title">{{cateCard.name}}</text>
-						</view>
-						<uni-grid :column="3" :square="false" :showBorder="false" :highlight="false">
-							<block v-for="(cate, cateIndex) of cateCard.children" :key="cateIndex">
-								<uni-grid-item>
-									<view class="cate-card-item">
-										<image class="cate-card-item-image" :src="cate.image"></image>
-										<text class="cate-card-item-name">{{cate.name}}</text>
-									</view>
-								</uni-grid-item>
-							</block>
-						</uni-grid>
-						
+				<view class="cate-card" v-for="(cateCard, cateCardIndex) of cateList" :key="cateCardIndex">
+					<view>
+						<text class="cate-card-title">{{cateCard.name}}</text>
 					</view>
+					<uni-grid :column="3" :square="false" :showBorder="false" :highlight="false">
+						<block v-for="(cate, cateIndex) of cateCard.children" :key="cateIndex">
+							<uni-grid-item>
+								<view class="cate-card-item">
+									<image class="cate-card-item-image" :src="cate.image"></image>
+									<text class="cate-card-item-name">{{cate.name}}</text>
+								</view>
+							</uni-grid-item>
+						</block>
+					</uni-grid>
+					
 				</view>
 			</scroll-view>
 		</view>

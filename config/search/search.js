@@ -61,18 +61,6 @@ const search = {
 				}
 			},
 			findSection: {
-				titleList: [
-				
-					{
-						id: 'find',
-						text: '搜索发现',
-					},
-					{
-						id: 'hot',
-						text: '热搜榜'
-					}
-				
-				],
 				icon: {
 					//眼睛
 					fontFamily: 'xg-iconfont',

@@ -13,7 +13,9 @@
 			<uni-list-item v-for="(item, index) of functionalSectionConfig" :key="index" :title="item.leftTitle" :rightText="item.rightTitle" @click="listItemTap(item.url)" />
 		</uni-list>
 		
-		<text class="logout-btn" @tap="logoutBtnTap">退出登录</text>
+		<view class="logout-btn">
+			<text class="logout-btn-text" @tap="logoutBtnTap">退出登录</text>
+		</view>
 		
 		<view class="bottom-placeholder"></view>
 	</view>
@@ -81,8 +83,11 @@
 		border-radius: $uni-border-radius-base;
 		background-color: $uni-bg-color;
 		height: 100rpx;
-		font-size: $uni-font-size-base;
 		
+		
+	}
+	.logout-btn-text {
+		font-size: $uni-font-size-base;
 	}
 	
 	.bottom-placeholder {

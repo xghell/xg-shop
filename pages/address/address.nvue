@@ -15,15 +15,16 @@
 			</view>
 		</view>
 		
-		<view class="add-address-btn" @tap="addAddressBtnTap">
-			<text class="plus-icon" :style="{'font-family': 'xg-iconfont'}">&#xe61e;</text>
-			<text class="add-address-btn-text">新建收货地址</text>
+		<view class="add-address-btn-wrap">
+			<view class="add-address-btn" @tap="addAddressBtnTap">
+				<text class="plus-icon" :style="{'font-family': 'xg-iconfont'}">&#xe61e;</text>
+				<text class="add-address-btn-text">新建收货地址</text>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import querystring from 'querystring';
 	import data from '@/data/address/address.js';
 	
 	export default {
@@ -43,7 +44,8 @@
 		},
 		methods: {
 			editIconTap(index) {
-				const addressQuerystring = querystring.stringify(this.addressList[index]);
+				const address = this.addressList[index];
+				const addressQuerystring = `is_default=${address.is_default}&name=${address.name}&phone=${address.phone}&district=${address.district}&detail_address=${address.detail_address}&tag=${address.tag}`;
 				// console.log(addressQuerystring);
 				uni.navigateTo({
 					url: `/pages/address/edit-address?type=edit&${addressQuerystring}`,
@@ -67,12 +69,6 @@
 <style lang="scss">
 	.page {
 		background-color: $uni-bg-color;
-		
-		/* #ifndef APP-PLUS-NVUE */
-		display: flex;
-		/* #endif */
-		flex-direction: column;
-		align-items: center;
 	}
 	
 	.bottom-border {
@@ -103,7 +99,7 @@
 	.name {
 		font-size: $uni-font-size-base;
 		font-weight: bold;
-		min-width: 180rpx;
+		width: 180rpx;
 	}
 	.phone {
 		font-size: $uni-font-size-base;
@@ -140,14 +136,14 @@
 		font-size: $uni-font-size-sm;
 	}
 	.edit-icon {
-		font-size: $uni-font-size-sm;
+		font-size: $uni-font-size-base;
 	}
 	
-	.add-address-btn {
+	.add-address-btn-wrap {
 		position: fixed;
 		bottom: $uni-spacing-row-base;
-		height: 80rpx;
-		width: 500rpx;
+		left: 0;
+		right: 0;
 		
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
@@ -155,6 +151,18 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
+	}
+	.add-address-btn {
+		
+		height: 80rpx;
+		width: 500rpx;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		
 		
 		background-color: $uni-bg-color-red;
 		border-radius: 100000px;

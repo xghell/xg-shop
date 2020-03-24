@@ -1,40 +1,87 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		// {
+		//     "path" : "pages/test/test",
+		//     "style" : {}
+		// },
+		// {
+		//		"path": "pages/home-tab-bar/home-tab-bar",
+		//		"style": {
+		// 		"navigationStyle": "custom"
+		// 	}
+		// },
+	 //    {
+  //           "path" : "pages/search/search",
+  //           "style" : {
+		// 		"navigationStyle": "custom"
+		// 	}
+  //       }
+  //       ,{
+  //           "path" : "pages/setting/setting",
+  //           "style" : {
+		// 		"navigationBarTitleText": "账户设置",
+		// 		"navigationBarBackgroundColor": "#FFFFFF"
+		// 	}
+  //       }
+  //       ,{
+  //           "path" : "pages/address/address",
+  //           "style" : {
+		// 		"navigationBarTitleText": "收货地址",
+		// 		"navigationBarBackgroundColor": "#FFFFFF"
+		// 	}
+  //       },
+		// {
+		//     "path" : "pages/address/edit-address",
+		//     "style" : {
+		// 		"navigationBarTitleText": "收货地址",
+		// 		"navigationBarBackgroundColor": "#FFFFFF"
+		// 	}
+		// },
+		// {
+		//     "path" : "pages/product/product-list",
+		//     "style" : {
+		// 		"navigationStyle": "custom"
+		// 	}
+		// },
+		// {
+		//     "path" : "pages/product/product-detail",
+		//     "style" : {
+		// 		"navigationStyle": "custom"
+		// 	}
+		// },
 		{
-			"path": "pages/home-tab-bar/home-tab-bar",
-			"style": {
-				"navigationStyle": "custom"
-			}
-		},
-	    {
-            "path" : "pages/search/search",
-            "style" : {
-				"navigationStyle": "custom"
-			}
-        }
-        ,{
-            "path" : "pages/test/test",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/setting/setting",
-            "style" : {
-				"navigationBarTitleText": "账户设置",
-				"navigationBarBackgroundColor": "#FFFFFF"
-			}
-        }
-        ,{
-            "path" : "pages/address/address",
-            "style" : {
-				"navigationBarTitleText": "收货地址",
-				"navigationBarBackgroundColor": "#FFFFFF"
-			}
-        },
-		{
-		    "path" : "pages/address/edit-address",
+		    "path" : "pages/product/product-comment",
 		    "style" : {
-				"navigationBarTitleText": "收货地址",
-				"navigationBarBackgroundColor": "#FFFFFF"
+				"navigationBarTitleText": "评价",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"type": "back",
+								"float": "left"
+							},
+							{
+								"text": "提交",
+								"fontSize": "16px"
+							}
+						]
+					}
+				},
+				"h5": {
+					"titleNView": {
+						"buttons": [
+							{
+								"type": "back",
+								"float": "left"
+							},
+							{
+								"text": "提交",
+								"fontSize": "34rpx"
+							}
+						]
+					}
+				}
 			}
 		}
     ],

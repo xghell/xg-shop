@@ -1,40 +1,36 @@
 <template>
 	<scroll-view class="page-scroll" scroll-y :scroll-top="pageScrollTop" @scroll="pageScroll">
-		<view>
-			<view class="dock-placeholder" :style="{height: finddockHeight + 'px'}"></view>
-			
-			<view class="room-list">
-				<view class="room" v-for="(room, roomIndex) of roomList" :key="roomIndex">
-					<image class="room-bg-img" :src="room.bgImage"></image>
-					<view class="room-title">
-						<view class="room-info">
-							<image class="room-avatar" :src="room.avatar"></image>
-							<text class="room-name">{{room.name}}</text>
-						</view>
-						<view class="room-status">
-							<view class="live-status-wrap">
-								<view class="live-status">
-									<text class="live-status-text">直播</text>
-									<xg-dynamic-wave class="room-status-wave" :started="true" pillarMaxHeight="10px" pillarColor="#FFF"></xg-dynamic-wave>
-								</view>
-							</view>
-							<text class="room-person-count">{{room.personCount > 10000 ? room.personCount/10000 + '万' : room.personCount}}人</text>
-						</view>
+		<view class="dock-placeholder" :style="{height: finddockHeight + 'px'}"></view>
+		
+		<view class="room-list">
+			<view class="room" v-for="(room, roomIndex) of roomList" :key="roomIndex">
+				<image class="room-bg-img" :src="room.bgImage"></image>
+				<view class="room-title">
+					<view class="room-info">
+						<image class="room-avatar" :src="room.avatar"></image>
+						<text class="room-name">{{room.name}}</text>
 					</view>
-					
-					<view class="room-content">
-						<view class="product-list">
-							<view class="product" v-for="(product, productIndex) of room.productList" :key="productIndex">
-								<image class="product-image" :src="product.image"></image>
-								<text class="product-price" v-if="room.productList.length - 1 !== productIndex">￥{{product.price}}</text>
+					<view class="room-status">
+						<view class="live-status-wrap">
+							<view class="live-status">
+								<text class="live-status-text">直播</text>
+								<xg-dynamic-wave class="room-status-wave" :started="true" pillarMaxHeight="10px" pillarColor="#FFF"></xg-dynamic-wave>
 							</view>
-							<text class="product product-count-mask">共{{room.productCount}}件</text>
 						</view>
+						<text class="room-person-count">{{room.personCount > 10000 ? room.personCount/10000 + '万' : room.personCount}}人</text>
+					</view>
+				</view>
+				
+				<view class="room-content">
+					<view class="product-list">
+						<view class="product" v-for="(product, productIndex) of room.productList" :key="productIndex">
+							<image class="product-image" :src="product.image"></image>
+							<text class="product-price" v-if="room.productList.length - 1 !== productIndex">￥{{product.price}}</text>
+						</view>
+						<text class="product product-count-mask">共{{room.productCount}}件</text>
 					</view>
 				</view>
 			</view>
-			
-			
 		</view>
 	</scroll-view>
 </template>

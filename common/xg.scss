@@ -1,7 +1,8 @@
 /* 文字尺寸 */
-$uni-font-size-mi: 10px;
-$uni-font-size-hg: 18px;
-$uni-font-size-mx: 20px;
+$uni-font-size-maro: 20rpx;
+$uni-font-size-mi: 24rpx;
+$uni-font-size-hg: 40rpx;
+$uni-font-size-mx: 44rpx;
 
 /* 文字颜色 */
 $uni-text-color-red: #ed1c24;
@@ -10,7 +11,7 @@ $uni-text-color-white: #FFFFFF;
 /* 图标尺寸 */
 $uni-icon-size-mi: 20rpx;
 $uni-icon-size-sm: 40rpx;
-$uni-icon-size-md: 40rpx;
+$uni-icon-size-md: 50rpx;
 $uni-icon-size-base: 80rpx;
 $uni-icon-size-lg: 120rpx;
 $uni-icon-size-hg: 160rpx;
@@ -31,3 +32,8 @@ $uni-bg-color-pink: pink;
 $uni-bg-color-red: red;
 $uni-bg-color-blue: blue;
 $uni-bg-color-black: black;
+$uni-bg-color-mask-white:rgba(255, 255, 255, 0.4);//遮罩颜色
+
+/* Border Radius */
+$uni-border-radius-mi: 8rpx;
+$uni-border-radius-hg: 40rpx;

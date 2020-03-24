@@ -162,8 +162,8 @@ const index = {
 			},
 			
 			productListTabBar: {
-				titleStyle: `height: ${style.UNI_FONT_SIZE_LG};margin-bottom: ${style.UNI_SPACING_ROW_BASE};`,
-				selectedTitleStyle: `height: ${style.UNI_FONT_SIZE_LG};color: ${style.UNI_TEXT_COLOR_RED};font-size: ${style.UNI_FONT_SIZE_LG};margin-bottom: ${style.UNI_SPACING_ROW_BASE};`,
+				titleStyle: `font-size: ${style.UNI_FONT_SIZE_BASE};height: ${style.UNI_FONT_SIZE_LG};margin-bottom: ${style.UNI_SPACING_ROW_BASE};`,
+				selectedTitleStyle: `font-size: ${style.UNI_FONT_SIZE_LG};height: ${style.UNI_FONT_SIZE_LG};color: ${style.UNI_TEXT_COLOR_RED};margin-bottom: ${style.UNI_SPACING_ROW_BASE};`,
 				selectedSubtitleStyle: `color: ${style.UNI_TEXT_COLOR_RED};`,
 				iconList: [
 				

@@ -1,0 +1,518 @@
+<template>
+	<view class="page">
+		<xg-nav-bar status-bar fixed float hasTitle :fixedHeight="navBarConfig.fixedHeight">
+			<view class="nav-bar-bg"></view>
+			
+			<view slot="left" class="nav-bar-left">
+				<view class="nav-bar-left-icon" v-for="(leftIcon, leftIconIndex) of navBarConfig.left.iconList" :key="leftIconIndex">
+					<xg-icon :fontFamily="navBarConfig.left.fontFamily" :text="leftIcon.text"></xg-icon>
+				</view>
+			</view>
+			
+			<view slot="title" class="nav-bar-title">
+				<view  class="nav-bar-title-icon" v-for="(titleIcon, titleIconIndex) of navBarConfig.title.iconList" :key="titleIconIndex" @tap="navBarTitlteIconTap(titleIconIndex)">
+					<xg-icon :selected="currentNavBarTitleIconIndex === titleIconIndex" :fontFamily="navBarConfig.title.fontFamily" :text="titleIcon.text" :textStyle="navBarConfig.title.textStyle" :selectedTitle="titleIcon.selectedTitle"  :selectedTitleStyle="navBarConfig.title.selectedTitleStyle"></xg-icon>
+				</view>
+			</view>
+			
+			<view slot="right" class="nav-bar-right">
+				<view class="nav-bar-right-icon" v-for="(rightIcon, rightIconIndex) of navBarConfig.right.iconList" :key="rightIconIndex">
+					<xg-icon :fontFamily="navBarConfig.right.fontFamily" :text="rightIcon.text"></xg-icon>
+				</view>
+			</view>
+		</xg-nav-bar>
+		<!-- 产品图片及视频介绍 -->
+		<view class="product-media">
+			<video v-if="showVideo" class="product-video" :src="video.src" autoplay controls @loadedmetadata="videoLoadedmetadata"></video>
+			
+			<view class="product-image-swiper-wrap" v-if="!showVideo">
+				<swiper  class="product-image-swiper" :duration="200" @change="productImageChange">
+					<swiper-item v-for="(image, imageIndex) of imageList" :key="imageIndex">
+						<image class="product-image" :src="image"></image>
+					</swiper-item>
+				</swiper>
+				
+				<view class="product-fix-btn-wrap">
+					<view class="product-image-swiper-dot">
+						<text class="current-image-index">{{currentImageIndex + 1}}</text>
+						<text class="product-image-swiper-dot-slash">/</text>
+						<text class="image-count">{{imageList.length}}</text>
+					</view>
+					
+					<view class="play-video-btn-wrap">
+						<view class="play-video-btn" @tap="playVideoBtnTap">
+							<text class="play-video-btn-icon" :style="{'font-family': playVideoBtnConfig.fontFamily}">{{playVideoBtnConfig.text}}</text>
+							<text class="video-duration-text">{{video.duration}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 产品概述，包括价格、折扣、简介 -->
+		<view class="intro-section">
+			<view class="price-section">
+				<view class="price-and-discount">
+					<tpl-price :price="price" :integerStyle="priceSectionConfig.price.integerStyle" :decimalStyle="priceSectionConfig.price.decimalStyle" :currencySymbolStyle="priceSectionConfig.price.currencySymbolStyle"></tpl-price>
+					<view v-if="discountPrice" class="discount-price">
+						<text class="discount-price-text">￥{{discountPrice}}</text>
+					</view>
+				</view>
+				<view class="price-section-icon-list">
+					<xg-icon class="price-section-icon" v-for="(icon, iconIndex) of priceSectionConfig.iconList" :key="iconIndex" :fontFamily="priceSectionConfig.fontFamily" :title="icon.title" :titleStyle="priceSectionConfig.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="priceSectionConfig.subtitleStyle"></xg-icon>
+				</view>
+			</view>
+			
+			<view class="product-title-section">
+				<text class="product-title-text">{{title}}</text>
+			</view>
+		</view>
+		
+		<!-- 优惠和活动部分 -->
+		<view class="activity-and-discount">
+			<view class="activity-and-discount-discount-section">
+				<view class="activity-and-discount-discount-label">
+					<text class="activity-and-discount-discount-label-text">优惠</text>
+				</view>
+				
+				<view class="activity-and-discount-discount-list">
+					<view class="activity-and-discount-discount" v-for="(discount, discountIndex) of discountList" :key="discountIndex">
+						<view class="activity-and-discount-discount-title">
+							<text class="activity-and-discount-discount-title-text">{{discount.title}}</text>
+						</view>
+						<view class="activity-and-discount-discount-desc">
+							<text class="activity-and-discount-discount-desc-text">{{discount.desc}}</text>
+						</view>
+					</view>
+				</view>
+				
+				<xg-icon :fontFamily="moreBtnConfig.fontFamily" :text="moreBtnConfig.text" :textStyle="moreBtnConfig.textStyle"></xg-icon>
+			</view>
+			<view class="activity-and-discount-activity">
+				
+			</view>
+		</view>
+		
+		<!-- 已选商品及商品配送信息 -->
+		<view class="order-info">
+			<view class="list-item bottom-border">
+				<view class="list-item-label">
+					<text class="list-item-label-text">已选</text>
+				</view>
+				<view class="list-item-detail">
+					<text class="list-item-detail-text">手撕面包1斤送同款（发2斤装手撕面包1箱），1件</text>
+				</view>
+				
+				<xg-icon :fontFamily="moreBtnConfig.fontFamily" :text="moreBtnConfig.text" :textStyle="moreBtnConfig.textStyle"></xg-icon>
+			</view>
+			<view class="list-item bottom-border">
+				<view class="list-item-label">
+					<text class="list-item-label-text">已选</text>
+				</view>					
+				<view class="list-item-detail">
+					<text class="list-item-detail-text">陕西省咸阳市兴平市西大街89号</text>
+				</view>
+				
+				<xg-icon :fontFamily="moreBtnConfig.fontFamily" :text="moreBtnConfig.text" :textStyle="moreBtnConfig.textStyle"></xg-icon>
+			</view>
+			<view class="list-item">
+				<view class="list-item-label">
+					<text class="list-item-label-text">运费</text>
+				</view>
+				<view class="list-item-detail">
+					<text class="list-item-detail-text">在线支付免运费</text>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 商品评价部分 -->
+		<view class="comment-section">
+			<view class="comment-section-label">
+				<view class="comment-section-label-left">
+					<text>评价</text>
+					<text>2000+</text>
+				</view>
+				<view class="comment-section-label-right">
+					<text>好评度</text>
+					<text>97%</text>
+					<xg-icon :fontFamily="arrowRightBtnConfig.fontFamily" :text="arrowRightBtnConfig.text" :textStyle="arrowRightBtnConfig.textStyle"></xg-icon>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import data from '@/data/product/product-detail.js';
+	import config from '@/config/product/product-detail.js';
+	
+	export default {
+		mixins: [config],
+		data() {
+			return {
+				currentNavBarTitleIconIndex: 0,
+				
+				currentImageIndex: 0,
+				showVideo: false,
+				imageList: [],
+				video: '',
+				price: '',
+				discountPrice: '',
+				title: '',
+				
+				discountList: [],
+			}
+		},
+		async onLoad() {
+			const productData = data.product();
+			const discountListData = data.discountList(); 
+			
+			const product = await productData;
+			
+			this.imageList = product.imageList;
+			this.video = product.video;
+			this.price = product.price;
+			this.discountPrice = product.discountPrice;
+			this.title = product.title;
+			
+			this.discountList = await discountListData;
+		},
+		methods: {
+			navBarTitlteIconTap(index) {
+				this.currentNavBarTitleIconIndex = index;
+			},
+			
+			videoLoadedmetadata(e) {
+				console.log(e);
+			},
+			playVideoBtnTap() {
+				this.showVideo = true;
+			},
+			productImageChange(e) {
+				this.currentImageIndex = e.detail.current;
+			}
+			
+		},
+	}
+</script>
+
+<style lang="scss">
+	$media-width: 750rpx;
+	$media-height: 750rpx;
+	$nav-bar-height: 100rpx;
+	
+	.bottom-border {
+		border-bottom-width: 0.5px;
+		border-color: $uni-border-color;
+	}
+	
+	.nav-bar-bg {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background-color: $uni-bg-color-grey;
+	}
+	.nav-bar-left {
+		height: $nav-bar-height;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.nav-bar-left-icon {
+		margin-left: $uni-spacing-col-base;
+	}
+	.nav-bar-title {
+		// border-width: 1px;
+		height: $nav-bar-height;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.nav-bar-title-icon {
+		// border-width: 1px;
+		height: 80rpx;
+		margin-left: $uni-spacing-col-base;
+		margin-right: $uni-spacing-col-base;
+	}
+	.nav-bar-right {
+		height: $nav-bar-height;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.nav-bar-right-icon {
+		margin-right: $uni-spacing-col-base;
+	}
+	
+	.product-media {
+		// border-width: 1px;
+		position: relative;
+		width: $media-width;
+		height: $media-height;
+	}
+	.product-video {
+		width: $media-width;
+		height: $media-height;
+	}
+	.product-image-swiper-wrap {
+		position: relative;
+		width: $media-width;
+		height: $media-height;
+	}
+	.product-image-swiper {
+		width: $media-width;
+		height: $media-height;
+	}
+	.product-fix-btn-wrap {
+		// border-width: 1px;
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 120rpx;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.product-image-swiper-dot {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		
+		position: absolute;
+		right: 0;
+		padding-top: $uni-spacing-row-mi;
+		padding-bottom: $uni-spacing-row-mi;
+		padding-left: $uni-spacing-col-lg;
+		padding-right: $uni-spacing-col-lg;
+		background-color: $uni-bg-color-mask;
+		border-top-left-radius: 10000px;
+		border-bottom-left-radius: 10000px;
+	}
+	.current-image-index {
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-white;
+	}
+	.product-image-swiper-dot-slash {
+		font-size: $uni-font-size-mi;
+		color: $uni-text-color-white;
+	}
+	.image-count {
+		font-size: $uni-font-size-mi;
+		color: $uni-text-color-white;
+		// padding-bottom: $uni-font-size-sm / 10;
+	}
+	.product-image {
+		width: $media-width;
+		height: $media-height;
+	}
+	.play-video-btn-wrap {
+		// border-width: 1px;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		
+		position: absolute;
+		left: 0;
+		right: 0;
+	}
+	.play-video-btn {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		
+		background-color: $uni-bg-color-mask-white;
+		border-radius: 10000px;
+		padding-left: $uni-spacing-col-base;
+		padding-right: $uni-spacing-col-base;
+		padding-top: $uni-spacing-row-mi;
+		padding-bottom: $uni-spacing-row-mi;
+	}
+	.play-video-btn-icon {
+		color: $uni-bg-color-red;
+		margin-right: $uni-spacing-col-base;
+		font-size: $uni-font-size-lg;
+	}
+	.video-duration-text {
+		font-size: $uni-font-size-sm;
+	}
+	
+	.intro-section {
+		padding-left: $uni-spacing-col-lg;
+		padding-right: $uni-spacing-col-lg;
+		padding-bottom: $uni-spacing-row-lg;
+		background-color: $uni-bg-color;
+		border-bottom-left-radius: $uni-border-radius-base;
+		border-bottom-right-radius: $uni-border-radius-base;
+	}
+	
+	.price-section {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		
+		margin-top: $uni-spacing-row-base;
+	}
+	.price-and-discount {
+	}
+	.discount-price {
+	}
+	.discount-price-text {
+		font-size: $uni-font-size-base;
+		text-decoration: line-through;
+		color: $uni-text-color-grey;
+	}
+	.price-section-icon-list {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.price-section-icon {
+		margin-left: $uni-spacing-col-lg;
+	}
+	
+	.product-title-section {
+		margin-top: $uni-spacing-row-base;
+	}
+	.product-title-text {
+		font-size: $uni-font-size-base;
+		font-weight: bold;
+		line-height: $uni-font-size-base * 1.6;
+	}
+	
+	
+	.activity-and-discount {
+		background-color: $uni-bg-color;
+		border-radius: $uni-border-radius-base;
+		margin-top: $uni-spacing-row-base;
+		padding-top: $uni-spacing-row-lg;
+		padding-right: $uni-spacing-row-lg;
+		padding-left: $uni-spacing-row-lg;
+	}
+	.activity-and-discount-discount-section {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: flex-start;
+	}
+	.activity-and-discount-discount-label {
+		
+	}
+	.activity-and-discount-discount-label-text {
+		font-size: $uni-font-size-sm;
+		font-weight: bold;
+	}
+	.activity-and-discount-discount-list {
+		flex: 1;
+		margin-right: $uni-spacing-col-lg;
+	}
+	.activity-and-discount-discount {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		
+		margin-left: $uni-spacing-col-lg;
+		margin-bottom: $uni-spacing-row-base;
+	}
+	.activity-and-discount-discount-title {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		background-color: $uni-bg-color-pink;
+		padding-left: $uni-spacing-col-sm;
+		padding-right: $uni-spacing-col-sm;
+		border-radius: $uni-border-radius-sm;
+	}
+	.activity-and-discount-discount-title-text {
+		font-size: $uni-font-size-mi;
+		color: $uni-text-color-red;
+	}
+	.activity-and-discount-discount-desc {
+		flex: 1;
+		margin-left: $uni-spacing-col-base;
+	}
+	.activity-and-discount-discount-desc-text {
+		font-size: $uni-font-size-sm;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 1;
+		overflow: hidden;
+		/* #endif */
+		
+		/* #ifdef APP-PLUS-NVUE */
+		lines: 1;
+		/* #endif */
+		
+		text-overflow: ellipsis;
+	}
+	
+	// 已选商品及配送信息
+	.order-info {
+		background-color: $uni-bg-color;
+		margin-top: $uni-spacing-row-base;
+		border-radius: $uni-border-radius-base;
+		// padding-top: $uni-spacing-row-lg;
+		// padding-right: $uni-spacing-col-lg;
+		// padding-bottom: $uni-spacing-row-lg;
+		// padding-left: $uni-spacing-col-lg;
+	}
+	.list-item {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: flex-start;
+		padding-bottom: $uni-spacing-row-lg;
+		padding-top: $uni-spacing-row-lg;
+		padding-left: $uni-spacing-col-lg;
+		padding-right: $uni-spacing-col-lg;
+	}
+	.list-item-label {
+		
+	}
+	.list-item-label-text {
+		font-size: $uni-font-size-sm;
+		font-weight: bold;
+		line-height: $uni-font-size-sm * 1.6;
+	}
+	.list-item-detail {
+		flex: 1;
+		margin-left: $uni-spacing-col-base;
+		margin-right: $uni-spacing-col-base;
+	}
+	.list-item-detail-text {
+		font-size: $uni-font-size-sm;
+		line-height: $uni-font-size-sm * 1.6;
+	}
+	
+</style>

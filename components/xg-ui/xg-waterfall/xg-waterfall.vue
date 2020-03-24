@@ -6,6 +6,7 @@
 
 <script>
 	/**
+	 * calculateLayout() 重新计算瀑布流布局，需使用$this.$refs引用
 	 * column-count: [可选]描述瀑布流的列数
 	 *   <integer>: 最佳列数，column-width 和 column-count 都指定非0值， 则 column-count 代表最大列数。
 	 * column-width : [可选]描述瀑布流每一列的列宽。 
@@ -25,6 +26,10 @@
 			};
 		},
 		props: {
+			width: {
+				type: String,
+				default: '750rpx',
+			},
 			columnCount: {
 				type: Number,
 				default: 0
@@ -78,47 +83,19 @@
 			}
 			
 		},
-		updated() {
-			this.$nextTick(function () {
-				setTimeout(()=> {
-					this.waterfallHeight = Math.max(...this.columnsHeight);
-					this.$emit('getWaterfallHeight', this.waterfallHeight);
-				}, 650);
+		created() {
+			this.waterfallWidth = this.toPx(this.width);
+			
+			//触发事件，可获子组件宽度，此时瀑布流布局计算还未开始
+			this.$emit('getWaterfallItemWidth', this.realColumnWidth);
+			
+			this.columnsHeight = (new Array(this.realColumnCount)).fill(0);
+			
+			this.columnsHeight.forEach((item, index) => {
+				this.columnsLeft[index] = (this.realColumnWidth + this.realColumnGap) * index + this.realLeftGap;
 			})
 		},
 		mounted() {
-			this.$nextTick(async function () {
-				// #ifdef APP-PLUS-NVUE
-				const data = await this.getComponentRect(this.$refs['waterfall']);
-				this.waterfallWidth = data.size.width;
-				
-				//触发事件，可获子组件宽度，此时瀑布流布局计算还未开始
-				this.$emit('getWaterfallItemWidth', this.realColumnWidth);
-				
-				this.columnsHeight = (new Array(this.realColumnCount)).fill(0);
-				
-				this.columnsHeight.forEach((item, index) => {
-					this.columnsLeft[index] = (this.realColumnWidth + this.realColumnGap) * index + this.realLeftGap;
-				})
-				// #endif
-				
-				// #ifndef APP-PLUS-NVUE
-				const selector = uni.createSelectorQuery().in(this);
-				selector.select('.waterfall').fields({size: true});
-				selector.exec(data => {
-					this.waterfallWidth = data[0].width;
-					
-					//触发事件，可获子组件宽度，此时瀑布流布局计算还未开始
-					this.$emit('getWaterfallItemWidth', this.realColumnWidth);
-						
-					this.columnsHeight = (new Array(this.realColumnCount)).fill(0);
-					
-					this.columnsHeight.forEach((item, index) => {
-						this.columnsLeft[index] = (this.realColumnWidth + this.realColumnGap) * index + this.realLeftGap;
-					})
-				})
-				// #endif
-			})
 			
 		},
 		methods: {
@@ -132,24 +109,25 @@
 					throw new TypeError(`${value}单位格式不正确`);
 				}
 			},
-			// #ifdef APP-NVUE
-			getComponentRect(ref) {
+			calculateLayout() {
+				this.columnsHeight = (new Array(this.realColumnCount)).fill(0);
 				
-				const dom = uni.requireNativePlugin('dom');
-				
-				return new Promise(function (resolve, reject) {
-					dom.getComponentRect(ref, data => {
-						resolve(data);
-					})
+				this.$slots.default.forEach((item, index) => {
+					item.componentInstance.calculateLayout();
 				})
+				// this.$nextTick(function () {
+				// 	setTimeout(() => {
+						
+				// 	}, 100);
+				// })
 			}
-			// #endif
 		},
 	}
 </script>
 
 <style scoped>
 	.waterfall {
+		/* border-width: 5px; */
 		position: relative;
 		/* width: 750rpx; */
 	}

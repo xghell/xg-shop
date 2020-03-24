@@ -18,7 +18,7 @@ const index = {
 		return carouselList;
 	},
 	
-	productListTab(index) {
+	productListTab(index, page = 0) {
 		const productListTab = [
 			[
 				{
@@ -142,7 +142,31 @@ const index = {
 					price: '9.8',
 					priceLabel: '',
 					discount: ''
-				}
+				},
+				{
+					url: '',
+					image: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1095684251,1374237898&fm=26&gp=0.jpg',
+					title: '钻石项链一条，看起来很贵的样子',
+					price: '99999.99',
+					priceLabel: '',
+					discount: ''
+				},
+				{
+					url: '',
+					image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1608647855,2036056543&fm=26&gp=0.jpg',
+					title: '',
+					price: '899',
+					priceLabel: '',
+					discount: ''
+				},
+				{
+					url: '',
+					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3587087173,3820998893&fm=26&gp=0.jpg',
+					title: '乐高积木',
+					price: '9.9',
+					priceLabel: '',
+					discount: ''
+				},
 			]
 		]
 		

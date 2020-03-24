@@ -1,7 +1,7 @@
 <template>
-	<view>
+	<view class="page">
 		<view>
-			<xg-input class="input consignee" leftTitle="收货人" placeholder="请填写收货人姓名" :clearIcon="clearIconConfig" :rightIcon="{fontFamily: 'xg-iconfont', text: '\ue605'}" :value="name"></xg-input>
+			<xg-input class="input consignee" leftTitle="收货人" placeholder="请填写收货人姓名" :clearIcon="clearIconConfig" :rightIcon="{fontFamily: 'xg-iconfont', text: '\ue605'}" :value="name" @rightIconTap="addConsigneeBtnTap"></xg-input>
 			
 			<xg-input class="input" type="number" leftTitle="手机号码" placeholder="请填写收货人手机号码" :clearIcon="clearIconConfig" :value="phone"></xg-input>
 			
@@ -14,17 +14,26 @@
 			<text class="address-tag-section-title">标签</text>
 			<view class="tag-list">
 				<view class="default-tag-list">
-					<text v-for="(tag, tagIndex) of defaultTagList" :key="tagIndex" class="tag-common" :class="currentTag === tag ? 'selected-tag' : 'tag'" @tap="tagTap(tag)">{{tag}}</text>
-					
-					<view class="custom-tag-section">
-						<text v-if="showCustomTagAddBtn" class="tag-common custom-tag-plus-icon" :style="{'font-family': 'xg-iconfont'}" @tap="customTagAddBtnTap">&#xe61e;</text>
-						<view v-if="showCustomTag" class="custom-tag">
-							<text class="custom-tag-text-common" :class="customTag === currentTag ? 'selected-custom-tag-text' : 'custom-tag-text'" @tap="tagTap(customTag)">{{customTag}}</text>
-							<text class="tag-edit-btn-common" :class="customTag === currentTag ? 'selected-tag-edit-btn' : 'tag-edit-btn'" @tap="tagEditBtnTap">编辑</text>
+					<view v-for="(tag, tagIndex) of defaultTagList" :key="tagIndex" class="tag-common" :class="currentTag === tag ? 'selected-tag' : 'tag'" @tap="tagTap(tag)">
+						<text class="tag-common-text" :class="currentTag === tag ? 'selected-tag-text' : 'tag-text'">{{tag}}</text>
+					</view>
+				</view>
+				<view class="custom-tag-section">
+					<view v-if="showCustomTagAddBtn" class="tag-common" @tap="customTagAddBtnTap">
+						<text  class="tag-common-text custom-tag-plus-icon" :style="{'font-family': 'xg-iconfont'}">&#xe61e;</text>
+					</view>
+					<view v-if="showCustomTag" class="custom-tag">
+						<view class="custom-tag-common-text-wrap" :class="customTag === currentTag ? 'selected-custom-tag-text-wrap' : 'custom-tag-text-wrap'"  @tap="tagTap(customTag)">
+							<text class="custom-tag-text-common" :class="customTag === currentTag ? 'selected-custom-tag-text' : 'custom-tag-text'">{{customTag}}</text>
 						</view>
-						<view v-if="showCustomTagInput" class="tag-input-section">
-							<input class="tag-input" type="text" placeholder-class="tag-input-placeholder-class" placeholder="请输入标签名称,最多5个字" :value="customTag" @input="customTagInputChang"/>
-							<text class="tag-comfirm-btn" @tap="tagConfirmBtnTap">确定</text>
+						<view class="tag-edit-btn-common" :class="customTag === currentTag ? 'selected-tag-edit-btn' : 'tag-edit-btn'">
+							<text class="tag-edit-btn-text-common" @tap="tagEditBtnTap">编辑</text>
+						</view>
+					</view>
+					<view v-if="showCustomTagInput" class="tag-input-section">
+						<input class="tag-input" type="text" placeholder-class="tag-input-placeholder-class" placeholder="请输入标签名称,最多5个字" :value="customTag" @input="customTagInputChang"/>
+						<view class="tag-comfirm-btn">
+							<text class="tag-comfirm-btn-text" @tap="tagConfirmBtnTap">确定</text>
 						</view>
 					</view>
 				</view>
@@ -41,7 +50,9 @@
 		</view>
 		
 		<view class="save-btn-section">
-			<text class="save-btn" @tap="saveBtnTap">保存</text>
+			<view class="save-btn">
+				<text class="save-btn-text" @tap="saveBtnTap">保存</text>
+			</view>
 		</view>
 		
 	</view>
@@ -73,6 +84,8 @@
 		onLoad(address) {
 			customData.type = address.type;
 			if (customData.type === 'edit') {
+				uni.setNavigationBarTitle({title: '编辑收货地址'});
+				
 				this.name = address.name;
 				this.phone = address.phone;
 				this.district = address.district;
@@ -85,6 +98,8 @@
 				} else {
 					this.currentTag = address.tag;
 				}
+			} else {
+				uni.setNavigationBarTitle({title: '新增收货地址'});
 			}
 		},
 		computed: {
@@ -96,6 +111,10 @@
 			}
 		},
 		methods: {
+			addConsigneeBtnTap() {
+				
+			},
+			
 			customTagAddBtnTap() {
 				this.showCustomTagAddBtn = false;
 				this.showCustomTagInput = true;
@@ -117,6 +136,7 @@
 			tagEditBtnTap() {
 				this.showCustomTag = false;
 				this.showCustomTagInput = true;
+				console.log('aa');
 			},
 			
 			defaultAddressSwitchChange(e) {
@@ -137,6 +157,10 @@
 
 <style lang="scss">
 	$tag-height: 54rpx;
+	
+	.page {
+		background-color: $uni-bg-color;
+	}
 	
 	.input {
 		padding-top: $uni-spacing-row-base;
@@ -170,10 +194,7 @@
 	}
 	.tag-list {
 		flex: 1;
-		/* #ifndef APP-PLUS-NVUE */
-		display: flex;
-		/* #endif */
-		flex-direction: column;
+		// border-width: 1px;
 	}
 	.default-tag-list {
 		/* #ifndef APP-PLUS-NVUE */
@@ -181,10 +202,12 @@
 		/* #endif */
 		flex-direction: row;
 		align-items: center;
-		flex-wrap: wrap;
+		// flex-wrap: wrap;
+		// height: 100px;
 	}
 	.custom-tag-section {
 		// border-width: 1px;
+		// height: 100px;
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
@@ -203,7 +226,7 @@
 		align-items: center;
 		margin-bottom: $uni-spacing-row-base;
 	}
-	.custom-tag-text-common {
+	.custom-tag-common-text-wrap {
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
@@ -218,26 +241,39 @@
 		height: $tag-height;
 		padding-left: $uni-spacing-col-lg;
 		padding-right: $uni-spacing-col-lg;
+		
+	}
+	.custom-tag-text-wrap {
+		
+	}
+	.selected-custom-tag-text-wrap {
+		background-color: $uni-bg-color-blue;
+	}
+	
+	.custom-tag-text-common {
 		font-size: $uni-font-size-base;
 	}
 	.custom-tag-text {
 		
 	}
 	.selected-custom-tag-text {
-		background-color: $uni-bg-color-blue;
 		color: $uni-text-color-white;
 	}
 	.tag-edit-btn-common {
 		padding-left: $uni-spacing-col-base;
 		padding-right: $uni-spacing-col-base;
-		font-size: $uni-font-size-base;
 		border-top-right-radius: 10000px;
 		border-bottom-right-radius: 10000px;
 		border-width: 0.5px;
 		border-color: $uni-border-color;
 		margin-left: 0.5px;
-		color: $uni-text-color-white;
 		height: $tag-height;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
 	}
 	.tag-edit-btn {
 		background-color: $uni-bg-color-black;
@@ -245,6 +281,11 @@
 	.selected-tag-edit-btn {
 		background-color: $uni-bg-color-blue;
 	}
+	.tag-edit-btn-text-common {
+		font-size: $uni-font-size-base;
+		color: $uni-text-color-white;
+	}
+	
 	.tag-input-section {
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
@@ -254,10 +295,12 @@
 		margin-bottom: $uni-spacing-row-base;
 	}
 	.tag-input {
+		// flex: 1;
 		background-color: $uni-bg-color-grey;
 		font-size: $uni-font-size-sm;
 		border-top-left-radius: 10000px;
 		border-bottom-left-radius: 10000px;
+		width: 400rpx;
 		height: $tag-height;
 		padding-left: $uni-spacing-col-base;
 		padding-right: $uni-spacing-col-base;
@@ -267,13 +310,21 @@
 	}
 	.tag-comfirm-btn {
 		background-color: $uni-bg-color-red;
-		font-size: $uni-font-size-base;
-		color: $uni-text-color-white;
 		border-top-right-radius: 10000px;
 		border-bottom-right-radius: 10000px;
 		height: $tag-height;
 		padding-left: $uni-spacing-col-base;
 		padding-right: $uni-spacing-col-base;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.tag-comfirm-btn-text {
+		font-size: $uni-font-size-base;
+		color: $uni-text-color-white;
 	}
 	
 	.tag-common {
@@ -284,7 +335,7 @@
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
-		font-size: $uni-font-size-base;
+		
 		// white-space: nowrap;
 		
 		border-width: 0.5px;
@@ -298,11 +349,14 @@
 		margin-right: $uni-spacing-col-base;
 		margin-bottom: $uni-spacing-row-base;
 	}
-	.tag {
-		
+	.tag-common-text {
+		// border-width: 1px;
+		font-size: $uni-font-size-base;
 	}
 	.selected-tag {
 		background-color: $uni-bg-color-blue;
+	}
+	.selected-tag-text {
 		color: $uni-text-color-white;
 	}
 	
@@ -337,6 +391,11 @@
 	}
 	
 	.save-btn-section {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
@@ -352,13 +411,14 @@
 		align-items: center;
 		justify-content: center;
 		
-		position: fixed;
-		bottom: 0;
 		width: 500rpx;
 		height: 80rpx;
 		background-color: $uni-bg-color-red;
 		border-radius: 10000px;
 		margin-bottom: $uni-spacing-row-base;
+	}
+	.save-btn-text {
 		color: $uni-text-color-white;
+		font-size: $uni-font-size-base;
 	}
 </style>

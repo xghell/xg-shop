@@ -36,7 +36,7 @@
 					
 				</view>
 				
-				<view v-if="hasChangeable" ref="changeable-section" class="changeable-section" :style="{top: changeableTop + 'px', right: changeableRight + 'px'}">
+				<view v-if="hasChangeable" ref="changeable-section" class="changeable-section" :style="{top: changeableTopOffset + 'px', width: changeableWidth + 'px'}">
 					<slot name="changeable">
 						<!-- <text>可变区域</text> -->
 						<xg-search-input :leftIcon="searchInput.leftIcon" :rightIcon="searchInput.rightIcon"
@@ -212,15 +212,26 @@
 		data() {
 			return {
 				statusBarHeight: 0,
+				changeableInitWidth: undefined,
 				changeableTop: undefined,
 				changeableRight: undefined,
 				navBarWrapHeight: undefined,
 				navBarInnerHeight: undefined,
+				fixedInitHeight: undefined,
 				opacity: 1
 			}
 		},
 		created() {
 			this.statusBarHeight = this.statusBar ? uni.getSystemInfoSync().statusBarHeight : 0;
+		},
+		computed: {
+			changeableWidth() {
+				// console.log(this.changeableInitWidth,this.changeableRight);
+				return this.changeableInitWidth - this.changeableRight;
+			},
+			changeableTopOffset() {
+				return this.changeableTop - this.fixedInitHeight;
+			}
 		},
 		methods: {
 			// #ifdef APP-PLUS-NVUE
@@ -277,18 +288,22 @@
 					changeableResult = this.getComponentRect(this.$refs['changeable-section']);
 					const changeableData = await changeableResult;
 					changeableHeight = changeableData.size.height;
+					
+					this.changeableInitWidth = changeableData.size.width;
 				}
 				
 				const rightData = await rightResult;
 				const fixedRData = await fixedResult;
 				
-				
+				const fixedHeight = fixedRData.size.height;
 				const rightHeight = rightData.size.height;
 				
 				maxChangeableRight = rightData.size.width;
-				maxChangeableTop = fixedRData.size.height;
+				maxChangeableTop = fixedHeight;
 				
 				minChangeableTop = rightHeight/2 - changeableHeight/2;
+				
+				this.fixedInitHeight = fixedHeight;
 				
 				if (this.hasChangeable) {
 					this.$watch('progress', ()=>{
@@ -318,16 +333,21 @@
 				
 				selector.exec(data => {
 					const rightHeight = data[1].height;
+					const fixedHeight = data[0].height;
 					
 					let changeableHeight = 0;
 					
 					if (this.hasChangeable) {
 						changeableHeight = data[2].height;
+						
+						this.changeableInitWidth = data[2].width;
 					}
 					
 					minChangeableTop = rightHeight/2 - changeableHeight/2;
-					maxChangeableTop = data[0].height;
+					maxChangeableTop = fixedHeight;
 					maxChangeableRight = data[1].width;
+					
+					this.fixedInitHeight = fixedHeight;
 					
 					if (this.hasChangeable) {
 						this.$watch('progress', ()=>{
@@ -379,6 +399,7 @@
 	}
 	
 	.title-section {
+		// background-color: blue;
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -420,7 +441,7 @@
 	
 	.changeable-section {
 		// background-color: red;
-		position: absolute;
+		position: relative;
 		left: 0;
 	}
 

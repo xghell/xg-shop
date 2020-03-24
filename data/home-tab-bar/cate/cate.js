@@ -154,7 +154,7 @@ const cate = {
 		]
 		
 		
-		const cateList = (new Array(10)).fill(catePageData);
+		const cateList = (new Array(10)).fill([...catePageData]);
 		
 		return cateList[index];
 	}

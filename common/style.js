@@ -1,11 +1,6 @@
 const style = {
 	/* 对应@/common/xg.scss文件样式 */
 	
-	//文字尺寸
-	UNI_FONT_SIZE_MI: '10px',
-	UNI_FONT_SIZE_HG: '18px',
-	UNI_FONT_SIZE_MX: '20px',
-	
 	//文字颜色
 	UNI_TEXT_COLOR_RED: '#ed1c24',
 	UNI_TEXT_COLOR_WHITE: '#FFFFFF',
@@ -13,7 +8,7 @@ const style = {
 	//图标尺寸
 	UNI_ICON_SIZE_MI: '20rpx',
 	UNI_ICON_SIZE_SM: '40rpx',
-	UNI_ICON_SIZE_MD: '60rpx',
+	UNI_ICON_SIZE_MD: '50rpx',
 	UNI_ICON_SIZE_BASE: '80rpx',
 	UNI_ICON_SIZE_LG: '120rpx',
 	UNI_ICON_SIZE_HG: '160rpx',
@@ -40,6 +35,7 @@ const style = {
 	UNI_BG_COLOR_GREY: '#f8f8f8',
 	UNI_BG_COLOR_HOVER: '#F1F1F1',
 	UNI_BG_COLOR_MASK: 'rgba(0, 0, 0, 0.4)',
+	UNI_BG_COLOR_MASK_WHITE: 'rgba(255, 255, 255, 0.4)',
 	UNI_BG_COLOR_PINK: 'pink',
 	UNI_BG_COLOR_RED: 'red',
 	UNI_BG_COLOR_BLUE: 'blue',
@@ -51,9 +47,13 @@ const style = {
 	// /* 尺寸变量 */
 	
 	//文字尺寸 
-	UNI_FONT_SIZE_SM: '12px',
-	UNI_FONT_SIZE_BASE: '14px',
-	UNI_FONT_SIZE_LG: '16px',
+	UNI_FONT_SIZE_MARO: '20rpx',
+	UNI_FONT_SIZE_MI: '24rpx',
+	UNI_FONT_SIZE_SM: '28rpx',
+	UNI_FONT_SIZE_BASE: '32rpx',
+	UNI_FONT_SIZE_LG: '36rpx',
+	UNI_FONT_SIZE_HG: '40rpx',
+	UNI_FONT_SIZE_MX: '44rpx',
 	
 	//图片尺寸 
 	UNI_IMG_SIZE_SM: '40rpx',
@@ -61,9 +61,11 @@ const style = {
 	UNI_IMG_SIZE_LG: '80rpx',
 	
 	// Border Radius 
+	UNI_BORDER_RADIUS_MI: '4rpx',
 	UNI_BORDER_RADIUS_SM: '10rpx',
 	UNI_BORDER_RADIUS_BASE: '20rpx',
 	UNI_BORDER_RADIUS_LG: '30rpx',
+	UNI_BORDER_RADIUS_HG: '40rpx',
 	UNI_BORDER_RADIUS_CIRCLE: '50%',
 	
 	// 水平间距 

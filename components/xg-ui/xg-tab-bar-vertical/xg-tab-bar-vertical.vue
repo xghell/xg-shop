@@ -1,8 +1,6 @@
 <template>
 	<scroll-view ref="scroll-view" class="scroll-view" :show-scrollbar="false" :scroll-y="true" :scroll-top="scrollTop" :style="{height: height}">
-		<view class="tab-bar">
-			<slot></slot>
-		</view>
+		<slot></slot>
 	</scroll-view>
 </template>
 
@@ -33,8 +31,6 @@
 <style scoped>
 	.scroll-view {
 		/* border-width: 1px;border-style: solid; */
-	}
-	.tab-bar {
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */

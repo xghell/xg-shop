@@ -1,30 +1,25 @@
 <template>
 	<scroll-view class="page-scroll" scroll-y="true" :scroll-top="pageScrollTop" @scroll="pageScroll">
-		<view>
-			<view class="dock-placeholder" :style="{height: finddockHeight + 'px'}"></view>
-			
-			<xg-waterfall :columnCount="waterfallConfig.columnCount" :columnGap="waterfallConfig.columnGap" :leftGap="waterfallConfig.leftGap" :rightGap="waterfallConfig.rightGap" @getWaterfallItemWidth="getWaterfallItemWidth">
-				<xg-waterfall-item v-for="(showItem, showIndex) of showList" :key="showIndex">
-					<view class="show">
-						<image class="show-image" :style="{width: waterfallItemWidth + 'px'}" :src="showItem.image" mode="widthFix"></image>
-						<text class="show-title line-limit">{{showItem.title||showItem.desc}}</text>
-						<view class="user-and-thumb-up">
-							<view class="user-info">
-								<image class="avatar" :src="showItem.user.avatar" mode=""></image>
-								<text class="username">{{showItem.user.username}}</text>
-							</view>
-							<view class="thumb-up">
-								<text class="thumb-up-icon" :style="{'font-family': thumbUpIconConfig.fontFamily}">{{thumbUpIconConfig.text}}</text>
-								<text class="thumb-up-number">{{showItem.thumb_up_number}}</text>
-							</view>
+		<view class="dock-placeholder" :style="{height: finddockHeight + 'px'}"></view>
+		
+		<xg-waterfall :columnCount="waterfallConfig.columnCount" :columnGap="waterfallConfig.columnGap" :leftGap="waterfallConfig.leftGap" :rightGap="waterfallConfig.rightGap" @getWaterfallItemWidth="getWaterfallItemWidth">
+			<xg-waterfall-item :ref="'waterfall-item-' + showIndex" v-for="(showItem, showIndex) of showList" :key="showIndex">
+				<view class="show">
+					<image class="show-image" :style="{width: showImageWidth + 'px', height: showImageWidth*showImageAspectRatio[showIndex] + 'px'}" :src="showItem.image" mode="widthFix" @load="showImageLoad(showIndex, $event)"></image>
+					<text class="show-title line-limit">{{showItem.title||showItem.desc}}</text>
+					<view class="user-and-thumb-up">
+						<view class="user-info">
+							<image class="avatar" :src="showItem.user.avatar" mode=""></image>
+							<text class="username">{{showItem.user.username}}</text>
+						</view>
+						<view class="thumb-up">
+							<text class="thumb-up-icon" :style="{'font-family': thumbUpIconConfig.fontFamily}">{{thumbUpIconConfig.text}}</text>
+							<text class="thumb-up-number">{{showItem.thumb_up_number}}</text>
 						</view>
 					</view>
-				</xg-waterfall-item>
-			</xg-waterfall>
-			
-			
-			
-		</view>
+				</view>
+			</xg-waterfall-item>
+		</xg-waterfall>
 	</scroll-view>
 </template>
 
@@ -44,8 +39,9 @@
 		data() {
 			return {
 				pageScrollTop: 0,
-				waterfallItemWidth: 0,
-				showList: []
+				showList: [],
+				showImageAspectRatio: [],
+				showImageWidth: 0,
 			}
 		},
 		async created() {
@@ -56,9 +52,21 @@
 			finddockHeight() {
 				// console.log(this.find.dockHeight);
 				return this.find.dockHeight;
-			}
+			},
 		},
 		methods: {
+			toPx(value) {
+				const result = /(\d+)(\w+)/.exec(value);
+				if ('rpx' === result[2].trim()) {
+					return uni.getSystemInfoSync().screenWidth * Number(result[1]) / 750;
+				} else if('px' === result[2].trim()) {
+					return Number(result[1]);
+				} else {
+					throw new TypeError(`${value}单位格式不正确`);
+				}
+				
+			},
+			
 			pageScroll(e) {
 				customData.old.pageScrollTop = e.detail.scrollTop;
 				// console.log(e);
@@ -67,10 +75,19 @@
 			//页面切换时设置滚动位置，需使用this.$refs引用
 			scrollDeltaYTo(deltaY) {
 				this.pageScrollTop = customData.old.pageScrollTop + deltaY;
+				// console.log(this.pageScrollTop);
+			},
+			getWaterfallItemWidth(e) {
+				this.showImageWidth = e;
 			},
 			
-			getWaterfallItemWidth(e) {
-				this.waterfallItemWidth = e;
+			showImageLoad(index, e) {
+				// this.showImageAspectRatio[index] = e.detail.height/e.detail.width;
+				// console.log(index ,e);
+				this.$set(this.showImageAspectRatio, index, e.detail.height/e.detail.width);
+				setTimeout(() => {
+					this.$refs['waterfall-item-' + index][0].calculateLayout();
+				}, 10);
 			}
 		},
 	}

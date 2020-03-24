@@ -46,6 +46,7 @@
 		pageRefList: ['concern-page', 'show-page', 'live-page', 'video-page'],
 		dockScrollDeltaY: 0,
 		pageScrollDeltaYList: [],
+		// initDockHeight: 0
 	}
 	
 	export default {
@@ -75,26 +76,32 @@
 				this.$refs['dock'].scrollDeltaTo(e);
 				// console.log(e);
 			},
+			
+			setSubPageScrollTop() {
+				this.$refs[customData.pageRefList[this.tabCurrentIndex]].scrollDeltaYTo(customData.dockScrollDeltaY - (customData.pageScrollDeltaYList[this.tabCurrentIndex]||0));
+			},
 			pageIndexChange(e) {
 				this.tabCurrentIndex = e.detail.current;
-				
-				this.$refs[customData.pageRefList[this.tabCurrentIndex]].scrollDeltaYTo(customData.dockScrollDeltaY - (customData.pageScrollDeltaYList[this.tabCurrentIndex]||0));
+				this.setSubPageScrollTop();
 			},
 			//嵌套滚动的产品列表
 			tabBarIconTap(index) {
 				this.tabCurrentIndex = index;
+				this.setSubPageScrollTop();
 			},
 			getNavBarMinHeight(e) {
 				this.navBarHeight = e;
 			},
 			getDockHeight(e) {
 				this.dockHeight = e;
+				// customData.initDockHeight = e;
 				// console.log(e);
 			},
 			dockScroll(e) {
 				customData.dockScrollDeltaY = e;
 				customData.pageScrollDeltaYList[this.tabCurrentIndex] = e;
 				
+				// this.dockHeight = customData.initDockHeight - e;
 				// this.navBarOpacity = 1 - e / this.navBarHeight;
 				if (e > 10) {
 					this.navBarOpacity = 0;

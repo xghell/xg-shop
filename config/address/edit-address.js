@@ -7,7 +7,7 @@ const editAddress = {
 				fontFamily: 'xg-iconfont',
 				text: '\ue62f',
 			},
-			defaultTagList: ['家', '公司', '学校', '常去地方']
+			defaultTagList: ['家', '公司', '学校']
 		};
 	},
 }

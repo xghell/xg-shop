@@ -12,6 +12,7 @@
 
 <script>
 	/**
+	 * @rightIconTap
 	 * @input
 	 */
 	
@@ -93,7 +94,7 @@
 
 <style lang="scss" scoped>
 	.input-item {
-		/* #ifdef APP-PLUS-NVUE */
+		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
 		flex-direction: row;
@@ -108,7 +109,7 @@
 		// border-width: 1px;
 		width: 0rpx;
 		flex: 1;
-		/* #ifdef APP-PLUS-NVUE */
+		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
 		flex-direction: row;

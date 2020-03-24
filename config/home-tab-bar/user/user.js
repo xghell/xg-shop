@@ -57,8 +57,8 @@ const user = {
 			orderSectionConfig: {
 				fontFamily: 'xg-iconfont',
 				textStyle: `font-size: ${style.UNI_ICON_SIZE_MD}`,
-				titleStyle: `font-size: ${style.UNI_FONT_SIZE_SM}`,
-				subtitleStyle: `font-size: ${style.UNI_FONT_SIZE_MI}`,
+				titleStyle: `font-size: ${style.UNI_FONT_SIZE_SM};margin-top: ${style.UNI_SPACING_ROW_SM};`,
+				subtitleStyle: `font-size: ${style.UNI_FONT_SIZE_MI};margin-top: ${style.UNI_SPACING_ROW_SM};`,
 				iconList: [
 					{
 						text: '\ue607',
@@ -93,8 +93,8 @@ const user = {
 				fontFamily: 'xg-iconfont',
 				thumbStyle: `width: ${style.UNI_ICON_SIZE_BASE};
 							height: ${style.UNI_ICON_SIZE_BASE};`,
-				titleStyle: `font-size: ${style.UNI_FONT_SIZE_SM}`,
-				subtitleStyle: `font-size: ${style.UNI_FONT_SIZE_MI}`,
+				titleStyle: `font-size: ${style.UNI_FONT_SIZE_SM};margin-top: ${style.UNI_SPACING_ROW_SM};`,
+				subtitleStyle: `font-size: ${style.UNI_FONT_SIZE_MI};margin-top: ${style.UNI_SPACING_ROW_SM};`,
 				iconList: [
 					{
 						thumb: '/static/user/kehufuwu.png',

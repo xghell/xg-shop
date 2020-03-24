@@ -4,8 +4,7 @@
 			<view>
 				<view class="nav-bar-placeholder" :style="{height: xgNavBarMaxHeight + 'px'}"></view>
 				
-				<!-- 返回顶部按钮 -->
-				<image v-if="goTopButtonShow" class="go-top-button" :src="goTopButton.image" :style="{width: goTopButton.size, height: goTopButton.size, bottom: goTopButton.bottom, right: goTopButton.right}" @tap="goTop"></image>
+				
 				
 				<!-- 顶部导航栏及背景 -->
 				<image class="xg-nav-bar-bg-img" :src="xgNavBar.backgroundImage"></image>
@@ -44,13 +43,15 @@
 					</xg-tab-bar>
 					<swiper class="product-list-tab" :current="productListTabCurrentIndex" @change="productListTabChange">
 						<swiper-item v-for="(productListTabCard, productListTabDataIndex) of productListTabData" :key="productListTabDataIndex">
-							<scroll-view class="product-list-tab-scroll" upper-threshold="10" :scroll-y="productListTabScrollable" :show-scrollbar="false" scroll-with-animation :scroll-top="productListTabScrollTop[productListTabDataIndex]" @scrolltoupper="productListTabScrolltoupper" @scroll="productListTabScroll(productListTabDataIndex, $event)">
+							<scroll-view class="product-list-tab-scroll" upper-threshold="10" :scroll-y="productListTabScrollable" :show-scrollbar="false" scroll-with-animation :scroll-top="productListTabScrollTop[productListTabDataIndex]" @scrolltoupper="productListTabScrolltoupper" @scrolltolower="productListTabScrolltolower" @scroll="productListTabScroll(productListTabDataIndex, $event)">
 								
-								<xg-waterfall :columnCount="productListTab.columnCount" :columnGap="productListTab.columnGap" :leftGap="productListTab.leftGap" :rightGap="productListTab.rightGap" @getWaterfallItemWidth="getproductListTabCardItemWidth">
-									<xg-waterfall-item v-for="(product, index) of productListTabCard" :key="index">
-										<tpl-product :style="{'margin-bottom': productListTab.rowGap}" :size="productListTabCardItemWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount"></tpl-product>
+								<xg-waterfall :columnCount="productListTab.columnCount" :columnGap="productListTab.columnGap" :leftGap="productListTab.leftGap" :rightGap="productListTab.rightGap" @getWaterfallItemWidth="getWaterfallItemWidth">
+									<xg-waterfall-item :ref="'waterfall-ref-' + productListTabDataIndex + index" v-for="(product, index) of productListTabCard" :key="index">
+										<tpl-product :style="{'margin-bottom': productListTab.rowGap}" :size="productListTabImageWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount" @imageLoad="productListTabImageLoad('waterfall-ref-' + productListTabDataIndex + index)"></tpl-product>
 									</xg-waterfall-item>
 								</xg-waterfall>
+								
+								<uni-load-more :status="loadMoreStatus"></uni-load-more>
 							</scroll-view>
 						</swiper-item>
 					</swiper>
@@ -58,6 +59,9 @@
 				</view>
 			</view>
 		</scroll-view>
+		
+		<!-- 返回顶部按钮 -->
+		<image v-if="goTopButtonShow" class="go-top-button" :src="goTopButton.image" :style="{width: goTopButton.size, height: goTopButton.size, bottom: goTopButton.bottom, right: goTopButton.right}" @tap="goTop"></image>
 		
 		<view class="nav-bar">
 			<xg-nav-bar status-bar hasChangeable :progress="xgNavBarProgress" :left="xgNavBar.left" :right="xgNavBar.right" :searchInput="xgNavBar.searchInput" @getNavBarMinHeight="getNavBarMinHeight" @getNavBarMaxHeight="getNavBarMaxHeight" @iconTap="xgNavBarIconTap" @searchInputRightIconTap="xgNavBarSearchInputRightIconTap" @focus="xgNavBarSearchInputFocus">
@@ -111,11 +115,12 @@
 				productListTabData: [],
 				productListTabScrollable: false,
 				productListTabScrollTop: [],
-				productListTabCardItemWidth: undefined,
+				productListTabImageWidth: 0,
+				loadMoreStatus: 'more'  //more,loading,nomore
 			}
 		},
 		async created() {
-			this.carouselList = data.carouselList();
+			this.carouselList = await data.carouselList();
 			this.productListTabData = (new Array(this.productListTabBar.iconList.length)).fill([]);
 			this.old.productListTabScrollTop = (new Array(this.productListTabBar.iconList.length)).fill(0);
 			this.productListTabScrollTop = (new Array(this.productListTabBar.iconList.length)).fill(0);
@@ -136,6 +141,23 @@
 				this.pageScrollHeight = pageScrollData.size.height;
 				// #endif
 			})
+		},
+		computed: {
+			cateNavPagesData() {
+				const pageCount = Math.ceil(this.cateNav.cateList.length/(this.cateNav.column*this.cateNav.row))
+				
+				const cateNavPagesData = [];
+				
+				for (let i = 0; i < pageCount; ++i) {
+					cateNavPagesData[i] = this.cateNav.cateList.slice(this.cateNav.column * this.cateNav.row * i, this.cateNav.column * this.cateNav.row * (i + 1))
+				}
+				
+				return cateNavPagesData;
+			},
+			
+			productListTabSectionHeight() {
+				return this.homeTabBar.pageContentHeight - this.xgNavBarMinHeight;
+			}
 		},
 		methods: {
 			toPx(value) {
@@ -217,15 +239,28 @@
 			},
 			
 			//嵌套滚动的产品列表
-			async productListTabBarIconTap(index) {
-				this.productListTabCurrentIndex = index;
-				this.$set(this.productListTabData, index, await data.productListTab(index))
+			async initProductListTab() {
+				if (!this.productListTabData[this.productListTabCurrentIndex].length) {
+					this.$set(this.productListTabData, this.productListTabCurrentIndex, await data.productListTab(this.productListTabCurrentIndex));
+				}
 			},
-			async productListTabChange(e) {
+			productListTabBarIconTap(index) {
+				this.productListTabCurrentIndex = index;
+				this.initProductListTab();
+			},
+			productListTabChange(e) {
 				const currentIndex = e.detail.current;
 				this.productListTabCurrentIndex = currentIndex;
+				this.initProductListTab();
+				this.loadMoreStatus = 'more';
+			},
+			async productListTabScrolltolower(e) {
+				this.loadMoreStatus = 'loading';
+				let productList = await data.productListTab(this.productListTabCurrentIndex);
+				this.productListTabData[this.productListTabCurrentIndex].push(...productList);
+				// this.loadMoreStatus = 'more';
 				
-				this.$set(this.productListTabData, currentIndex, await data.productListTab(currentIndex))
+				// this.$set(this.productListTabData, this.productListTabCurrentIndex,  await data.productListTab(index))
 			},
 			productListTabScrolltoupper(e) {
 				this.pageScrollable = true;
@@ -239,9 +274,6 @@
 				customData.productListTabScrollDeltaY = e.detail.deltaY;
 				this.old.productListTabScrollTop[index] = e.detail.scrollTop;
 			},
-			getproductListTabCardItemWidth(e) {
-				this.productListTabCardItemWidth = e;
-			},
 			productListTabGoTop() {
 				this.productListTabScrollTop = [...this.old.productListTabScrollTop];
 				
@@ -249,24 +281,18 @@
 					this.productListTabScrollTop = [...this.old.productListTabScrollTop.fill(0)];
 				})
 			},
-		},
-		computed: {
-			cateNavPagesData() {
-				const pageCount = Math.ceil(this.cateNav.cateList.length/(this.cateNav.column*this.cateNav.row))
-				
-				const cateNavPagesData = [];
-				
-				for (let i = 0; i < pageCount; ++i) {
-					cateNavPagesData[i] = this.cateNav.cateList.slice(this.cateNav.column * this.cateNav.row * i, this.cateNav.column * this.cateNav.row * (i + 1))
-				}
-				
-				return cateNavPagesData;
+			getWaterfallItemWidth(e) {
+				this.productListTabImageWidth = e;
 			},
-			
-			productListTabSectionHeight() {
-				return this.homeTabBar.pageContentHeight - this.xgNavBarMinHeight;
+			productListTabImageLoad(ref) {
+				// console.log(this.$refs[ref]);
+				setTimeout(() => {
+					this.$refs[ref][0].calculateLayout();
+				}, 10)
+				
 			}
 		},
+		
 	}
 </script>
 
@@ -301,7 +327,7 @@
 		/* #ifndef APP-PLUS-NVUE */
 		z-index: 10000;
 		/* #endif */
-		position: fixed;
+		position: absolute;
 	}
 	
 	.xg-nav-bar-bg-img {

@@ -1,12 +1,12 @@
 const search = {
-	history() {
+	historyList() {
 		const history = [
 			'医用口罩', '饮水机', '体温计', '智能电视机', '洗发水', '最好吃的零食', '生鲜'
 		];
 		
 		return history;
 	},
-	find() {
+	findList() {
 		const find = [
 			{
 				name: '牛肉生鲜',
@@ -31,8 +31,10 @@ const search = {
 				name: '小米10'
 			},
 		];
+		
+		return find;
 	},
-	hot() {
+	hotList() {
 		
 	}
 }
