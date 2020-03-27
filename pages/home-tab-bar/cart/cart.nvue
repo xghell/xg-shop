@@ -30,9 +30,9 @@
 		
 		<view class="dock">
 			<xg-dock ref="dock" status-bar  @getDockHeight="getDockHeight">
+				<view class="dock-bg"></view>
 				<xg-nav-bar hasTitle :fixedHeight="navBarConfig.fixedHeight" :title="navBarConfig.title" :right="navBarConfig.right">
 				</xg-nav-bar>
-				<view class="dock-bg"></view>
 			</xg-dock>
 		</view>
 	</view>

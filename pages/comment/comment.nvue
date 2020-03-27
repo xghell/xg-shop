@@ -65,8 +65,8 @@
 </template>
 
 <script>
-	import data from '@/data/product/product-comment.js';
-	import config from '@/config/product/product-comment.js';
+	import data from '@/data/comment/comment.js';
+	import config from '@/config/comment/comment.js';
 	
 	export default {
 		mixins: [config],

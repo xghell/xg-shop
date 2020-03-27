@@ -44,10 +44,10 @@
 				},
 				
 				imageList: [
-					'http://img4.imgtn.bdimg.com/it/u=1294777008,606946384&fm=26&gp=0.jpg',
-					'http://img4.imgtn.bdimg.com/it/u=271815213,1458391213&fm=26&gp=0.jpg',
-					'http://img4.imgtn.bdimg.com/it/u=1294777008,606946384&fm=26&gp=0.jpg',
-					'http://img4.imgtn.bdimg.com/it/u=271815213,1458391213&fm=26&gp=0.jpg',
+					// 'http://img4.imgtn.bdimg.com/it/u=1294777008,606946384&fm=26&gp=0.jpg',
+					// 'http://img4.imgtn.bdimg.com/it/u=271815213,1458391213&fm=26&gp=0.jpg',
+					// 'http://img4.imgtn.bdimg.com/it/u=1294777008,606946384&fm=26&gp=0.jpg',
+					// 'http://img4.imgtn.bdimg.com/it/u=271815213,1458391213&fm=26&gp=0.jpg',
 				]
 			}
 		},

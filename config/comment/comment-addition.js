@@ -5,7 +5,7 @@ const productDetail = {
 		return {
 			
 			rateConfig: {
-				starSize: `${style.UNI_FONT_SIZE_LG}`,
+				starSize: `${style.UNI_FONT_SIZE_HG}`,
 				starActivecolor: `${style.UNI_TEXT_COLOR_RED}`,
 			},
 			

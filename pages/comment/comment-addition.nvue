@@ -1,0 +1,146 @@
+<template>
+	<view class="page">
+		<view class="product-rate-section">
+			<image class="product-image" :src="productImage" mode=""></image>
+			<view class="product-rate-value-section">
+				<view class="product-rate-value-label">
+					<text class="product-rate-value-label-text">已评分</text>
+				</view>
+				<view class="rate">
+					<uni-rate disabled :value="rate" :size="rateSize" :activeColor="rateConfig.starActivecolor"></uni-rate>
+					<text class="rate-text">非常好</text>
+				</view>
+			</view>
+		</view>
+		
+		<view class="product-comment-section">
+			<textarea class="product-comment-textarea" :maxlength="500" value="" placeholder="符合评价规则,评价超过10个字即可获得积分" :placeholder-style="'font-size:' + placeholderSize + 'px'" />
+			<xg-preview-image></xg-preview-image>
+		</view>
+		
+	</view>
+</template>
+
+<script>
+	import config from '@/config/comment/comment-addition.js';
+	
+	export default {
+		mixins: [config],
+		data() {
+			return {
+				productImage: '',
+				rate: 0
+			}
+		},
+		onLoad(e) {
+			const item = JSON.parse(decodeURIComponent(e.item));
+			
+			this.rate = Number(item.rate);
+			this.productImage = item.image;
+		},
+		computed: {
+			rateSize() {
+				return this.toPx(this.rateConfig.starSize);
+			},
+			placeholderSize() {
+				return this.toPx(this.textareaConfig.placeholderSize);
+			}
+		},
+		methods: {
+			toPx(value) {
+				const result = /(\d+\.?\d*)(\w+)/.exec(value);
+				if ('rpx' === result[2].trim()) {
+					return uni.getSystemInfoSync().screenWidth * Number(result[1]) / 750;
+				} else if('px' === result[2].trim()) {
+					return Number(result[1]);
+				} else {
+					throw new TypeError(`${value}单位格式不正确`);
+				}
+			},
+			
+			
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page {
+		background-color: $uni-bg-color-grey;
+		
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+	
+	.rate {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.rate-text {
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-grey;
+		margin-left: $uni-spacing-col-base;
+	}
+	
+	.product-rate-section {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		
+		padding-top: $uni-spacing-row-hg;
+		padding-right: $uni-spacing-col-lg;
+		padding-bottom: $uni-spacing-row-hg;
+		padding-left: $uni-spacing-col-lg;
+		
+		border-bottom-left-radius: $uni-border-radius-base;
+		border-bottom-right-radius: $uni-border-radius-base;
+		background-color: $uni-bg-color;
+	}
+	.product-image {
+		width: $uni-icon-size-lg;
+		height: $uni-icon-size-lg;
+	}
+	.product-rate-value-section {
+		margin-left: $uni-spacing-col-base;
+	}
+	.product-rate-value-label {
+		margin-bottom: $uni-spacing-row-base;
+	}
+	.product-rate-value-label-text {
+		font-size: $uni-font-size-sm;
+	}
+	.product-rate-value {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.product-rate-value-text {
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-grey;
+		margin-left: $uni-spacing-col-base;
+	}
+
+	.product-comment-section {
+		padding-left: $uni-spacing-col-lg;
+		padding-right: $uni-spacing-col-lg;
+		padding-top: $uni-spacing-row-lg;
+		padding-bottom: $uni-spacing-row-lg;
+		margin-top: $uni-spacing-row-base;
+		
+		background-color: $uni-bg-color;
+		border-radius: $uni-border-radius-base;
+	}
+	.product-comment-textarea {
+		font-size: $uni-font-size-base;
+	}
+
+</style>
