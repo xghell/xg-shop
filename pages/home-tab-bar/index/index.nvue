@@ -1,6 +1,6 @@
 <template>
 	<view class="index-page">
-		<scroll-view ref="page-scroll" class="pageScroll" scroll-with-animation lower-threshold="10" :scrollTop="pageScrollTop" :scroll-y="pageScrollable" @scrolltolower="pageScrollToLower" @scroll="pageScroll">
+		<scroll-view ref="page-scroll" class="pageScroll" scroll-with-animation :show-scrollbar="false" lower-threshold="10" :scrollTop="pageScrollTop" :scroll-y="pageScrollable" @scrolltolower="pageScrollToLower" @scroll="pageScroll">
 			<view>
 				<view class="nav-bar-placeholder" :style="{height: xgNavBarMaxHeight + 'px'}"></view>
 				
@@ -24,7 +24,7 @@
 				<uni-swiper-dot :info="cateNavPagesData" :current="cateNavIndex" mode="default">
 					<swiper  class="cate-nav" @change="cateNavIndexChange">
 						<swiper-item v-for="(cateNavData, cateNavIndex) of cateNavPagesData" :key="cateNavIndex">
-							<uni-grid :showBorder="false" :square="false" :column="cateNav.column">
+							<uni-grid :showBorder="false" :square="true" :column="cateNav.column">
 								<uni-grid-item v-for="(cate, index) of cateNavData" :key="index">
 									<xg-icon :index="cate.id" :iconStyle="cateNav.iconStyle" :thumb="cate.thumb" :thumbStyle="cateNav.thumbStyle" :subtitle="cate.subtitle" :subtitleStyle="cateNav.subtitleStyle"></xg-icon>
 								</uni-grid-item>
@@ -47,7 +47,7 @@
 								
 								<xg-waterfall :columnCount="productListTab.columnCount" :columnGap="productListTab.columnGap" :leftGap="productListTab.leftGap" :rightGap="productListTab.rightGap" @getWaterfallItemWidth="getWaterfallItemWidth">
 									<xg-waterfall-item :ref="'waterfall-ref-' + productListTabDataIndex + index" v-for="(product, index) of productListTabCard" :key="index">
-										<tpl-product :style="{'margin-bottom': productListTab.rowGap}" :size="productListTabImageWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount" @imageLoad="productListTabImageLoad('waterfall-ref-' + productListTabDataIndex + index)"></tpl-product>
+										<tpl-product :style="{'margin-bottom': productListTab.rowGap}" :size="productListTabImageWidth + 'px'" :url="product.url" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount" @imageLoad="productListTabImageLoad('waterfall-ref-' + productListTabDataIndex + index)"></tpl-product>
 									</xg-waterfall-item>
 								</xg-waterfall>
 								
@@ -64,7 +64,7 @@
 		<image v-if="goTopButtonShow" class="go-top-button" :src="goTopButton.image" :style="{width: goTopButton.size, height: goTopButton.size, bottom: goTopButton.bottom, right: goTopButton.right}" @tap="goTop"></image>
 		
 		<view class="nav-bar">
-			<xg-nav-bar status-bar hasChangeable :progress="xgNavBarProgress" :left="xgNavBar.left" :right="xgNavBar.right" :searchInput="xgNavBar.searchInput" @getNavBarMinHeight="getNavBarMinHeight" @getNavBarMaxHeight="getNavBarMaxHeight" @iconTap="xgNavBarIconTap" @searchInputRightIconTap="xgNavBarSearchInputRightIconTap" @focus="xgNavBarSearchInputFocus">
+			<xg-nav-bar status-bar hasChangeable :fixedHeight="xgNavBar.fixedHeight" :progress="xgNavBarProgress" :left="xgNavBar.left" :right="xgNavBar.right" :searchInput="xgNavBar.searchInput" @getNavBarMinHeight="getNavBarMinHeight" @getNavBarMaxHeight="getNavBarMaxHeight" @iconTap="xgNavBarIconTap" @searchInputRightIconTap="xgNavBarSearchInputRightIconTap" @focus="xgNavBarSearchInputFocus">
 				<image class="xg-nav-bar-bg-img" :src="xgNavBar.backgroundImage"></image>
 			</xg-nav-bar>
 		</view>
@@ -80,6 +80,8 @@
 		inertiaCoefficient: 7, //惯性系数，决定靠惯性滚动的距离，值越大滚动越远
 		pageScrollDeltaY: 0, //页面滚动速度
 		productListTabScrollDeltaY: 0, //产品列表滚动速度
+		
+		productListTabImageLoaded: {},
 	};
 	
 	export default {
@@ -199,7 +201,10 @@
 			pageScrollToLower(e) {
 				//TODO
 				this.productListTabScrollable = true;
+				// #ifdef APP-PLUS-NVUE
 				this.pageScrollable = false;
+				// #endif
+				
 				
 				//TODO
 				// #ifdef APP-PLUS-NVUE
@@ -286,10 +291,13 @@
 			},
 			productListTabImageLoad(ref) {
 				// console.log(this.$refs[ref]);
-				setTimeout(() => {
-					this.$refs[ref][0].calculateLayout();
-				}, 10)
-				
+				if (!customData.productListTabImageLoaded[ref]) {
+					customData.productListTabImageLoaded[ref] = true;
+					
+					setTimeout(() => {
+						this.$refs[ref][0].calculateLayout();
+					}, 10)
+				}
 			}
 		},
 		
@@ -307,12 +315,12 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		/* #ifndef APP-PLUS-NVUE */
-		display: flex;
-		/* #endif */
-		flex-direction: column;
 	}
 	.nav-bar {
+		/* #ifndef APP-PLUS-NVUE */
+		z-index: 10000;
+		/* #endif */
+		
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -320,7 +328,11 @@
 	}
 	
 	.pageScroll {
-		flex: 1;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
 	}
 	
 	.go-top-button {
@@ -384,8 +396,11 @@
 		flex-direction: column;
 	}
 	.product-list-tab-scroll {
-		
-		flex: 1;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
 	}
 	.product-list-tab-scroll-agent {
 		z-index: 100000;

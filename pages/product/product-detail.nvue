@@ -1,10 +1,10 @@
 <template>
 	<view class="page">
-		<xg-nav-bar status-bar fixed float hasTitle :fixedHeight="navBarConfig.fixedHeight">
+		<xg-nav-bar status-bar fixed float hasTitle :fixedHeight="navBarConfig.fixedHeight" @getNavBarMaxHeight="getNavBarMaxHeight">
 			<view class="nav-bar-bg"></view>
 			
 			<view slot="left" class="nav-bar-left">
-				<view class="nav-bar-left-icon" v-for="(leftIcon, leftIconIndex) of navBarConfig.left.iconList" :key="leftIconIndex">
+				<view class="nav-bar-left-icon" v-for="(leftIcon, leftIconIndex) of navBarConfig.left.iconList" :key="leftIconIndex" @tap="navBarBackBtnTap">
 					<xg-icon :fontFamily="navBarConfig.left.fontFamily" :text="leftIcon.text"></xg-icon>
 				</view>
 			</view>
@@ -29,7 +29,7 @@
 		<view ref="product" class="product">
 			<!-- 产品图片及视频介绍 -->
 			<view class="product-media">
-				<video v-if="showVideo" class="product-video" :src="video.src" autoplay controls @loadedmetadata="videoLoadedmetadata"></video>
+				<video v-if="showVideo" class="product-video" autoplay controls :src="video.src" @loadedmetadata="videoLoadedmetadata"></video>
 				
 				<view class="product-image-swiper-wrap" v-if="!showVideo">
 					<swiper  class="product-image-swiper" :duration="200" @change="productImageChange">
@@ -156,7 +156,7 @@
 									<text class="user-nickname-text">{{comment.userNickname}}</text>
 								</view>
 								<view class="comment-rate">
-									<uni-rate value="" :size="rateSize" :activeColor="rateConfig.starActivecolor"></uni-rate>
+									<uni-rate value="" :disabled="true" :size="rateSize" :activeColor="rateConfig.starActivecolor"></uni-rate>
 								</view>
 							</view>
 						</view>
@@ -344,6 +344,7 @@
 		mixins: [config],
 		data() {
 			return {
+				navBarHeight: 0,
 				currentNavBarTitleIconIndex: 0,
 				navBarTitleIconContentTopList: [], //标题对应内容距离顶部距离
 				
@@ -405,7 +406,7 @@
 			
 			this.recommendedProductList = await recommendedProductListData;
 		},
-		mounted() {
+		onReady() {
 			this.$nextTick(function () {
 				setTimeout(async () => {
 					// #ifndef APP-PLUS-NVUE
@@ -417,7 +418,7 @@
 					selector.exec(data => {
 						let sumHeight = 0;
 						data.forEach((item, index) => {
-							this.navBarTitleIconContentTopList[index] = sumHeight - 44;
+							this.navBarTitleIconContentTopList[index] = sumHeight - this.navBarHeight;
 							sumHeight += item.height;
 						})
 						// console.log(this.navBarTitleIconContentTopList);
@@ -436,13 +437,27 @@
 					const recommendedHeight = await recommendedData.size.height;
 					
 					this.navBarTitleIconContentTopList[0] = 0;
-					this.navBarTitleIconContentTopList[1] = productHeight;
-					this.navBarTitleIconContentTopList[2] = productHeight + commentHeight;
-					this.navBarTitleIconContentTopList[3] = productHeight + commentHeight + recommendedHeight;
+					this.navBarTitleIconContentTopList[1] = productHeight - this.navBarHeight;
+					this.navBarTitleIconContentTopList[2] = productHeight + commentHeight - this.navBarHeight;
+					this.navBarTitleIconContentTopList[3] = productHeight + commentHeight + recommendedHeight - this.navBarHeight;
+					console.log(productHeight);
 					// #endif
 				}, 1000);
 				
 			})
+		},
+		onPageScroll(e) {
+			// console.log(e.scrollTop);
+			let offsetY = e.scrollTop;
+			if (offsetY > this.navBarTitleIconContentTopList[0] && offsetY < this.navBarTitleIconContentTopList[1]) {
+				this.currentNavBarTitleIconIndex = 0;
+			} else if (offsetY > this.navBarTitleIconContentTopList[1] && offsetY < this.navBarTitleIconContentTopList[2]) {
+				this.currentNavBarTitleIconIndex = 1;
+			} else if (offsetY > this.navBarTitleIconContentTopList[2] && offsetY < this.navBarTitleIconContentTopList[3]) {
+				this.currentNavBarTitleIconIndex = 2;
+			} else if (offsetY > this.navBarTitleIconContentTopList[3]) {
+				this.currentNavBarTitleIconIndex = 3;
+			}
 		},
 		methods: {
 			// #ifdef APP-NVUE
@@ -468,6 +483,14 @@
 				}
 			},
 			
+			getNavBarMaxHeight(e) {
+				this.navBarHeight = e;
+			},
+			navBarBackBtnTap() {
+				uni.navigateBack({
+					delta: 1
+				});
+			},
 			navBarTitlteIconTap(index) {
 				this.currentNavBarTitleIconIndex = index;
 				
@@ -932,15 +955,15 @@
 		align-items: center;
 	}
 	.user-avatar {
-		width: $uni-icon-size-md;
-		height: $uni-icon-size-md;
+		width: $uni-icon-size-base;
+		height: $uni-icon-size-base;
 		border-radius: $uni-border-radius-circle;
 	}
 	.nickname-and-rate {
 		margin-left: $uni-spacing-col-base;
 	}
 	.user-nickname {
-		
+		margin-bottom: $uni-spacing-row-sm;
 	}
 	.user-nickname-text {
 		font-size: $uni-font-size-sm;

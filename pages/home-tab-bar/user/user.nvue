@@ -62,7 +62,7 @@
 		</scroll-view>
 		
 		<view class="nav-bar">
-			<xg-nav-bar status-bar hasTitle :title="navBarConfig.title" :left="navBarConfig.left" :right="navBarConfig.right" @getNavBarMaxHeight="getNavBarHeight" @iconTap="navBarItemTap"></xg-nav-bar>
+			<xg-nav-bar status-bar hasTitle :fixedHeight="navBarConfig.fixedHeight" :title="navBarConfig.title" :left="navBarConfig.left" :right="navBarConfig.right" @getNavBarMaxHeight="getNavBarHeight" @iconTap="navBarItemTap"></xg-nav-bar>
 		</view>
 	</view>
 </template>
@@ -118,14 +118,13 @@
 		right: 0;
 		bottom: 0;
 		left: 0;
-		
-		/* #ifndef APP-PLUS-NVUE */
-		display: flex;
-		/* #endif */
-		flex-direction: column;
 	}
 	.page-scroll {
-		flex: 1;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
 	}
 	
 	.nav-section {
@@ -137,6 +136,8 @@
 		top: 0;
 		right: 0;
 		left: 0;
+		
+		width: 750rpx;
 	}
 	
 	.nav-bar {

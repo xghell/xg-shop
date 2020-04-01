@@ -26,14 +26,12 @@ const productDetail = {
 				right: {
 					fontFamily: 'xg-iconfont',
 					iconList: [
+						// #ifndef MP
 						{
 							id: 'share',
 							text: '\ue614',
 						},
-						{
-							id: 'share',
-							text: '\ue606',
-						}
+						// #endif
 					],
 				}
 					

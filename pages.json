@@ -3,11 +3,11 @@
 		// {
 		//     "path" : "pages/test/test",
 		//     "style" : {}
-		// },
+		// }
 		// {
 		// 	"path": "pages/home-tab-bar/home-tab-bar",
 		// 	"style": {
-		// 	"navigationStyle": "custom"
+		// 		"navigationStyle": "custom"
 		// 	}
 		// },
 	 //    {

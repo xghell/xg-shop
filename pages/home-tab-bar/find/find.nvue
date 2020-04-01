@@ -20,7 +20,7 @@
 			<xg-dock ref="dock" status-bar :threshold="navBarHeight + 'px'" @getDockHeight="getDockHeight" @dockScroll="dockScroll">
 				<image class="top-bg-image" :src="topBgImage" mode=""></image>
 				
-				<xg-nav-bar :style="{opacity: navBarOpacity}"  hasTitle :left="navBar.left" :right="navBar.right" :title="navBar.title" @getNavBarMinHeight="getNavBarMinHeight"></xg-nav-bar>
+				<xg-nav-bar :style="{opacity: navBarOpacity}"  hasTitle :fixedHeight="navBar.fixedHeight" :left="navBar.left" :right="navBar.right" :title="navBar.title" @getNavBarMinHeight="getNavBarMinHeight"></xg-nav-bar>
 				
 				<xg-tab-bar class="tab-bar">
 					<xg-tab-bar-item v-for="(icon, index) of tabBar.iconList" :key="index">
@@ -146,6 +146,8 @@
 		top: 0;
 		left: 0;
 		right: 0;
+		
+		width: 750rpx;
 	}
 	.tab-bar {
 		

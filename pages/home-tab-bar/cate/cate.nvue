@@ -1,11 +1,12 @@
 <template>
 	<view class="cate">
-		<xg-nav-bar status-bar hasCenter :navBarStyle="navBar.navBarStyle" :left="navBar.left" :right="navBar.right" @getNavBarMaxHeight="getNavBarHeight" @iconTap="navBarIconTap">
+		<xg-nav-bar status-bar hasCenter :fixedHeight="navBar.fixedHeight" :navBarStyle="navBar.navBarStyle" :left="navBar.left" :right="navBar.right" @getNavBarMaxHeight="getNavBarHeight" @iconTap="navBarIconTap">
 			<view class="nav-bar-bg"></view>
 			<view class="nav-bar-search-input" slot="center">
 				<xg-search-input :leftIcon="navBar.searchInput.leftIcon" :rightIcon="navBar.searchInput.rightIcon" :searchInputStyle="navBar.searchInput.searchInputStyle" :inputStyle="navBar.searchInput.inputStyle" :placeholder="navBar.searchInput.placeholder" @rightTap="navBarSearchInputRightIconTap"></xg-search-input>
 			</view>
 		</xg-nav-bar>
+		
 		<view class="page-content">
 			<xg-tab-bar-vertical class="tab-bar" :height="pageContentHeight + 'px'">
 				<xg-tab-bar-vertical-item v-for="(name, index) of tabBarList" :key="index" height="100rpx">
@@ -100,6 +101,11 @@
 		bottom: 0;
 		right: 0;
 		left: 0;
+	}
+	.nav-bar-search-input {
+		position: absolute;
+		left: 0;
+		right: 0;
 	}
 	
 	.cate {

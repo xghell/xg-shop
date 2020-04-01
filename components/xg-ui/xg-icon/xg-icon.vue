@@ -118,6 +118,7 @@
 		font-size: $uni-font-size-base;
 	}
 	.icon {
+		// border-width: 1px;
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */

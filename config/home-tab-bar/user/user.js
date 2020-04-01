@@ -1,10 +1,37 @@
 import style from '@/common/style.js';
+// #ifdef MP
+function toPx(value) {
+	const result = /(\d+\.?\d*)(\w+)/.exec(value);
+	if ('rpx' === result[2].trim()) {
+		return uni.getSystemInfoSync().screenWidth * Number(result[1]) / 750;
+	} else if('px' === result[2].trim()) {
+		return Number(result[1]);
+	} else {
+		throw new TypeError(`${value}单位格式不正确`);
+	}
+	
+}
+
+const systemInfo = uni.getSystemInfoSync();
+const statusBarHeight = systemInfo.statusBarHeight;
+const windowWidth = systemInfo.windowWidth;
+const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
+let navBarHeight = menuButtonInfo.height + 2*(menuButtonInfo.top - statusBarHeight);
+let navBarRightOffset = windowWidth - menuButtonInfo.left;
+// console.log(menuButtonInfo,statusBarHeight, systemInfo);
+// #endif
 
 const user = {
 	data() {
 		return {
 			navBgImageConfig: 'http://img0.imgtn.bdimg.com/it/u=3297191922,2404858156&fm=26&gp=0.jpg',
 			navBarConfig: {
+				// #ifndef MP
+				fixedHeight: `100rpx`,
+				// #endif
+				// #ifdef MP
+				fixedHeight: `${navBarHeight}px`,
+				// #endif
 				left: {
 					iconStyle: `margin-left: ${style.UNI_SPACING_COL_BASE};
 								margin-top: ${style.UNI_SPACING_ROW_SM};
@@ -39,6 +66,13 @@ const user = {
 						{
 							id: 'message',
 							text: '\ue624',
+							
+							// #ifndef MP
+							iconStyle: `margin-right: ${style.UNI_SPACING_COL_BASE};`,
+							// #endif
+							// #ifdef MP
+							iconStyle: `margin-right: ${navBarRightOffset + toPx(style.UNI_SPACING_COL_BASE)}px;`,
+							// #endif
 						}
 					],
 				},

@@ -1,4 +1,25 @@
 import style from '@/common/style.js';
+// #ifdef MP
+function toPx(value) {
+	const result = /(\d+\.?\d*)(\w+)/.exec(value);
+	if ('rpx' === result[2].trim()) {
+		return uni.getSystemInfoSync().screenWidth * Number(result[1]) / 750;
+	} else if('px' === result[2].trim()) {
+		return Number(result[1]);
+	} else {
+		throw new TypeError(`${value}单位格式不正确`);
+	}
+	
+}
+
+
+const systemInfo = uni.getSystemInfoSync();
+const statusBarHeight = systemInfo.statusBarHeight;
+const windowWidth = systemInfo.windowWidth;
+const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
+let navBarHeight = menuButtonInfo.height + 2*(menuButtonInfo.top - statusBarHeight);
+let navBarRightOffset = windowWidth - menuButtonInfo.left;
+// #endif
 
 const index = {
 	data() {
@@ -10,6 +31,10 @@ const index = {
 				bottom: `${style.UNI_SPACING_COL_HG}`,
 			},
 			xgNavBar: {
+				// #ifdef MP
+				fixedHeight: `${navBarHeight}px`,
+				// #endif
+				
 				backgroundImage: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2346819948,4073569407&fm=26&gp=0.jpg',
 				searchInput: {
 				
@@ -45,7 +70,7 @@ const index = {
 						{
 							id: 'rise',
 							fontFamily: '黑体',
-							text: '中国加油！武汉加油！',
+							text: '厉害了我的国!',
 							textStyle: 'font-size: 16px;',
 						}
 					]
@@ -65,12 +90,20 @@ const index = {
 						{
 							id: 'scan',
 							text: '\ue60c',
+						// #ifndef MP
 							subtitle: '扫啊扫'
+						// #endif
 						},
+						
 						{
 							id: 'message',
 							text: '\ue624',
-							subtitle: '消息'
+							// #ifndef MP
+							subtitle: '消息',
+							// #endif
+							// #ifdef MP
+							iconStyle: `margin-right: ${navBarRightOffset + toPx(style.UNI_SPACING_COL_BASE)}px;`,
+							// #endif
 						}
 					]
 				

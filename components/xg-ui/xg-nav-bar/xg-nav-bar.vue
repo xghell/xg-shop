@@ -389,13 +389,14 @@
 		overflow: hidden;
 	}
 	.fixed-section {
+		// border-width: 1px;
 		position: relative;
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;
 		/* #endif */
 		flex-direction: row;
 		justify-content: space-between;
-		align-items: center;
+		// align-items: center;
 	}
 	
 	.title-section {
@@ -427,9 +428,17 @@
 		// border-width: 1px;
 		position: relative;
 		flex: 1;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
 	}
 	
 	.right-section {
+		// border-width: 1px;
+		border-color: green;
 		position: relative;
 		/* #ifndef APP-PLUS-NVUE */
 		display: flex;

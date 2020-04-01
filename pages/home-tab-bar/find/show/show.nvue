@@ -30,7 +30,8 @@
 	const customData = {
 		old: {
 			pageScrollTop: 0,
-		}
+		},
+		waterfallImageLoaded: [], //防止app端，image重复触发load事件
 	};
 	
 	export default {
@@ -84,10 +85,16 @@
 			showImageLoad(index, e) {
 				// this.showImageAspectRatio[index] = e.detail.height/e.detail.width;
 				// console.log(index ,e);
-				this.$set(this.showImageAspectRatio, index, e.detail.height/e.detail.width);
-				setTimeout(() => {
-					this.$refs['waterfall-item-' + index][0].calculateLayout();
-				}, 10);
+				
+				
+				if (!customData.waterfallImageLoaded[index]) {
+					customData.waterfallImageLoaded[index] = true;
+					
+					this.$set(this.showImageAspectRatio, index, e.detail.height/e.detail.width);
+					setTimeout(() => {
+						this.$refs['waterfall-item-' + index][0].calculateLayout();
+					}, 10);
+				}
 			}
 		},
 	}
