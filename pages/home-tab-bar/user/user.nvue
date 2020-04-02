@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
 		
-		<scroll-view class="page-scroll" :scroll-y="true" >
+		<scroll-view class="page-scroll" :scroll-y="true" @scroll="pageScroll">
 			<view class="nav-section">
 				<image class="nav-bg-img" :src="navBgImageConfig" mode="widthFix"></image>
 				
@@ -59,10 +59,35 @@
 					
 				</view>
 			</view>
+		
+			<!-- 推荐 -->
+			<view class="recommended">
+				<view class="recommended-product-list-title">
+					<xg-icon :fontFamily="recommendedProductListTitleConfig.lineIcon.fontFamily" :text="recommendedProductListTitleConfig.lineIcon.text" :textStyle="recommendedProductListTitleConfig.lineIcon.textStyle"></xg-icon>
+					<xg-icon :vertical="false" :fontFamily="recommendedProductListTitleConfig.recommendIcon.fontFamily" :thumb="recommendedProductListTitleConfig.recommendIcon.thumb" :title="recommendedProductListTitleConfig.recommendIcon.title" :iconStyle="recommendedProductListTitleConfig.recommendIcon.iconStyle" :titleStyle="recommendedProductListTitleConfig.recommendIcon.titleStyle"></xg-icon>
+					<xg-icon :fontFamily="recommendedProductListTitleConfig.lineIcon.fontFamily" :text="recommendedProductListTitleConfig.lineIcon.text" :textStyle="recommendedProductListTitleConfig.lineIcon.textStyle"></xg-icon>
+				</view>
+				
+				<tpl-product-list class="recommended-product-list" :columnCount="recommendedProductListConfig.columnCount" :columnGap="recommendedProductListConfig.columnGap" :rowGap="recommendedProductListConfig.rowGap" :leftGap="recommendedProductListConfig.leftGap" :rightGap="recommendedProductListConfig.rightGap" :productList="recommendedProductList"></tpl-product-list>
+			</view>
 		</scroll-view>
 		
 		<view class="nav-bar">
-			<xg-nav-bar status-bar hasTitle :fixedHeight="navBarConfig.fixedHeight" :title="navBarConfig.title" :left="navBarConfig.left" :right="navBarConfig.right" @getNavBarMaxHeight="getNavBarHeight" @iconTap="navBarItemTap"></xg-nav-bar>
+			<xg-nav-bar status-bar hasTitle :fixedHeight="navBarConfig.fixedHeight" @getNavBarMaxHeight="getNavBarHeight">
+				<view class="nav-bar-bg" :style="{opacity: navBarBgOacity}"></view>
+				
+				<view class="nav-bar-left" slot="left" v-if="navBarLeftShow">
+					<image class="nav-bar-left-avatar" :src="userInfo.avatar" mode=""></image>
+				</view>
+				<view class="nav-bar-title" slot="title" v-if="navBarTitleShow">
+					<text class="nav-bar-title-text">我的</text>
+				</view>
+				<view class="nav-bar-right" slot="right">
+					<view class="nav-bar-right-icon" v-for="(icon, iconIndex) of navBarConfig.right.iconList" :key="iconIndex">
+						<text class="nav-bar-right-text" :style="{'font-family': navBarConfig.right.fontFamily, 'font-size': icon.textSize, color: navBarRightIconColor}">{{icon.text}}</text>
+					</view>
+				</view>
+			</xg-nav-bar>
 		</view>
 	</view>
 </template>
@@ -70,20 +95,44 @@
 <script>
 	import config from '@/config/home-tab-bar/user/user.js';
 	import data from '@/data/home-tab-bar/user/user.js';
+	import style from '@/common/style.js';
+	
+	import {between} from '@/common/helper.js';
 	
 	export default {
 		mixins: [config],
 		data() {
 			return {
+				navBarBgOacity: 0,
+				navBarLeftShow: false,
+				navBarTitleShow: false,
+				navBarRightIconColor: style.UNI_TEXT_COLOR_WHITE,
+				
 				navBarHeight: 0,
 				userInfo: {},
+				
+				//为你推荐
+				recommendedProductList: [],
 			}
 		},
 		async created() {
 			const userInfoData = data.userInfo();
+			const recommendedProductListData = data.recommendedProductList();
+			
 			this.userInfo = await userInfoData;
+			this.recommendedProductList = await recommendedProductListData;
 		},
 		methods: {
+			pageScroll(e) {
+				const scrollTop = e.detail.scrollTop;
+				
+				const threshold = 200;
+				this.navBarBgOacity = between(scrollTop/threshold, 0, 1);
+				this.navBarLeftShow = scrollTop > threshold*0.5 ? true : false;
+				this.navBarTitleShow = scrollTop > threshold*0.5 ? true : false;
+				this.navBarRightIconColor = scrollTop > threshold*0.5 ? style.UNI_TEXT_COLOR : style.UNI_TEXT_COLOR_WHITE;
+			},
+			
 			getNavBarHeight(e) {
 				this.navBarHeight = e;
 			},
@@ -146,6 +195,44 @@
 		right: 0;
 		left: 0;
 	}
+	.nav-bar-bg {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		background-color: $uni-bg-color;
+	}
+	.nav-bar-left {
+		
+	}
+	.nav-bar-left-avatar {
+		width: $uni-icon-size-base;
+		height: $uni-icon-size-base;
+		border-radius: $uni-border-radius-circle;
+		
+		margin-left: $uni-spacing-col-base;
+	}
+	.nav-bar-title {
+		
+	}
+	.nav-bar-title-text {
+		font-size: $uni-font-size-hg;
+	}
+	.nav-bar-right {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.nav-bar-right-icon {
+		margin-right: $uni-spacing-col-base;
+	}
+	.nav-bar-right-text {
+		font-size: $uni-icon-size-sm;
+	}
+	
 	
 	.user-section {
 		
@@ -267,5 +354,21 @@
 	.service-item {
 		margin-bottom: $uni-spacing-row-base;
 		margin-top: $uni-spacing-row-base;
+	}
+	
+	
+	// 推荐
+	.recommended-product-list-title {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		
+		margin-top: $uni-spacing-row-base;
+	}
+	.recommended-product-list {
+		margin-top: $uni-spacing-row-sm;
 	}
 </style>

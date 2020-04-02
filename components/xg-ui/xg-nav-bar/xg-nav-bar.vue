@@ -1,6 +1,6 @@
 <template>
 	<view class="nav-bar-wrap" :style="{height: navBarWrapHeight + 'px'}">
-		<view class="nav-bar" :style="{position: fixed ? 'fixed' : 'relative'}">
+		<view class="nav-bar" :style="{position: fixed ? 'fixed' : 'relative'}" @tap.stop="">
 			<!-- 默认插槽，可作为背景使用 -->
 			<slot></slot>
 			

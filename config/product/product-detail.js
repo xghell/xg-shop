@@ -91,6 +91,7 @@ const productDetail = {
 				text: '\ue60f',
 			},
 			
+			//为你推荐
 			recommendedProductListTitleConfig: {
 				recommendIcon: {
 					fontFamily: 'xg-iconfont',

@@ -1,349 +1,361 @@
 <template>
-	<view class="page">
-		<xg-nav-bar status-bar fixed float hasTitle :fixedHeight="navBarConfig.fixedHeight" @getNavBarMaxHeight="getNavBarMaxHeight">
-			<view class="nav-bar-bg"></view>
-			
-			<view slot="left" class="nav-bar-left">
-				<view class="nav-bar-left-icon" v-for="(leftIcon, leftIconIndex) of navBarConfig.left.iconList" :key="leftIconIndex" @tap="navBarBackBtnTap">
-					<xg-icon :fontFamily="navBarConfig.left.fontFamily" :text="leftIcon.text"></xg-icon>
-				</view>
-			</view>
-			
-			<view slot="title" class="nav-bar-title">
-				<view class="nav-bar-title-icon-wrap" v-for="(title, titleIconIndex) of navBarConfig.title.list" :key="titleIconIndex" @tap="navBarTitlteIconTap(titleIconIndex)">
-					<view  class="nav-bar-title-icon">
-						<view  class="nav-bar-title-icon-text-wrap">
-							<text  class="nav-bar-title-icon-text" :class="currentNavBarTitleIconIndex === titleIconIndex ? 'nav-bar-title-icon-text-selected' : ''">{{title}}</text>
-						</view>
-						<view :class="currentNavBarTitleIconIndex === titleIconIndex ? 'nav-bar-title-icon-line' : ''"></view>
+	<scroll-view class="page-wrap" :scroll-y="true" :scroll-top="pageScrollTop" @scroll="pageScroll">
+		<view class="page">
+			<xg-nav-bar status-bar fixed float hasTitle :fixedHeight="navBarConfig.fixedHeight" @getNavBarMaxHeight="getNavBarMaxHeight">
+				<view class="nav-bar-bg" :style="{opacity: navBarBgOpacity}"></view>
+				
+				<view slot="left" class="nav-bar-left">
+					<view class="nav-bar-left-icon"  :style="{'background-color': navBarSideIconBgColor}" v-for="(leftIcon, leftIconIndex) of navBarConfig.left.iconList" :key="leftIconIndex" @tap="navBarBackBtnTap">
+						<text class="nav-bar-left-icon-text" :style="{'font-family': navBarConfig.left.fontFamily, color: navBarSideIconTextColor, opacity: navBarSideIconTextOpacity}">{{leftIcon.text}}</text>
 					</view>
 				</view>
-			</view>
-			
-			<view slot="right" class="nav-bar-right">
-				<view class="nav-bar-right-icon" v-for="(rightIcon, rightIconIndex) of navBarConfig.right.iconList" :key="rightIconIndex">
-					<xg-icon :fontFamily="navBarConfig.right.fontFamily" :text="rightIcon.text"></xg-icon>
-				</view>
-			</view>
-		</xg-nav-bar>
-		<view ref="product" class="product">
-			<!-- 产品图片及视频介绍 -->
-			<view class="product-media">
-				<video v-if="showVideo" class="product-video" autoplay controls :src="video.src" @loadedmetadata="videoLoadedmetadata"></video>
 				
-				<view class="product-image-swiper-wrap" v-if="!showVideo">
-					<swiper  class="product-image-swiper" :duration="200" @change="productImageChange">
-						<swiper-item v-for="(image, imageIndex) of imageList" :key="imageIndex">
-							<image class="product-image" :src="image"></image>
-						</swiper-item>
-					</swiper>
+				<view slot="title" class="nav-bar-title" :style="{opacity: navBarTitleOpacity}">
+					<view class="nav-bar-title-icon-wrap" v-for="(title, titleIconIndex) of navBarConfig.title.list" :key="titleIconIndex" @tap="navBarTitlteIconTap(titleIconIndex)">
+						<view  class="nav-bar-title-icon">
+							<view  class="nav-bar-title-icon-text-wrap">
+								<text  class="nav-bar-title-icon-text" :class="currentNavBarTitleIconIndex === titleIconIndex ? 'nav-bar-title-icon-text-selected' : ''">{{title}}</text>
+							</view>
+							<view :class="currentNavBarTitleIconIndex === titleIconIndex ? 'nav-bar-title-icon-line' : ''"></view>
+						</view>
+					</view>
+				</view>
+				
+				<view slot="right" class="nav-bar-right">
+					<view class="nav-bar-right-icon"  :style="{'background-color': navBarSideIconBgColor}" v-for="(rightIcon, rightIconIndex) of navBarConfig.right.iconList" :key="rightIconIndex">
+						<text class="nav-bar-right-icon-text" :style="{'font-family': navBarConfig.right.fontFamily, color: navBarSideIconTextColor, opacity: navBarSideIconTextOpacity}">{{rightIcon.text}}</text>
+					</view>
+				</view>
+			</xg-nav-bar>
+			<view id="product" ref="product" class="product">
+				<!-- 产品图片及视频介绍 -->
+				<view class="product-media">
+					<video v-if="showVideo" class="product-video" autoplay controls :src="video.src" @loadedmetadata="videoLoadedmetadata"></video>
 					
-					<view class="product-fix-btn-wrap">
-						<view class="product-image-swiper-dot">
-							<text class="current-image-index">{{currentImageIndex + 1}}</text>
-							<text class="product-image-swiper-dot-slash">/</text>
-							<text class="image-count">{{imageList.length}}</text>
+					<view class="product-image-swiper-wrap" v-if="!showVideo">
+						<swiper  class="product-image-swiper" :duration="200" @change="productImageChange">
+							<swiper-item v-for="(image, imageIndex) of imageList" :key="imageIndex">
+								<image class="product-image" :src="image"></image>
+							</swiper-item>
+						</swiper>
+						
+						<view class="product-fix-btn-wrap">
+							<view class="product-image-swiper-dot">
+								<text class="current-image-index">{{currentImageIndex + 1}}</text>
+								<text class="product-image-swiper-dot-slash">/</text>
+								<text class="image-count">{{imageList.length}}</text>
+							</view>
+							
+							<view class="play-video-btn-wrap">
+								<view class="play-video-btn" @tap="playVideoBtnTap">
+									<text class="play-video-btn-icon" :style="{'font-family': playVideoBtnConfig.fontFamily}">{{playVideoBtnConfig.text}}</text>
+									<text class="video-duration-text">{{video.duration}}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				
+				<!-- 产品概述，包括价格、折扣、简介 -->
+				<view class="intro-section">
+					<view class="price-section">
+						<view class="price-and-discount">
+							<tpl-price :price="price" :integerStyle="priceSectionConfig.price.integerStyle" :decimalStyle="priceSectionConfig.price.decimalStyle" :currencySymbolStyle="priceSectionConfig.price.currencySymbolStyle"></tpl-price>
+							<view v-if="discountPrice" class="discount-price">
+								<text class="discount-price-text">￥{{discountPrice}}</text>
+							</view>
+						</view>
+						<view class="price-section-icon-list">
+							<xg-icon class="price-section-icon" v-for="(icon, iconIndex) of priceSectionConfig.iconList" :key="iconIndex" :fontFamily="priceSectionConfig.fontFamily" :title="icon.title" :titleStyle="priceSectionConfig.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="priceSectionConfig.subtitleStyle"></xg-icon>
+						</view>
+					</view>
+					
+					<view class="product-title-section">
+						<text class="product-title-text">{{title}}</text>
+					</view>
+				</view>
+				
+				<!-- 优惠和活动部分 -->
+				<view class="activity-and-discount">
+					<view class="activity-and-discount-discount-section">
+						<view class="activity-and-discount-discount-label">
+							<text class="activity-and-discount-discount-label-text">优惠</text>
 						</view>
 						
-						<view class="play-video-btn-wrap">
-							<view class="play-video-btn" @tap="playVideoBtnTap">
-								<text class="play-video-btn-icon" :style="{'font-family': playVideoBtnConfig.fontFamily}">{{playVideoBtnConfig.text}}</text>
-								<text class="video-duration-text">{{video.duration}}</text>
+						<view class="activity-and-discount-discount-list">
+							<view class="activity-and-discount-discount" v-for="(discount, discountIndex) of discountList" :key="discountIndex">
+								<view class="activity-and-discount-discount-title">
+									<text class="activity-and-discount-discount-title-text">{{discount.title}}</text>
+								</view>
+								<view class="activity-and-discount-discount-desc">
+									<text class="activity-and-discount-discount-desc-text">{{discount.desc}}</text>
+								</view>
 							</view>
 						</view>
+						
+						<xg-icon :fontFamily="moreBtnConfig.fontFamily" :text="moreBtnConfig.text" :textStyle="moreBtnConfig.textStyle"></xg-icon>
 					</view>
-				</view>
-			</view>
-			
-			<!-- 产品概述，包括价格、折扣、简介 -->
-			<view class="intro-section">
-				<view class="price-section">
-					<view class="price-and-discount">
-						<tpl-price :price="price" :integerStyle="priceSectionConfig.price.integerStyle" :decimalStyle="priceSectionConfig.price.decimalStyle" :currencySymbolStyle="priceSectionConfig.price.currencySymbolStyle"></tpl-price>
-						<view v-if="discountPrice" class="discount-price">
-							<text class="discount-price-text">￥{{discountPrice}}</text>
-						</view>
-					</view>
-					<view class="price-section-icon-list">
-						<xg-icon class="price-section-icon" v-for="(icon, iconIndex) of priceSectionConfig.iconList" :key="iconIndex" :fontFamily="priceSectionConfig.fontFamily" :title="icon.title" :titleStyle="priceSectionConfig.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="priceSectionConfig.subtitleStyle"></xg-icon>
+					<view class="activity-and-discount-activity">
+						
 					</view>
 				</view>
 				
-				<view class="product-title-section">
-					<text class="product-title-text">{{title}}</text>
+				<!-- 已选商品及商品配送信息 -->
+				<view class="order-info">
+					<view class="list-item bottom-border">
+						<view class="list-item-label">
+							<text class="list-item-label-text">已选</text>
+						</view>
+						<view class="list-item-detail">
+							<text class="list-item-detail-text">手撕面包1斤送同款（发2斤装手撕面包1箱），1件</text>
+						</view>
+						
+						<xg-icon :fontFamily="moreBtnConfig.fontFamily" :text="moreBtnConfig.text" :textStyle="moreBtnConfig.textStyle"></xg-icon>
+					</view>
+					<view class="list-item bottom-border">
+						<view class="list-item-label">
+							<text class="list-item-label-text">已选</text>
+						</view>					
+						<view class="list-item-detail">
+							<text class="list-item-detail-text">陕西省咸阳市兴平市西大街89号</text>
+						</view>
+						
+						<xg-icon :fontFamily="moreBtnConfig.fontFamily" :text="moreBtnConfig.text" :textStyle="moreBtnConfig.textStyle"></xg-icon>
+					</view>
+					<view class="list-item">
+						<view class="list-item-label">
+							<text class="list-item-label-text">运费</text>
+						</view>
+						<view class="list-item-detail">
+							<text class="list-item-detail-text">在线支付免运费</text>
+						</view>
+					</view>
 				</view>
 			</view>
 			
-			<!-- 优惠和活动部分 -->
-			<view class="activity-and-discount">
-				<view class="activity-and-discount-discount-section">
-					<view class="activity-and-discount-discount-label">
-						<text class="activity-and-discount-discount-label-text">优惠</text>
+			<!-- 商品评价部分 -->
+			<view id="comment" ref="comment" class="comment">
+				<view class="comment-section">
+					<view class="comment-section-label">
+						<view class="comment-section-label-left">
+							<text class="comment-section-label-left-text">评价</text>
+							<text class="comment-section-label-left-number">{{commentTotal}}</text>
+						</view>
+						<view class="comment-section-label-right">
+							<text class="comment-section-label-right-text">好评度</text>
+							<text class="comment-section-label-right-percent">{{goodCommentPercent}}</text>
+							<xg-icon :fontFamily="arrowRightBtnConfig.fontFamily" :text="arrowRightBtnConfig.text" :textStyle="arrowRightBtnConfig.textStyle"></xg-icon>
+						</view>
 					</view>
 					
-					<view class="activity-and-discount-discount-list">
-						<view class="activity-and-discount-discount" v-for="(discount, discountIndex) of discountList" :key="discountIndex">
-							<view class="activity-and-discount-discount-title">
-								<text class="activity-and-discount-discount-title-text">{{discount.title}}</text>
+					<view class="product-comment-list">
+						<view class="product-comment" :class="commentIndex !== commentListLength - 1 ? 'bottom-border' : ''" v-for="(comment, commentIndex) of commentList" :key="commentIndex">
+							<view class="user-info">
+								<image class="user-avatar" :src="comment.userAvatar" mode=""></image>
+								<view class="nickname-and-rate">
+									<view class="user-nickname">
+										<text class="user-nickname-text">{{comment.userNickname}}</text>
+									</view>
+									<view class="comment-rate">
+										<uni-rate value="" :disabled="true" :size="rateSize" :activeColor="rateConfig.starActivecolor"></uni-rate>
+									</view>
+								</view>
 							</view>
-							<view class="activity-and-discount-discount-desc">
-								<text class="activity-and-discount-discount-desc-text">{{discount.desc}}</text>
+							
+							<view class="comment-content">
+								<text class="comment-content-text">{{comment.comment}}</text>
+							</view>
+							
+							<view class="comment-image-list">
+								<uni-grid :highlight="false" :showBorder="false" :column="3">
+									<uni-grid-item v-for="(image, imageIndex) of comment.imageList" :key="imageIndex">
+										<view class="comment-image-wrap">
+											<image class="comment-image" :src="image" mode=""></image>
+										</view>
+									</uni-grid-item>
+								</uni-grid>
+							</view>
+							
+							<view class="product-sku">
+								<text class="product-sku-text">{{comment.product}}</text>
+							</view>
+						</view>
+						
+						<view class="more-comment-wrap">
+							<navigator class="more-comment" url="">
+								<text class="more-comment-text">查看全部评价</text>
+							</navigator>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+			<!-- 商品详情 -->
+			<view id="detail" ref="detail" class="detail">
+				<view class="product-detail">
+					<view class="product-detail-label">
+						<view class="separator">
+							<view class="short-line"></view>
+							<view class="short-vertical-line"></view>
+						</view>
+						<text class="product-detail-label-text">详情</text>
+						<view class="separator">
+							<view class="short-vertical-line"></view>
+							<view class="short-line"></view>
+						</view>
+					</view>
+					
+					<view class="product-detail-content">
+						<view class="product-intro">
+							<view class="product-intro-label">
+								<text class="product-intro-label-icon" :style="{'font-family': productIntroIconConfig.fontFamily}">{{productIntroIconConfig.text}}</text>
+								<text class="product-intro-label-text">商品介绍</text>
+							</view>
+							
+							<view class="product-info">
+								<view class="long-line"></view>
+								<text class="product-info-text">产品信息</text>
+								<view class="long-line"></view>
+							</view>
+							
+							<view class="product-info-image-list">
+								<image class="product-info-image" :style="{width: '730rpx', height: 730*productInfoImageAspectRatioList[imageIndex] + 'rpx'}" :src="image.image" mode="" v-for="(image, imageIndex) of productInfoImageList" :key="imageIndex" @load="productInfoImageLoad(imageIndex, $event)" @tap="producInfoImageTap(image.url, imageIndex)"></image>
+							</view>
+						</view>
+						
+						<view class="product-specification">
+							<view class="product-specification-label">
+								<text class="product-specification-label-icon" :style="{'font-family': productSpecificationIconConfig.fontFamily}">{{productSpecificationIconConfig.text}}</text>
+								<text class="product-specification-label-text">规格参数</text>
+							</view>
+							
+							<view class="table">
+								<view class="table-row">
+									<view class="table-col">
+										<view class="table-item">
+											<text class="table-item-text">商品编号</text>
+										</view>
+									</view>
+									<view class="table-col">
+										<view class="table-item">
+											<text class="table-item-text">48221665865</text>
+										</view>
+									</view>
+								</view>
+								
+								<view class="table-row">
+									<view class="table-col">
+										<view class="table-item">
+											<text class="table-item-text">主体</text>
+										</view>
+									</view>
+								</view>
+								
+								<view class="table-row">
+									<view class="table-col">
+										<view class="table-item">
+											<text class="table-item-text">净含量</text>
+										</view>
+									</view>
+									<view class="table-col">
+										<view class="table-item">
+											<text class="table-item-text">0.5</text>
+										</view>
+									</view>
+								</view>
+								
+								<view class="table-row">
+									<view class="table-col">
+										<view class="table-item">
+											<text class="table-item-text">保质期</text>
+										</view>
+									</view>
+									<view class="table-col">
+										<view class="table-item">
+											<text class="table-item-text">120天</text>
+										</view>
+									</view>
+								</view>
+								
+								<view class="table-row">
+									<view class="table-col">
+										<view class="table-item">
+											<text class="table-item-text">参数</text>
+										</view>
+									</view>
+								</view>
+								
+								<view class="table-row">
+									<view class="table-col">
+										<view class="table-item">
+											<text class="table-item-text">类别</text>
+										</view>
+									</view>
+									<view class="table-col">
+										<view class="table-item">
+											<text class="table-item-text">其他</text>
+										</view>
+									</view>
+								</view>
+								<view class="table-row">
+									<view class="table-col">
+										<view class="table-item">
+											<text class="table-item-text">包装</text>
+										</view>
+									</view>
+									<view class="table-col">
+										<view class="table-item">
+											<text class="table-item-text">整箱装</text>
+										</view>
+									</view>
+								</view>
 							</view>
 						</view>
 					</view>
 					
-					<xg-icon :fontFamily="moreBtnConfig.fontFamily" :text="moreBtnConfig.text" :textStyle="moreBtnConfig.textStyle"></xg-icon>
-				</view>
-				<view class="activity-and-discount-activity">
+					
+					
 					
 				</view>
 			</view>
-			
-			<!-- 已选商品及商品配送信息 -->
-			<view class="order-info">
-				<view class="list-item bottom-border">
-					<view class="list-item-label">
-						<text class="list-item-label-text">已选</text>
-					</view>
-					<view class="list-item-detail">
-						<text class="list-item-detail-text">手撕面包1斤送同款（发2斤装手撕面包1箱），1件</text>
-					</view>
-					
-					<xg-icon :fontFamily="moreBtnConfig.fontFamily" :text="moreBtnConfig.text" :textStyle="moreBtnConfig.textStyle"></xg-icon>
-				</view>
-				<view class="list-item bottom-border">
-					<view class="list-item-label">
-						<text class="list-item-label-text">已选</text>
-					</view>					
-					<view class="list-item-detail">
-						<text class="list-item-detail-text">陕西省咸阳市兴平市西大街89号</text>
-					</view>
-					
-					<xg-icon :fontFamily="moreBtnConfig.fontFamily" :text="moreBtnConfig.text" :textStyle="moreBtnConfig.textStyle"></xg-icon>
-				</view>
-				<view class="list-item">
-					<view class="list-item-label">
-						<text class="list-item-label-text">运费</text>
-					</view>
-					<view class="list-item-detail">
-						<text class="list-item-detail-text">在线支付免运费</text>
-					</view>
-				</view>
-			</view>
-		</view>
 		
-		<!-- 商品评价部分 -->
-		<view ref="comment" class="comment">
-			<view class="comment-section">
-				<view class="comment-section-label">
-					<view class="comment-section-label-left">
-						<text class="comment-section-label-left-text">评价</text>
-						<text class="comment-section-label-left-number">{{commentTotal}}</text>
-					</view>
-					<view class="comment-section-label-right">
-						<text class="comment-section-label-right-text">好评度</text>
-						<text class="comment-section-label-right-percent">{{goodCommentPercent}}</text>
-						<xg-icon :fontFamily="arrowRightBtnConfig.fontFamily" :text="arrowRightBtnConfig.text" :textStyle="arrowRightBtnConfig.textStyle"></xg-icon>
-					</view>
+			<!-- 推荐 -->
+			<view id="recommended" ref="recommended" class="recommended">
+				<view class="recommended-product-list-title">
+					<xg-icon :fontFamily="recommendedProductListTitleConfig.lineIcon.fontFamily" :text="recommendedProductListTitleConfig.lineIcon.text" :textStyle="recommendedProductListTitleConfig.lineIcon.textStyle"></xg-icon>
+					<xg-icon :vertical="false" :fontFamily="recommendedProductListTitleConfig.recommendIcon.fontFamily" :thumb="recommendedProductListTitleConfig.recommendIcon.thumb" :title="recommendedProductListTitleConfig.recommendIcon.title" :iconStyle="recommendedProductListTitleConfig.recommendIcon.iconStyle" :titleStyle="recommendedProductListTitleConfig.recommendIcon.titleStyle"></xg-icon>
+					<xg-icon :fontFamily="recommendedProductListTitleConfig.lineIcon.fontFamily" :text="recommendedProductListTitleConfig.lineIcon.text" :textStyle="recommendedProductListTitleConfig.lineIcon.textStyle"></xg-icon>
 				</view>
 				
-				<view class="product-comment-list">
-					<view class="product-comment" :class="commentIndex !== commentListLength - 1 ? 'bottom-border' : ''" v-for="(comment, commentIndex) of commentList" :key="commentIndex">
-						<view class="user-info">
-							<image class="user-avatar" :src="comment.userAvatar" mode=""></image>
-							<view class="nickname-and-rate">
-								<view class="user-nickname">
-									<text class="user-nickname-text">{{comment.userNickname}}</text>
-								</view>
-								<view class="comment-rate">
-									<uni-rate value="" :disabled="true" :size="rateSize" :activeColor="rateConfig.starActivecolor"></uni-rate>
-								</view>
-							</view>
-						</view>
-						
-						<view class="comment-content">
-							<text class="comment-content-text">{{comment.comment}}</text>
-						</view>
-						
-						<view class="comment-image-list">
-							<uni-grid :highlight="false" :showBorder="false" :column="3">
-								<uni-grid-item v-for="(image, imageIndex) of comment.imageList" :key="imageIndex">
-									<view class="comment-image-wrap">
-										<image class="comment-image" :src="image" mode=""></image>
-									</view>
-								</uni-grid-item>
-							</uni-grid>
-						</view>
-						
-						<view class="product-sku">
-							<text class="product-sku-text">{{comment.product}}</text>
-						</view>
-					</view>
-					
-					<view class="more-comment-wrap">
-						<navigator class="more-comment" url="">
-							<text class="more-comment-text">查看全部评价</text>
-						</navigator>
-					</view>
-				</view>
+				<tpl-product-list class="recommended-product-list" :columnCount="recommendedProductListConfig.columnCount" :columnGap="recommendedProductListConfig.columnGap" :rowGap="recommendedProductListConfig.rowGap" :leftGap="recommendedProductListConfig.leftGap" :rightGap="recommendedProductListConfig.rightGap" :productList="recommendedProductList"></tpl-product-list>
 			</view>
 		</view>
-		
-		<!-- 商品详情 -->
-		<view ref="detail" class="detail">
-			<view class="product-detail">
-				<view class="product-detail-label">
-					<view class="separator">
-						<view class="short-line"></view>
-						<view class="short-vertical-line"></view>
-					</view>
-					<text class="product-detail-label-text">详情</text>
-					<view class="separator">
-						<view class="short-vertical-line"></view>
-						<view class="short-line"></view>
-					</view>
-				</view>
-				
-				<view class="product-detail-content">
-					<view class="product-intro">
-						<view class="product-intro-label">
-							<text class="product-intro-label-icon" :style="{'font-family': productIntroIconConfig.fontFamily}">{{productIntroIconConfig.text}}</text>
-							<text class="product-intro-label-text">商品介绍</text>
-						</view>
-						
-						<view class="product-info">
-							<view class="long-line"></view>
-							<text class="product-info-text">产品信息</text>
-							<view class="long-line"></view>
-						</view>
-						
-						<view class="product-info-image-list">
-							<image class="product-info-image" :style="{width: '730rpx', height: 730*productInfoImageAspectRatioList[imageIndex] + 'rpx'}" :src="image.image" mode="" v-for="(image, imageIndex) of productInfoImageList" :key="imageIndex" @load="productInfoImageLoad(imageIndex, $event)" @tap="producInfoImageTap(image.url, imageIndex)"></image>
-						</view>
-					</view>
-					
-					<view class="product-specification">
-						<view class="product-specification-label">
-							<text class="product-specification-label-icon" :style="{'font-family': productSpecificationIconConfig.fontFamily}">{{productSpecificationIconConfig.text}}</text>
-							<text class="product-specification-label-text">规格参数</text>
-						</view>
-						
-						<view class="table">
-							<view class="table-row">
-								<view class="table-col">
-									<view class="table-item">
-										<text class="table-item-text">商品编号</text>
-									</view>
-								</view>
-								<view class="table-col">
-									<view class="table-item">
-										<text class="table-item-text">48221665865</text>
-									</view>
-								</view>
-							</view>
-							
-							<view class="table-row">
-								<view class="table-col">
-									<view class="table-item">
-										<text class="table-item-text">主体</text>
-									</view>
-								</view>
-							</view>
-							
-							<view class="table-row">
-								<view class="table-col">
-									<view class="table-item">
-										<text class="table-item-text">净含量</text>
-									</view>
-								</view>
-								<view class="table-col">
-									<view class="table-item">
-										<text class="table-item-text">0.5</text>
-									</view>
-								</view>
-							</view>
-							
-							<view class="table-row">
-								<view class="table-col">
-									<view class="table-item">
-										<text class="table-item-text">保质期</text>
-									</view>
-								</view>
-								<view class="table-col">
-									<view class="table-item">
-										<text class="table-item-text">120天</text>
-									</view>
-								</view>
-							</view>
-							
-							<view class="table-row">
-								<view class="table-col">
-									<view class="table-item">
-										<text class="table-item-text">参数</text>
-									</view>
-								</view>
-							</view>
-							
-							<view class="table-row">
-								<view class="table-col">
-									<view class="table-item">
-										<text class="table-item-text">类别</text>
-									</view>
-								</view>
-								<view class="table-col">
-									<view class="table-item">
-										<text class="table-item-text">其他</text>
-									</view>
-								</view>
-							</view>
-							<view class="table-row">
-								<view class="table-col">
-									<view class="table-item">
-										<text class="table-item-text">包装</text>
-									</view>
-								</view>
-								<view class="table-col">
-									<view class="table-item">
-										<text class="table-item-text">整箱装</text>
-									</view>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-				
-				
-				
-				
-			</view>
-		</view>
-	
-		<!-- 推荐 -->
-		<view ref="recommended" class="recommended">
-			<view class="recommended-product-list-title">
-				<xg-icon :fontFamily="recommendedProductListTitleConfig.lineIcon.fontFamily" :text="recommendedProductListTitleConfig.lineIcon.text" :textStyle="recommendedProductListTitleConfig.lineIcon.textStyle"></xg-icon>
-				<xg-icon :vertical="false" :fontFamily="recommendedProductListTitleConfig.recommendIcon.fontFamily" :thumb="recommendedProductListTitleConfig.recommendIcon.thumb" :title="recommendedProductListTitleConfig.recommendIcon.title" :iconStyle="recommendedProductListTitleConfig.recommendIcon.iconStyle" :titleStyle="recommendedProductListTitleConfig.recommendIcon.titleStyle"></xg-icon>
-				<xg-icon :fontFamily="recommendedProductListTitleConfig.lineIcon.fontFamily" :text="recommendedProductListTitleConfig.lineIcon.text" :textStyle="recommendedProductListTitleConfig.lineIcon.textStyle"></xg-icon>
-			</view>
-			
-			<xg-waterfall class="recommended-product-list" :columnCount="recommendedProductListConfig.columnCount" :columnGap="recommendedProductListConfig.columnGap" :leftGap="recommendedProductListConfig.leftGap" :rightGap="recommendedProductListConfig.rightGap" @getWaterfallItemWidth="getWaterFallItemWidth">
-				<xg-waterfall-item :ref="'waterfall-item-' + index" v-for="(product, index) of recommendedProductList" :key="index">
-					<tpl-product :style="{'margin-bottom': recommendedProductListConfig.rowGap}" :size="waterFallItemWidth + 'px'" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :discount="product.discount" @imageLoad="recommendedProductListImageLoad('waterfall-item-' + index)"></tpl-product>
-				</xg-waterfall-item>
-			</xg-waterfall>
-			
-		</view>
-	</view>
+	</scroll-view>
 </template>
 
 <script>
 	import data from '@/data/product/product-detail.js';
 	import config from '@/config/product/product-detail.js';
+	import {between} from '@/common/helper.js';
+	
+	const customData = {
+		old: {
+			pageScrollTop: 0,
+		}
+	};
 	
 	export default {
 		mixins: [config],
 		data() {
 			return {
+				pageScrollTop: 0,
+				
+				navBarBgOpacity: 0,
+				navBarTitleOpacity: 0,
+				navBarSideIconBgColor: 'rgba(0, 0, 0, 0.3)',
+				navBarSideIconTextColor: '#FFF',
+				navBarSideIconTextOpacity: 1,				
+				
 				navBarHeight: 0,
 				currentNavBarTitleIconIndex: 0,
 				navBarTitleIconContentTopList: [], //标题对应内容距离顶部距离
@@ -361,11 +373,12 @@
 				goodCommentPercent: '',
 				commentList: [],
 				
+				productInfoImageLoadedCount: 0,
 				productInfoImageList: [],
 				productInfoImageAspectRatioList: [],
 				
+				//为你推荐
 				recommendedProductList: [],
-				waterFallItemWidth: 0,
 			}
 		},
 		computed: {
@@ -379,6 +392,9 @@
 				return this.productInfoImageList.map((item) => {
 					return item.image;
 				})
+			},
+			productInfoImageListCount() {
+				return this.productInfoImageList.length;
 			}
 		},
 		async onLoad() {
@@ -406,58 +422,17 @@
 			
 			this.recommendedProductList = await recommendedProductListData;
 		},
+		
 		onReady() {
 			this.$nextTick(function () {
-				setTimeout(async () => {
-					// #ifndef APP-PLUS-NVUE
-					const selector = uni.createSelectorQuery().in(this);
-					selector.select('.product').fields({size: true});
-					selector.select('.comment').fields({size: true});
-					selector.select('.detail').fields({size: true});
-					selector.select('.recommended').fields({size: true});
-					selector.exec(data => {
-						let sumHeight = 0;
-						data.forEach((item, index) => {
-							this.navBarTitleIconContentTopList[index] = sumHeight - this.navBarHeight;
-							sumHeight += item.height;
-						})
-						// console.log(this.navBarTitleIconContentTopList);
-					});
-					// #endif
-					
-					// #ifdef APP-PLUS-NVUE
-					const productData = this.getComponentRect(this.$refs['product']);
-					const commentData = this.getComponentRect(this.$refs['comment']);
-					const detailData = this.getComponentRect(this.$refs['detail']);
-					const recommendedData = this.getComponentRect(this.$refs['recommended']);
-					
-					const productHeight = await productData.size.height;
-					const commentHeight = await commentData.size.height;
-					const detailHeight = await detailData.size.height;
-					const recommendedHeight = await recommendedData.size.height;
-					
-					this.navBarTitleIconContentTopList[0] = 0;
-					this.navBarTitleIconContentTopList[1] = productHeight - this.navBarHeight;
-					this.navBarTitleIconContentTopList[2] = productHeight + commentHeight - this.navBarHeight;
-					this.navBarTitleIconContentTopList[3] = productHeight + commentHeight + recommendedHeight - this.navBarHeight;
-					console.log(productHeight);
-					// #endif
-				}, 1000);
-				
+				this.$watch('productInfoImageLoadedCount', (newVal, oldVal) => {
+					if (newVal === this.productInfoImageListCount) {
+						setTimeout(() => {
+							this.calculateLayout();
+						}, 100);
+					}
+				})
 			})
-		},
-		onPageScroll(e) {
-			// console.log(e.scrollTop);
-			let offsetY = e.scrollTop;
-			if (offsetY > this.navBarTitleIconContentTopList[0] && offsetY < this.navBarTitleIconContentTopList[1]) {
-				this.currentNavBarTitleIconIndex = 0;
-			} else if (offsetY > this.navBarTitleIconContentTopList[1] && offsetY < this.navBarTitleIconContentTopList[2]) {
-				this.currentNavBarTitleIconIndex = 1;
-			} else if (offsetY > this.navBarTitleIconContentTopList[2] && offsetY < this.navBarTitleIconContentTopList[3]) {
-				this.currentNavBarTitleIconIndex = 2;
-			} else if (offsetY > this.navBarTitleIconContentTopList[3]) {
-				this.currentNavBarTitleIconIndex = 3;
-			}
 		},
 		methods: {
 			// #ifdef APP-NVUE
@@ -483,6 +458,69 @@
 				}
 			},
 			
+			async calculateLayout() {
+				// #ifndef APP-PLUS-NVUE
+				const selector = uni.createSelectorQuery().in(this);
+				selector.select('.product').fields({size: true});
+				selector.select('.comment').fields({size: true});
+				selector.select('.detail').fields({size: true});
+				selector.select('.recommended').fields({size: true});
+				selector.exec(data => {
+					let sumHeight = 0;
+					data.forEach((item, index) => {
+						this.navBarTitleIconContentTopList[index] = sumHeight - this.navBarHeight;
+						sumHeight += item.height;
+					})
+					// console.log(this.navBarTitleIconContentTopList);
+				});
+				// #endif
+				
+				// #ifdef APP-PLUS-NVUE
+				const productData = this.getComponentRect(this.$refs['product']);
+				const commentData = this.getComponentRect(this.$refs['comment']);
+				const detailData = this.getComponentRect(this.$refs['detail']);
+				// const recommendedData = this.getComponentRect(this.$refs['recommended']);
+				
+				const productHeight = (await productData).size.height;
+				const commentHeight = (await commentData).size.height;
+				const detailHeight = (await detailData).size.height;
+				// const recommendedHeight = (await recommendedData).size.height;
+				
+				this.navBarTitleIconContentTopList[0] = 0;
+				this.navBarTitleIconContentTopList[1] = productHeight - this.navBarHeight;
+				this.navBarTitleIconContentTopList[2] = productHeight + commentHeight - this.navBarHeight;
+				this.navBarTitleIconContentTopList[3] = productHeight + commentHeight + detailHeight - this.navBarHeight;
+				
+				// #endif
+			},
+			
+			pageScroll(e) {
+				let scrollTop = e.detail.scrollTop;
+				
+				customData.old.pageScrollTop = scrollTop;
+				
+				//设置顶部导航与滚动联动，根据滚动位置选择当前导航项
+				let offsetY = scrollTop + 10;
+				if (offsetY > this.navBarTitleIconContentTopList[0] && offsetY < this.navBarTitleIconContentTopList[1]) {
+					this.currentNavBarTitleIconIndex = 0;
+				} else if (offsetY > this.navBarTitleIconContentTopList[1] && offsetY < this.navBarTitleIconContentTopList[2]) {
+					this.currentNavBarTitleIconIndex = 1;
+				} else if (offsetY > this.navBarTitleIconContentTopList[2] && offsetY < this.navBarTitleIconContentTopList[3]) {
+					this.currentNavBarTitleIconIndex = 2;
+				} else if (offsetY > this.navBarTitleIconContentTopList[3]) {
+					this.currentNavBarTitleIconIndex = 3;
+				}
+				
+				//设置导航栏背景随滚动渐变
+				const threshold = 100;
+				const changePosition = 0.5;
+				this.navBarBgOpacity = between(scrollTop/threshold, 0, 1);
+				this.navBarTitleOpacity = between(scrollTop/threshold, 0, 1);
+				this.navBarSideIconBgColor = `rgba(0, 0, 0, ${0.3*between((1 - scrollTop/(threshold/2)), 0, 1)})`;
+				this.navBarSideIconTextColor = scrollTop < (threshold/2) ? '#FFF' : '#000';
+				this.navBarSideIconTextOpacity = scrollTop < (threshold/2) ? between(1 - scrollTop/(threshold/2), 0, 1) : between(scrollTop/(threshold/2) - 1, 0, 1);
+			},
+			
 			getNavBarMaxHeight(e) {
 				this.navBarHeight = e;
 			},
@@ -492,12 +530,14 @@
 				});
 			},
 			navBarTitlteIconTap(index) {
-				this.currentNavBarTitleIconIndex = index;
+				this.pageScrollTop = customData.old.pageScrollTop;
+				this.$nextTick(function () {
+					this.pageScrollTop = this.navBarTitleIconContentTopList[index];
+				})
 				
-				uni.pageScrollTo({
-				    scrollTop: this.navBarTitleIconContentTopList[index],
-				    duration: 300
-				});
+				setTimeout(() => {
+					this.currentNavBarTitleIconIndex = index;
+				}, 300);
 			},
 			
 			videoLoadedmetadata(e) {
@@ -512,6 +552,7 @@
 			
 			productInfoImageLoad(index, e) {
 				this.$set(this.productInfoImageAspectRatioList, index,  e.detail.height / e.detail.width)
+				this.productInfoImageLoadedCount++;
 			},
 			producInfoImageTap(url, index) {
 				if (url) {
@@ -528,15 +569,6 @@
 					});
 				}
 			},
-			
-			getWaterFallItemWidth(e) {
-				this.waterFallItemWidth = e;
-			},
-			recommendedProductListImageLoad(ref) {
-				setTimeout(() => {
-					this.$refs[ref][0].calculateLayout();
-				}, 100);
-			}
 		},
 	}
 </script>
@@ -545,6 +577,14 @@
 	$media-width: 750rpx;
 	$media-height: 750rpx;
 	$nav-bar-height: 100rpx;
+	
+	.page-wrap {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
 	
 	.bottom-border {
 		border-bottom-width: 0.5px;
@@ -569,6 +609,20 @@
 	}
 	.nav-bar-left-icon {
 		margin-left: $uni-spacing-col-base;
+		// background-color: $uni-bg-color-mask;
+		border-radius: $uni-border-radius-circle;
+		width: $uni-icon-size-md;
+		height: $uni-icon-size-md;
+		// padding: 10rpx;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.nav-bar-left-icon-text {
+		font-size: $uni-icon-size-sm;
 	}
 	.nav-bar-title {
 		// border-width: 1px;
@@ -616,6 +670,20 @@
 	}
 	.nav-bar-right-icon {
 		margin-right: $uni-spacing-col-lg;
+		
+		border-radius: $uni-border-radius-circle;
+		width: $uni-icon-size-md;
+		height: $uni-icon-size-md;
+		// padding: 10rpx;
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.nav-bar-right-icon-text {
+		font-size: $uni-icon-size-sm;
 	}
 	
 	.product-media {
