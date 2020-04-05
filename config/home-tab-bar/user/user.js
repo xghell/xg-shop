@@ -36,7 +36,7 @@ const user = {
 					fontFamily: 'xg-iconfont',
 					iconList: [
 						{
-							url: '',
+							url: '/pages/setting/setting',
 							text: '设置',
 							textSize: `${style.UNI_FONT_SIZE_BASE}`,
 						},

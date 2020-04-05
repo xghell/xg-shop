@@ -38,6 +38,8 @@ const style = {
 	UNI_BG_COLOR_MASK_WHITE: 'rgba(255, 255, 255, 0.4)',
 	UNI_BG_COLOR_PINK: 'pink',
 	UNI_BG_COLOR_RED: 'red',
+	UNI_BG_COLOR_YELLOW: 'yellow',
+	UNI_BG_COLOR_ORANGE: 'orange',
 	UNI_BG_COLOR_BLUE: 'blue',
 	UNI_BG_COLOR_BLACK: 'black',
 	

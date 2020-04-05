@@ -52,7 +52,8 @@
             "sdkConfigs" : {}
         },
         "nvueLaunchMode" : "fast",
-        "renderer" : "native"
+        "renderer" : "native",
+        "compilerVersion" : 2
     },
     /* 快应用特有相关 */
     "quickapp" : {},

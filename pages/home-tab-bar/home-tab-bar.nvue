@@ -41,6 +41,7 @@
 	
 	const pageHeight = uni.getSystemInfoSync()['windowHeight'];
 	const pageSwitch = ['showIndexPage','showCatePage','showFindPage','showCartPage','showUserPage'];
+	const pageIndexList = {'index': 0, 'cate': 1, 'find': 2, 'cart': 3, 'user': 4};
 	
 	/**
 	 * @getHomeTabBarHeight
@@ -71,7 +72,15 @@
 				currentIndex: 0,
 			}
 		},
-		mounted() {
+		onLoad(e) {
+			const page = e.page;
+			if (page) {
+				this.currentIndex = pageIndexList[page];
+				this[pageSwitch[this.currentIndex]] = true;
+			}
+			
+		},
+		onReady() {
 			this.$nextTick(async function () {
 				// #ifndef APP-PLUS-NVUE
 				const selector = uni.createSelectorQuery().in(this);

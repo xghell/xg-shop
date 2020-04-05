@@ -83,9 +83,9 @@
 					<text class="nav-bar-title-text">我的</text>
 				</view>
 				<view class="nav-bar-right" slot="right">
-					<view class="nav-bar-right-icon" v-for="(icon, iconIndex) of navBarConfig.right.iconList" :key="iconIndex">
+					<navigator class="nav-bar-right-icon" v-for="(icon, iconIndex) of navBarConfig.right.iconList" :key="iconIndex" :url="icon.url">
 						<text class="nav-bar-right-text" :style="{'font-family': navBarConfig.right.fontFamily, 'font-size': icon.textSize, color: navBarRightIconColor}">{{icon.text}}</text>
-					</view>
+					</navigator>
 				</view>
 			</xg-nav-bar>
 		</view>
@@ -135,16 +135,6 @@
 			
 			getNavBarHeight(e) {
 				this.navBarHeight = e;
-			},
-			navBarItemTap(e) {
-				console.log('点击了导航栏',e);
-				const aciton = {
-					setting() {
-						uni.navigateTo({url: '/pages/setting/setting'})
-					}
-				}
-				
-				aciton[e]();
 			},
 			
 			orderItemTap(id) {

@@ -1,5 +1,5 @@
 <template>
-	<view class="product" :style="{width: size}" @tap="productTap">
+	<navigator class="product" :style="{width: size}" :url="url">
 		<image class="product-image" :style="'width:' + size + ';' + 'height:' + imageHeight + ';' + imageStyle" :src="image" @load="imageLoad"></image>
 		<!-- {{'height:' + size*aspectRatio}} -->
 		<text v-if="title" class="product-title" :style="'lines:' + titleLines + ';-webkit-line-clamp:' + titleLines + ';' + titleStyle">{{title}}</text>
@@ -8,7 +8,7 @@
 			<text v-if="priceLabel" class="price-label" :style="priceLabelStyle">{{priceLabel}}</text>
 		</view>
 		<text v-if="discount" class="discount" :style="discountStyle">{{currencySymbol}}{{Number(discount).toFixed(precision)}}</text>
-	</view>
+	</navigator>
 </template>
 
 <script>
@@ -104,9 +104,6 @@
 				// console.log(this.aspectRatio);
 				this.$emit('imageLoad')
 			},
-			productTap() {
-				uni.navigateTo({url: this.url});
-			}
 		},
 	}
 </script>

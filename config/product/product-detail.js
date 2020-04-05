@@ -1,4 +1,5 @@
 import style from '@/common/style.js';
+import {toPx} from '@/common/helper.js';
 
 const productDetail = {
 	data() {
@@ -12,7 +13,12 @@ const productDetail = {
 							id: 'back',
 							text: '\ue638',
 						},
-					]
+					],
+					closeVideoBtn: {//uni-icon
+						type: 'closeempty',
+						size: `${toPx(style.UNI_ICON_SIZE_MD)}`,
+						color: `${style.UNI_TEXT_COLOR_WHITE}`,
+					}
 				},
 				title: {
 					
@@ -52,6 +58,9 @@ const productDetail = {
 				textStyle: `font-size: ${style.UNI_ICON_SIZE_MI};font-weight: bold;`,
 			},
 			
+			productMediaConfig: {
+				height: '750rpx',
+			},
 			playVideoBtnConfig: {
 				fontFamily: 'xg-iconfont',
 				text: '\ue64c',
@@ -123,6 +132,42 @@ const productDetail = {
 				columnGap: `${style.UNI_SPACING_COL_SM}`,
 				leftGap: `${style.UNI_SPACING_COL_BASE}`,
 				rightGap: `${style.UNI_SPACING_COL_BASE}`,
+			},
+		
+		
+			// 加入购物车、购买、客服等导航 
+			goodNavConfig: {
+				fontFamily: 'xg-iconfont',
+				textStyle: `margin-bottom: ${style.UNI_SPACING_ROW_SM}`,
+				iconList: [
+					{
+						url: '',
+						text: '\ue635',
+						subtitle: '联系客服',
+					},
+					{
+						url: '',
+						text: '\ue617',
+						subtitle: '店铺',
+					},
+					{
+						url: `/pages/home-tab-bar/home-tab-bar?page=cart`,
+						text: '\ue600',
+						subtitle: '购物车',
+					}
+				],
+				btnList: [
+					{
+						id: 'addCart',
+						text: '加入购物车',
+						color: `${style.UNI_BG_COLOR_RED}`,
+					},
+					{
+						id: 'buy',
+						text: '立即购买',
+						color: `${style.UNI_BG_COLOR_ORANGE}`,
+					}
+				],
 			}
 		}
 	},

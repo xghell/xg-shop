@@ -1,39 +1,62 @@
 <template>
-	<view class="">
-		<view class="main">
-			<view class="sub1" style="background-color: #007AFF;">1</view>
-			<view class="sub2" style="background-color: red;">2</view>
-		</view>
-	</view>
+	<scroller ref="page-scroll" style="position: fixed;top:0;bottom: 0;left: 0;right: 0;border-width: 2px;border-color: red;" :scroll-y="true">
+		<view class="" style="height: 500px;"></view>
+		
+		<view ref="block-1" style="height: 100px;background-color: #007AFF;">1</view>
+		<view ref="block-2" style="height: 100px;background-color: red;">2</view>
+		
+		<view class="" style="height: 1000px;"></view>
+	</scroller>
 </template>
 
 <script>
-	import config from '@/config/home-tab-bar/index/index.js';
+	const Binding = uni.requireNativePlugin('bindingx');
+	const dom = uni.requireNativePlugin('dom');
+	
 	export default {
-		mixins: [config],
-		data() {
-			return {
-				width: 100,
-				aspectArtio1: 1,
-				aspectArtio2: 1,
-			}
-		},
-		onLoad() {
-			
-		},
 		onReady() {
+			this.$nextTick(function () {
+				const pageScroll = this.getEl(this.$refs['page-scroll']);
+				const bolck1 = this.getEl(this.$refs['block-1']);
+				const bolck2 = this.getEl(this.$refs['block-2']);
+				
+				 let main_binding = Binding.bind({
+				        eventType: 'scroll',
+						anchor: pageScroll,
+				        props: [
+							{
+								element: bolck1,
+								property: 'opacity',
+								expression: '1-y/400'
+							}
+							// , {
+							// 	element: bolck1,
+							// 	property: 'background-color',
+							// 	expression: "evaluateColor('#607D8B','#ff0000',min(y,100)/100)"
+							// },
+						]
+				    }, function (res) {
+				    	// console.log('www',res);
+				    });
+					
+					dom. scrollToElement(bolck2,{offset: 0})
+					console.log(dom);
+			})
 			
-		},
-		computed: {
 		},
 		methods: {
+			getEl: function(el) {
+                if (typeof el === 'string' || typeof el === 'number') return el;
+                if (WXEnvironment) {
+                    return el.ref;
+                } else {
+                    return el instanceof HTMLElement ? el : el.$el;
+                }
+            },
 		},
 	}
 </script>
 
 <style scoped>
-	.sub2 {
-		position: relative;
-		width: 500rpx;
-	}
+
 </style>
