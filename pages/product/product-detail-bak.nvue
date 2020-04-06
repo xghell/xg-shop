@@ -6,9 +6,9 @@
 		<!-- #ifndef APP-PLUS-NVUE -->
 		<scroll-view ref="page-scroll" class="page-scroll" :show-scrollbar="false" :scroll-y="true" :scroll-top="pageScrollTop" @scroll="productVideo.pageScroll">
 		<!-- #endif -->
-			<view class="page" :data-width="pageWidth">
+			<view class="page">
 				<xg-nav-bar status-bar fixed float hasTitle :fixedHeight="navBarConfig.fixedHeight" @getNavBarMaxHeight="getNavBarMaxHeight">
-					<view class="nav-bar-bg" :style="{opacity: navBarBgOpacity}" :data-height="navBarHeight"></view>
+					<view class="nav-bar-bg" :style="{opacity: navBarBgOpacity}"></view>
 					
 					<view slot="left" class="nav-bar-left">
 						<view class="nav-bar-left-icon"  :style="{'background-color': navBarSideIconBgColor}" v-for="(leftIcon, leftIconIndex) of navBarConfig.left.iconList" :key="leftIconIndex" @tap="navBarLeftIconTap(leftIcon.id)">
@@ -40,16 +40,6 @@
 				<view id="product" ref="product" class="product">
 					<!-- 产品图片及视频介绍 -->
 					<view class="product-media" :style="{height: productMediaConfig.height}">
-						<view class="video-wrap" v-if="showVideo" id="product-video" ref="product-video"  :style="{height: productMediaConfig.height}" :data-height="videoHeight">
-							<video class="product-video" autoplay controls :src="video.src"></video>
-							<view v-if="videoIsFloat" class="product-video-float-close" @tap="videoFloatCloseBtnTap">
-								<view class="product-video-float-close-icon-bg"></view>
-								<view class="product-video-float-close-icon">
-									<uni-icons :type="navBarConfig.left.closeVideoBtn.type" :size="navBarConfig.left.closeVideoBtn.size" :color="navBarConfig.left.closeVideoBtn.color"></uni-icons>
-								</view>
-							</view>
-						</view>
-						
 						<view class="product-image-swiper-wrap" v-if="!showVideo">
 							<swiper  class="product-image-swiper" :style="{height: productMediaConfig.height}" :duration="200" @change="productImageChange">
 								<swiper-item v-for="(image, imageIndex) of imageList" :key="imageIndex">
@@ -368,35 +358,46 @@
 		<!-- #ifdef APP-PLUS-NVUE -->
 		</scroller>
 		<!-- #endif -->
+		
+		<view class="video-wrap" v-if="showVideo" id="product-video" ref="product-video"  :style="{height: productMediaConfig.height}">
+			<video class="product-video" autoplay controls :src="video.src"></video>
+			<view v-if="videoIsFloat" class="product-video-float-close" @tap="videoFloatCloseBtnTap">
+				<view class="product-video-float-close-icon-bg"></view>
+				<view class="product-video-float-close-icon">
+					<uni-icons :type="navBarConfig.left.closeVideoBtn.type" :size="navBarConfig.left.closeVideoBtn.size" :color="navBarConfig.left.closeVideoBtn.color"></uni-icons>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
 
 <script lang="wxs" module="productVideo">
+	let videoHeight = 0;
+	
 	function pageScroll(e, ins) {
-		var scrollTop = e.detail.scrollTop;
-		var rate = 0.3
+		const scrollTop = e.detail.scrollTop;
+		const rate = 0.3
 		
 		ins.callMethod('pageScroll', e);
-		var pageWrap = ins.selectComponent('.page');
-		var navBar = ins.selectComponent('.nav-bar-bg');
-		var productVideo = ins.selectComponent('#product-video');
+		const pageWrap = ins.selectComponent('.page');
+		const navBar = ins.selectComponent('.nav-bar-bg');
+		const productVideo = ins.selectComponent('#product-video');
 		
+		const navBarHeight = navBar.$el.offsetHeight;
+		const pageWidth = pageWrap.$el.offsetWidth;
 		
-		var navBarHeight = parseFloat(navBar.getDataset().height);
-		var pageWidth = pageWrap.getDataset().width;
-		// console.log(navBarHeight);
-		var videoFloatWidth = pageWidth*0.27;
-		var videoFloatHeight = pageWidth*0.27;
-		var videoOffsetTop = pageWidth*0.03;
-		var videoOffsetRight = pageWidth*0.03;
+		const videoFloatWidth = pageWidth*0.27;
+		const videoFloatHeight = pageWidth*0.27;
+		const videoOffsetTop = pageWidth*0.03;
+		const videoOffsetRight = pageWidth*0.03;
 		
 		if (productVideo) {
-			var videoHeight = productVideo.getDataset().height;
+			videoHeight = videoHeight || productVideo.$el.offsetHeight;
 			productVideo.setStyle({
 				height: scrollTop < videoHeight ? videoHeight - scrollTop*(1-rate) + 'px' : videoFloatWidth + 'px',
 				width: scrollTop < videoHeight ? pageWidth + 'px' : videoFloatHeight + 'px',
-				transform: scrollTop < videoHeight ? 'translateY(-' + scrollTop*rate + 'px)' : 'translateY(' + (navBarHeight + videoOffsetTop) + 'px)',
+				transform: scrollTop < videoHeight ? `translateY(-${scrollTop*rate}px)` : `translateY(${navBarHeight + videoOffsetTop}px)`,
 				right: scrollTop < videoHeight ? '0' : videoOffsetRight + 'px',
 			})
 		}
@@ -404,7 +405,7 @@
 	}
 	
 	module.exports = {
-		pageScroll: pageScroll
+		pageScroll
 	}
 </script>
 
@@ -466,9 +467,6 @@
 			}
 		},
 		computed: {
-			pageWidth() {
-				return this.toPx('750rpx');
-			},
 			videoHeight() {
 				return this.toPx('750rpx')
 			},
@@ -885,12 +883,8 @@
 		width: $media-width;
 	}
 	.video-wrap {
-		/* #ifndef APP-PLUS-NVUE */
-		z-index: 10000;
-		/* #endif */
 		width: $media-width;
-		position: fixed;
-		top: 0;
+		position: absolute;
 		right: 0;
 		
 		overflow: hidden;

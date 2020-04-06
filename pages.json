@@ -3,145 +3,145 @@
 		// {
 		//     "path" : "pages/test/test",
 		//     "style" : {}
-		// },
-		// {
-		// 	"path": "pages/home-tab-bar/home-tab-bar",
-		// 	"style": {
-		// 		"navigationStyle": "custom"
-		// 	}
-		// },
-	 //    {
-  //           "path" : "pages/search/search",
-  //           "style" : {
-		// 		"navigationStyle": "custom"
-		// 	}
-  //       }
-  //       ,{
-  //           "path" : "pages/setting/setting",
-  //           "style" : {
-		// 		"navigationBarTitleText": "账户设置",
-		// 		"navigationBarBackgroundColor": "#FFFFFF"
-		// 	}
-  //       }
-  //       ,{
-  //           "path" : "pages/address/address",
-  //           "style" : {
-		// 		"navigationBarTitleText": "收货地址",
-		// 		"navigationBarBackgroundColor": "#FFFFFF"
-		// 	}
-  //       },
-		// {
-		//     "path" : "pages/address/edit-address",
-		//     "style" : {
-		// 		"navigationBarTitleText": "收货地址",
-		// 		"navigationBarBackgroundColor": "#FFFFFF"
-		// 	}
-		// },
-		// {
-		//     "path" : "pages/product/product-list",
-		//     "style" : {
-		// 		"navigationStyle": "custom"
-		// 	}
-		// },
+		// }
+		{
+			"path": "pages/home-tab-bar/home-tab-bar",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+	    {
+            "path" : "pages/search/search",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/setting/setting",
+            "style" : {
+				"navigationBarTitleText": "账户设置",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+        }
+        ,{
+            "path" : "pages/address/address",
+            "style" : {
+				"navigationBarTitleText": "收货地址",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+        },
+		{
+		    "path" : "pages/address/edit-address",
+		    "style" : {
+				"navigationBarTitleText": "收货地址",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+		    "path" : "pages/product/product-list",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
 		{
 		    "path" : "pages/product/product-detail",
 		    "style" : {
 				"navigationStyle": "custom"
 			}
+		},
+		{
+		    "path" : "pages/comment/comment",
+		    "style" : {
+				"navigationBarTitleText": "评价",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"type": "back",
+								"float": "left"
+							},
+							{
+								"text": "提交",
+								"fontSize": "14px"
+							}
+						]
+					}
+				},
+				"h5": {
+					"titleNView": {
+						"buttons": [
+							{
+								"type": "back",
+								"float": "left"
+							},
+							{
+								"text": "提交",
+								"fontSize": "14px"
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+		    "path" : "pages/comment/comment-list",
+		    "style" : {
+				"navigationBarTitleText": "评价中心",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"text": "评价规则",
+								"fontSize": "14px",
+								"width": "auto"
+							}
+						]
+					}
+				},
+				"h5": {
+					"titleNView": {
+						"buttons": [
+							{
+								"text": "评价规则",
+								"fontSize": "14px",
+								"width": "auto"
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+		    "path" : "pages/comment/comment-addition",
+		    "style" : {
+				"navigationBarTitleText": "追加评价",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"text": "提交",
+								"fontSize": "14px",
+								"width": "auto"
+							}
+						]
+					}
+				},
+				"h5": {
+					"titleNView": {
+						"buttons": [
+							{
+								"text": "提交",
+								"fontSize": "14px",
+								"width": "auto"
+							}
+						]
+					}
+				}
+			}
 		}
-		// {
-		//     "path" : "pages/comment/comment",
-		//     "style" : {
-		// 		"navigationBarTitleText": "评价",
-		// 		"navigationBarBackgroundColor": "#FFFFFF",
-		// 		"app-plus": {
-		// 			"titleNView": {
-		// 				"buttons": [
-		// 					{
-		// 						"type": "back",
-		// 						"float": "left"
-		// 					},
-		// 					{
-		// 						"text": "提交",
-		// 						"fontSize": "14px"
-		// 					}
-		// 				]
-		// 			}
-		// 		},
-		// 		"h5": {
-		// 			"titleNView": {
-		// 				"buttons": [
-		// 					{
-		// 						"type": "back",
-		// 						"float": "left"
-		// 					},
-		// 					{
-		// 						"text": "提交",
-		// 						"fontSize": "14px"
-		// 					}
-		// 				]
-		// 			}
-		// 		}
-		// 	}
-		// },
-		// {
-		//     "path" : "pages/comment/comment-list",
-		//     "style" : {
-		// 		"navigationBarTitleText": "评价中心",
-		// 		"navigationBarBackgroundColor": "#FFFFFF",
-		// 		"app-plus": {
-		// 			"titleNView": {
-		// 				"buttons": [
-		// 					{
-		// 						"text": "评价规则",
-		// 						"fontSize": "14px",
-		// 						"width": "auto"
-		// 					}
-		// 				]
-		// 			}
-		// 		},
-		// 		"h5": {
-		// 			"titleNView": {
-		// 				"buttons": [
-		// 					{
-		// 						"text": "评价规则",
-		// 						"fontSize": "14px",
-		// 						"width": "auto"
-		// 					}
-		// 				]
-		// 			}
-		// 		}
-		// 	}
-		// },
-		// {
-		//     "path" : "pages/comment/comment-addition",
-		//     "style" : {
-		// 		"navigationBarTitleText": "追加评价",
-		// 		"navigationBarBackgroundColor": "#FFFFFF",
-		// 		"app-plus": {
-		// 			"titleNView": {
-		// 				"buttons": [
-		// 					{
-		// 						"text": "提交",
-		// 						"fontSize": "14px",
-		// 						"width": "auto"
-		// 					}
-		// 				]
-		// 			}
-		// 		},
-		// 		"h5": {
-		// 			"titleNView": {
-		// 				"buttons": [
-		// 					{
-		// 						"text": "提交",
-		// 						"fontSize": "14px",
-		// 						"width": "auto"
-		// 					}
-		// 				]
-		// 			}
-		// 		}
-		// 	}
-		// }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
