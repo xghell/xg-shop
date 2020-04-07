@@ -17,28 +17,28 @@ const homeTabBar = {
 			iconList: [
 				{
 					url: '',
-					text: '\ue62e',
+					text: '\ue633',
 					title: '首页',
 				},
 				{
 					url: '',
-					text: '\ue72c',
+					text: '\ue7f9',
 					title: '分类',
 				},
 				{
 					url: '',
-					text: '\ue63e',
+					text: '\ue669',
 					selectedText: '\ue746',
 					title: '发现',
 				},
 				{
 					url: '',
-					text: '\ue600',
+					text: '\ue609',
 					title: '购物车',
 				},
 				{
 					url: '',
-					text: '\ue631',
+					text: '\ue6b1',
 					title: '我的',
 				}
 			]

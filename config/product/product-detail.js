@@ -147,17 +147,17 @@ const productDetail = {
 				iconList: [
 					{
 						url: '',
-						text: '\ue635',
+						text: '\ue636',
 						subtitle: '联系客服',
 					},
 					{
 						url: '',
-						text: '\ue617',
+						text: '\ue767',
 						subtitle: '店铺',
 					},
 					{
 						url: `/pages/home-tab-bar/home-tab-bar?page=cart`,
-						text: '\ue600',
+						text: '\ue69a',
 						subtitle: '购物车',
 					}
 				],

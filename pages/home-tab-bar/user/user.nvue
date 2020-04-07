@@ -144,7 +144,12 @@
 					}
 				}
 				
-				aciton[id]();
+				if (aciton[id]) {
+					aciton[id]();
+				} else {
+					console.log('此功能即将开发，敬请期待。。。');
+				}
+				
 			}
 		}
 	}
