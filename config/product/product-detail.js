@@ -58,8 +58,13 @@ const productDetail = {
 				textStyle: `font-size: ${style.UNI_ICON_SIZE_MI};font-weight: bold;`,
 			},
 			
+			//产品介绍视频及图片区域
 			productMediaConfig: {
 				height: '750rpx',
+				videoFloat: {
+					width: '220rpx',
+					height: '220rpx',
+				}
 			},
 			playVideoBtnConfig: {
 				fontFamily: 'xg-iconfont',

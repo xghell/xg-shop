@@ -1,15 +1,14 @@
 <template>
 	<view>
-		<!-- <scroll-view class="page-scroll" :scroll-y="true" @scroll="pageScroll">
+		<scroll-view class="page-scroll" :scroll-y="true" @scroll="pageScroll">
 			<view class="" style="height: 300px;background-color: green;">1</view>
-			<view class="block">2</view>
+			<view class="block-wrap">
+				<view class="block" :style="blockStyle">2{{blockStyle}}</view>
+			</view>
 			<view class="" style="height: 300px;background-color: red;">3</view>
 			<view class="" style="height: 300px;background-color: green;">4</view>
-		</scroll-view> -->
-		<view class="" style="height: 300px;background-color: green;">1</view>
-		<view class="block">2</view>
-		<view class="" style="height: 300px;background-color: red;">3</view>
-		<view class="" style="height: 300px;background-color: green;">4</view>
+		</scroll-view>
+		
 	</view>
 </template>
 
@@ -19,6 +18,14 @@
 			return {
 				fixed: false
 			}
+		},
+		computed: {
+			blockStyle() {
+				return this.fixed ? 'position: fixed;top:0;height: 300px;':'position: absolute;top:100px;height: 100px;'
+			}
+		},
+		onReady() {
+			uni.$emit('')
 		},
 		methods: {
 			
@@ -38,12 +45,18 @@
 		bottom: 0;
 		left: 0;
 	}
+	.block-wrap {
+		height: 300px;
+		border-width: 2px;
+	}
 	.block {
 		/* #ifndef APP-PLUS-NVUE */
 		z-index: 1000;
 		/* #endif */
-		position: sticky;
-		top: -100px;
+		position: absolute;
+		// top: 0;
+		// left: 0;
+		// right: 0;
 		height: 300px;
 		background-color: #007AFF;
 	}

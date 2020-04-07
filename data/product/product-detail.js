@@ -108,6 +108,39 @@ const productDetail = {
 		return imageList;
 	},
 	
+	specificationList() {
+		const specificationList = [
+			{
+				name: '主体',
+				children: [
+					{
+						name: '净含量',
+						value: '0.53'
+					},
+					{
+						name: '保质期',
+						value: '120天'
+					}
+				]
+			},
+			{
+				name: '参数',
+				children: [
+					{
+						name: '类别',
+						value: '其他'
+					},
+					{
+						name: '包装',
+						value: '整箱包装'
+					}
+				]
+			}
+		];
+		
+		return specificationList;
+	},
+	
 	recommendedProductList() {
 		const productList = [
 		

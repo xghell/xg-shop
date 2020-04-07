@@ -6,9 +6,9 @@
 		<!-- #ifndef APP-PLUS-NVUE -->
 		<scroll-view ref="page-scroll" class="page-scroll" :show-scrollbar="false" :scroll-y="true" :scroll-top="pageScrollTop" @scroll="productVideo.pageScroll">
 		<!-- #endif -->
-			<view class="page" :data-width="pageWidth">
+			<view class="page">
 				<xg-nav-bar status-bar fixed float hasTitle :fixedHeight="navBarConfig.fixedHeight" @getNavBarMaxHeight="getNavBarMaxHeight">
-					<view class="nav-bar-bg" :style="{opacity: navBarBgOpacity}" :data-height="navBarHeight"></view>
+					<view class="nav-bar-bg" :style="{opacity: navBarBgOpacity}"></view>
 					
 					<view slot="left" class="nav-bar-left">
 						<view class="nav-bar-left-icon"  :style="{'background-color': navBarSideIconBgColor}" v-for="(leftIcon, leftIconIndex) of navBarConfig.left.iconList" :key="leftIconIndex" @tap="navBarLeftIconTap(leftIcon.id)">
@@ -40,15 +40,6 @@
 				<view id="product" ref="product" class="product">
 					<!-- 产品图片及视频介绍 -->
 					<view class="product-media" :style="{height: productMediaConfig.height}">
-						<view class="video-wrap" v-if="showVideo" id="product-video" ref="product-video"  :style="{height: productMediaConfig.height}" :data-height="videoHeight">
-							<video class="product-video" autoplay controls :src="video.src"></video>
-							<view v-if="videoIsFloat" class="product-video-float-close" @tap="videoFloatCloseBtnTap">
-								<view class="product-video-float-close-icon-bg"></view>
-								<view class="product-video-float-close-icon">
-									<uni-icons :type="navBarConfig.left.closeVideoBtn.type" :size="navBarConfig.left.closeVideoBtn.size" :color="navBarConfig.left.closeVideoBtn.color"></uni-icons>
-								</view>
-							</view>
-						</view>
 						
 						<view class="product-image-swiper-wrap" v-if="!showVideo">
 							<swiper  class="product-image-swiper" :style="{height: productMediaConfig.height}" :duration="200" @change="productImageChange">
@@ -248,85 +239,28 @@
 								</view>
 								
 								<view class="table">
-									<view class="table-row">
-										<view class="table-col">
-											<view class="table-item">
-												<text class="table-item-text">商品编号</text>
+									<block v-for="(specification, specificationIndex) of specificationList" :key="specificationIndex">
+										<view class="table-row">
+											<view class="table-col">
+												<view class="table-item">
+													<text class="table-item-text">{{specification.name}}</text>
+												</view>
 											</view>
 										</view>
-										<view class="table-col">
-											<view class="table-item">
-												<text class="table-item-text">48221665865</text>
+										
+										<view class="table-row" v-for="(item, itemIndex) of specification.children" :key="itemIndex">
+											<view class="table-col">
+												<view class="table-item">
+													<text class="table-item-text">{{item.name}}</text>
+												</view>
+											</view>
+											<view class="table-col">
+												<view class="table-item">
+													<text class="table-item-text">{{item.value}}</text>
+												</view>
 											</view>
 										</view>
-									</view>
-									
-									<view class="table-row">
-										<view class="table-col">
-											<view class="table-item">
-												<text class="table-item-text">主体</text>
-											</view>
-										</view>
-									</view>
-									
-									<view class="table-row">
-										<view class="table-col">
-											<view class="table-item">
-												<text class="table-item-text">净含量</text>
-											</view>
-										</view>
-										<view class="table-col">
-											<view class="table-item">
-												<text class="table-item-text">0.5</text>
-											</view>
-										</view>
-									</view>
-									
-									<view class="table-row">
-										<view class="table-col">
-											<view class="table-item">
-												<text class="table-item-text">保质期</text>
-											</view>
-										</view>
-										<view class="table-col">
-											<view class="table-item">
-												<text class="table-item-text">120天</text>
-											</view>
-										</view>
-									</view>
-									
-									<view class="table-row">
-										<view class="table-col">
-											<view class="table-item">
-												<text class="table-item-text">参数</text>
-											</view>
-										</view>
-									</view>
-									
-									<view class="table-row">
-										<view class="table-col">
-											<view class="table-item">
-												<text class="table-item-text">类别</text>
-											</view>
-										</view>
-										<view class="table-col">
-											<view class="table-item">
-												<text class="table-item-text">其他</text>
-											</view>
-										</view>
-									</view>
-									<view class="table-row">
-										<view class="table-col">
-											<view class="table-item">
-												<text class="table-item-text">包装</text>
-											</view>
-										</view>
-										<view class="table-col">
-											<view class="table-item">
-												<text class="table-item-text">整箱装</text>
-											</view>
-										</view>
-									</view>
+									</block>
 								</view>
 							</view>
 						</view>
@@ -368,6 +302,16 @@
 		<!-- #ifdef APP-PLUS-NVUE -->
 		</scroller>
 		<!-- #endif -->
+		
+		<view class="video-wrap" v-if="showVideo" id="product-video" ref="product-video"  :style="{height: videoHeightDynamic + 'px', transform:' translate(' + videoTransX + 'px,' + videoTransY + 'px)'}" :data-set="JSON.stringify({videoHeight: videoHeight, videoWidth: videoWidth, videoFloatWidth: videoFloatWidth, videoFloatHeight: videoFloatHeight, videoFloatOffsetRight: videoFloatOffsetRight, videoFloatOffsetTop: videoFloatOffsetTop, navBarHeight: navBarHeight, videoScrollRate: videoScrollRate})">
+			<video class="product-video" autoplay controls :src="video.src"></video>
+			<view v-if="videoIsFloat" class="product-video-float-close" @tap="videoFloatCloseBtnTap">
+				<view class="product-video-float-close-icon-bg"></view>
+				<view class="product-video-float-close-icon">
+					<uni-icons :type="navBarConfig.left.closeVideoBtn.type" :size="navBarConfig.left.closeVideoBtn.size" :color="navBarConfig.left.closeVideoBtn.color"></uni-icons>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -375,32 +319,30 @@
 <script lang="wxs" module="productVideo">
 	function pageScroll(e, ins) {
 		var scrollTop = e.detail.scrollTop;
-		var rate = 0.3
 		
 		ins.callMethod('pageScroll', e);
-		var pageWrap = ins.selectComponent('.page');
-		var navBar = ins.selectComponent('.nav-bar-bg');
+		
 		var productVideo = ins.selectComponent('#product-video');
-		
-		
-		var navBarHeight = parseFloat(navBar.getDataset().height);
-		var pageWidth = pageWrap.getDataset().width;
-		// console.log(navBarHeight);
-		var videoFloatWidth = pageWidth*0.27;
-		var videoFloatHeight = pageWidth*0.27;
-		var videoOffsetTop = pageWidth*0.03;
-		var videoOffsetRight = pageWidth*0.03;
-		
+			
 		if (productVideo) {
-			var videoHeight = productVideo.getDataset().height;
+			
+			var videoDataset = JSON.parse(productVideo.getDataset().set);
+			
+			var videoScrollRate = videoDataset.videoScrollRate;
+			var navBarHeight = videoDataset.navBarHeight;
+			var videoWidth = videoDataset.videoWidth;
+			var videoHeight = videoDataset.videoHeight;
+			var videoFloatWidth = videoDataset.videoFloatWidth;
+			var videoFloatHeight = videoDataset.videoFloatHeight;
+			var videoFloatOffsetTop = videoDataset.videoFloatOffsetTop;
+			var videoFloatOffsetRight = videoDataset.videoFloatOffsetRight;
+			
 			productVideo.setStyle({
-				height: scrollTop < videoHeight ? videoHeight - scrollTop*(1-rate) + 'px' : videoFloatWidth + 'px',
-				width: scrollTop < videoHeight ? pageWidth + 'px' : videoFloatHeight + 'px',
-				transform: scrollTop < videoHeight ? 'translateY(-' + scrollTop*rate + 'px)' : 'translateY(' + (navBarHeight + videoOffsetTop) + 'px)',
-				right: scrollTop < videoHeight ? '0' : videoOffsetRight + 'px',
+				height: scrollTop < videoHeight ? videoHeight - scrollTop*(1 - videoScrollRate) + 'px' : videoFloatHeight + 'px',
+				width: scrollTop < videoHeight ? videoWidth + 'px' : videoFloatWidth + 'px',
+				transform: scrollTop < videoHeight ? 'translate(0, -' + scrollTop*videoScrollRate + 'px)' : 'translate(-' + videoFloatOffsetRight + 'px, ' + (navBarHeight + videoFloatOffsetTop) + 'px)',
 			})
 		}
-		
 	}
 	
 	module.exports = {
@@ -444,6 +386,10 @@
 				showCloseVideoBtn: false,
 				
 				currentImageIndex: 0,
+				videoScrollRate: 0.5,
+				videoTransX: 0,
+				videoTransY: 0,
+				videoHeightDynamic: 0,
 				videoIsFloat: false,
 				showVideo: false,
 				imageList: [],
@@ -460,18 +406,35 @@
 				productInfoImageLoadedCount: 0,
 				productInfoImageList: [],
 				productInfoImageAspectRatioList: [],
+				specificationList: [],
 				
 				//为你推荐
 				recommendedProductList: [],
 			}
 		},
 		computed: {
-			pageWidth() {
+			// 视频窗口配置参数
+			videoWidth() {
 				return this.toPx('750rpx');
 			},
-			videoHeight() {
-				return this.toPx('750rpx')
+			videoFloatWidth() {
+				return this.toPx(this.productMediaConfig.videoFloat.width);
 			},
+			videoHeight() {//初始高度
+				return this.toPx(this.productMediaConfig.height);
+			},
+			videoFloatHeight() {
+				return this.toPx(this.productMediaConfig.videoFloat.height);
+			},
+			videoFloatOffsetTop() {
+				return this.toPx(style.UNI_SPACING_ROW_BASE);
+			},
+			videoFloatOffsetRight() {
+				return this.toPx(style.UNI_SPACING_COL_BASE);
+			},
+			
+			
+			
 			rateSize() {
 				return this.toPx(this.rateConfig.starSize);
 			},
@@ -488,11 +451,16 @@
 			}
 		},
 		async onLoad() {
+			//配置
+			this.videoHeightDynamic = this.videoHeight;
+			
+			//数据
 			const productData = data.product();
 			const discountListData = data.discountList(); 
 			const commentInfoData = data.commentInfo();
 			const productInfoImageListData = data.productInfoImageList();
 			const recommendedProductListData = data.recommendedProductList();
+			const specificationListData =data.specificationList();
 			
 			const product = await productData;
 			this.imageList = product.imageList;
@@ -509,6 +477,7 @@
 			this.commentList = commentInfo.commentList;
 			
 			this.productInfoImageList = await productInfoImageListData;
+			this.specificationList = await specificationListData;
 			
 			this.recommendedProductList = await recommendedProductListData;
 		},
@@ -598,13 +567,13 @@
 				let scrollTop;
 				// #ifndef APP-PLUS-NVUE
 				scrollTop = e.detail.scrollTop;
-				customData.old.pageScrollTop = scrollTop;
 				// #endif
 				
 				// #ifdef APP-PLUS-NVUE
 				scrollTop = -e.contentOffset.y;
 				// #endif
 				
+				customData.old.pageScrollTop = scrollTop;
 				
 				//设置顶部导航与滚动联动，根据滚动位置选择当前导航项
 				let offsetY = scrollTop + 10;
@@ -630,8 +599,7 @@
 				//导航栏关闭视频播放
 				this.showCloseVideoBtn = (scrollTop < 10 && this.showVideo === true) ? true : false;
 				
-				this.videoIsFloat = scrollTop < 100 ? false : true;
-				
+				this.videoIsFloat = scrollTop < this.videoHeight ? false : true;
 			},
 			
 			getNavBarMaxHeight(e) {
@@ -653,10 +621,13 @@
 				this.showCloseVideoBtn = false;
 			},
 			navBarTitlteIconTap(index) {
+				
+				// #ifndef APP-PLUS-NVUE
 				this.pageScrollTop = customData.old.pageScrollTop;
 				this.$nextTick(function () {
 					this.pageScrollTop = this.navBarTitleIconContentTopList[index];
 				})
+				// #endif
 				
 				// #ifdef APP-PLUS-NVUE
 				const toSectionRef = this.getEl(this.$refs[customData.pageSectionList[index]]);
@@ -670,23 +641,18 @@
 			},
 			
 			playVideoBtnTap() {
+				//设置视频窗口及关闭视频窗口按钮显示
 				this.showVideo = true;
 				this.showCloseVideoBtn = true;
 				
+				//设置初始视频窗口位置
+				this.videoTransY = -customData.old.pageScrollTop*this.videoScrollRate;
+				this.videoHeightDynamic = this.videoHeight - customData.old.pageScrollTop*(1 - this.videoScrollRate);
+				
 				this.$nextTick(function () {
 					// #ifdef APP-PLUS-NVUE
-					const videoHeight = this.videoHeight;
-					const videoWidth = this.toPx('750rpx');
-					const videoFloatWidth = this.toPx('220rpx');
-					const videoFloatHeight = this.toPx('220rpx');
-					const videoOffsetTop = this.toPx('20rpx');
-					const videoOffsetRight = this.toPx('20rpx');
-					
-					
-					const rate = 0.5;
 					const pageScrollRef = this.getEl(this.$refs['page-scroll']);
 					const productVideoRef = this.getEl(this.$refs['product-video']);
-					const productRef = this.getEl(this.$refs['good-nav']);
 					bindingx.bind({
 					  eventType:'scroll', //描述事件触发类型是scroll触发
 					  anchor: pageScrollRef, //滚动容器
@@ -695,22 +661,22 @@
 						{
 						  element: productVideoRef, //动画元素
 						  property:'height', //动画属性
-						  expression:`y < ${videoHeight-30} ? ${videoHeight} - y*(${1-rate}) : ${videoFloatHeight}` //表达式 说明了y从0-400,对应的值是1-0  
+						  expression:`y < ${this.videoHeight-20} ? ${this.videoHeight} - y*(${1-this.videoScrollRate}) : ${this.videoFloatHeight}` //表达式 说明了y从0-400,对应的值是1-0  
 						},
 						{
 						  element: productVideoRef, //动画元素
 						  property:'width', //动画属性
-						  expression:`y < ${videoHeight-30} ? ${videoWidth} : ${videoFloatWidth}` //表达式 说明了y从0-400,对应的值是1-0  
+						  expression:`y < ${this.videoHeight-20} ? ${this.videoWidth} : ${this.videoFloatWidth}` //表达式 说明了y从0-400,对应的值是1-0  
 						},
 						{
 						  element: productVideoRef, //动画元素
 						  property:'transform.translateX', //动画属性
-						  expression:`y < ${videoHeight-3} ? 0 : ${-videoOffsetRight}` //表达式 说明了y从0-400,对应的值是1-0  
+						  expression:`y < ${this.videoHeight-3} ? 0 : ${-this.videoFloatOffsetRight}` //表达式 说明了y从0-400,对应的值是1-0  
 						},
 						{
 						  element: productVideoRef, //动画元素
 						  property:'transform.translateY', //动画属性
-						  expression:`y < ${videoHeight} ? y*(-${rate}) : ${this.navBarHeight + videoOffsetTop}` //表达式 说明了y从0-400,对应的值是1-0  
+						  expression:`y < ${this.videoHeight} ? y*(-${this.videoScrollRate}) : ${this.navBarHeight + this.videoFloatOffsetTop}` //表达式 说明了y从0-400,对应的值是1-0  
 						},
 					  ]
 					}, function (res) {
@@ -889,7 +855,7 @@
 		z-index: 10000;
 		/* #endif */
 		width: $media-width;
-		position: fixed;
+		position: absolute;
 		top: 0;
 		right: 0;
 		
