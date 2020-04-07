@@ -15,6 +15,7 @@
 			return {
 				top: 0,
 				left: 0,
+				hasLayouted: false
 			}
 		},
 		// mounted() {
@@ -28,6 +29,13 @@
 			}
 		},
 		methods: {
+			calculateLayoutOnce() {
+				if (!this.hasLayouted) {
+					this.hasLayouted = true;
+					
+					this.calculateLayout();
+				}
+			},
 			calculateLayout() {
 				// console.log('ww');
 				// #ifdef APP-PLUS-NVUE

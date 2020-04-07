@@ -62,7 +62,7 @@
 		},
 		data() {
 			return {
-				showIndexPage: true,
+				showIndexPage: false,
 				showCatePage: false,
 				showFindPage: false,
 				showCartPage: false,
@@ -76,9 +76,12 @@
 			const page = e.page;
 			if (page) {
 				this.currentIndex = pageIndexList[page];
-				this[pageSwitch[this.currentIndex]] = true;
+				this.$nextTick(function () {
+					this[pageSwitch[this.currentIndex]] = true;
+				})
+			} else {
+				this.showIndexPage = true;
 			}
-			
 		},
 		onReady() {
 			this.$nextTick(async function () {
@@ -104,9 +107,7 @@
 		methods: {
 			itemTap(index) {
 				this.currentIndex = index;
-				
 				this[pageSwitch[this.currentIndex]] = true;
-				
 			},
 		},
 	}

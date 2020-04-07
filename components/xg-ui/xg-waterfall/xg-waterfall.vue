@@ -6,7 +6,6 @@
 
 <script>
 	/**
-	 * calculateLayout() 重新计算瀑布流布局，需使用$this.$refs引用
 	 * column-count: [可选]描述瀑布流的列数
 	 *   <integer>: 最佳列数，column-width 和 column-count 都指定非0值， 则 column-count 代表最大列数。
 	 * column-width : [可选]描述瀑布流每一列的列宽。 
@@ -109,18 +108,6 @@
 					throw new TypeError(`${value}单位格式不正确`);
 				}
 			},
-			calculateLayout() {
-				this.columnsHeight = (new Array(this.realColumnCount)).fill(0);
-				
-				this.$slots.default.forEach((item, index) => {
-					item.componentInstance.calculateLayout();
-				})
-				// this.$nextTick(function () {
-				// 	setTimeout(() => {
-						
-				// 	}, 100);
-				// })
-			}
 		},
 	}
 </script>

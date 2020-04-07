@@ -33,7 +33,6 @@
 		old: {
 			pageScrollTop: 0,
 		},
-		waterfallImageLoaded: [], //防止app端，image重复触发load事件
 	}
 	
 	export default {
@@ -86,16 +85,10 @@
 				this.videoCoverImageWidth = e;
 			},
 			videoCoverImageLoad(index, e) {
-				// this.videoCoverImageAspectRatio = e.detail.height/e.detail.width;
-				// console.log(this.videoCoverImageAspectRatio);
-				if (!customData.waterfallImageLoaded[index]) {
-					customData.waterfallImageLoaded[index] = true;
-					
-					this.$set(this.videoCoverImageAspectRatio, index, e.detail.height/e.detail.width);
-					setTimeout(() => {
-						this.$refs['waterfall-item-' + index][0].calculateLayout();
-					}, 10);
-				}
+				this.$set(this.videoCoverImageAspectRatio, index, e.detail.height/e.detail.width);
+				setTimeout(() => {
+					this.$refs['waterfall-item-' + index][0].calculateLayoutOnce();
+				}, 10);
 			}
 		},
 	}

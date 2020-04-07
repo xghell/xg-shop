@@ -45,7 +45,6 @@
 		data() {
 			return {
 				waterFallItemWidth: 0,
-				imageListLoaded: [],
 			}
 		},
 		methods: {
@@ -53,13 +52,9 @@
 				this.waterFallItemWidth = e;
 			},
 			recommendedProductListImageLoad(index) {
-				if (!this.imageListLoaded[index]) {
-					this.imageListLoaded[index] = true;
-					
-					setTimeout(() => {
-						this.$refs['waterfall-item-' + index][0].calculateLayout();
-					}, 100);
-				}
+				setTimeout(() => {
+					this.$refs['waterfall-item-' + index][0].calculateLayoutOnce();
+				}, 100);
 			}
 		},
 	}
