@@ -45,6 +45,7 @@ const style = {
 	
 	//边框颜色
 	UNI_BORDER_COLOR: '#c8c7cc',
+	UNI_BORDER_COLOR_RED: 'red',
 	
 	// /* 尺寸变量 */
 	

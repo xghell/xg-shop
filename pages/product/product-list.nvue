@@ -1,15 +1,189 @@
 <template>
-	<div>
+	<view>
+		<xg-dock>
+			<xg-nav-bar status-bar hasCenter :fixedHeight="navBar.fixedHeight" :navBarStyle="navBar.navBarStyle" :left="navBar.left" :right="navBar.right" @iconTap="navBarIconTap">
+				<view class="nav-bar-bg"></view>
+				<view class="nav-bar-search-input" slot="center">
+					<tpl-search-input></tpl-search-input>
+				</view>
+			</xg-nav-bar>
+			<view class="title-tab">
+				<view class="title-tab-bar" v-for="(titleTabBar, titleTabBarIndex) of titleTabBarConfig.list" :key="titleTabBarIndex" @tap="titleTabBarTap(titleTabBarIndex, titleTabBar.id)">
+					<view class="title-tab-bar-item">
+						<text class="title-tab-bar-text">{{titleTabBar.text}}</text>
+						<!-- 未被选中时 -->
+						<xg-icon v-if="titleTabBar.icon && currentTitleTabBarIndex !== titleTabBarIndex" class="title-tab-bar-icon" :fontFamily="titleTabBarConfig.fontFamily" :subtitle="titleTabBar.icon.subtitle"></xg-icon>
+						<!-- 被选中时 -->
+						<xg-icon v-if="titleTabBar.selectedIcon && !titleTabBar.isTapped && currentTitleTabBarIndex === titleTabBarIndex" class="title-tab-bar-icon" :fontFamily="titleTabBarConfig.fontFamily" :subtitle="titleTabBar.selectedIcon.subtitle"></xg-icon>
+						<!-- 第一次点击 -->
+						<xg-icon v-if="titleTabBar.tapOnceIcon && currentTitleTabBarIndex === titleTabBarIndex && titleTabBar.isTapped && titleTabBar.tapSwitch" class="title-tab-bar-icon" :fontFamily="titleTabBarConfig.fontFamily" :subtitle="titleTabBar.tapOnceIcon.subtitle"></xg-icon>
+						<!-- 第二次点击 -->
+						<xg-icon v-if="titleTabBar.tapTwiceIcon && currentTitleTabBarIndex === titleTabBarIndex && titleTabBar.isTapped && !titleTabBar.tapSwitch" class="title-tab-bar-icon" :fontFamily="titleTabBarConfig.fontFamily" :subtitle="titleTabBar.tapTwiceIcon.subtitle"></xg-icon>
+					</view>
+					
+					<view :class="currentTitleTabBarIndex === titleTabBarIndex ? 'title-tab-bar-icon-line' : ''"></view>
+				</view>
+			</view>
+		</xg-dock>
 		
-	</div>
+		<view class="product-list">
+			<view class="product" v-for="(product, productIndex) of productList" :key="productIndex">
+				<tpl-product-one :url="product.url" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :productLabelList="product.productLabelList" :commentCount="product.commentCount"></tpl-product-one>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
+	import config from '@/config/product/product-list.js';
+	import data from '@/data/product/product-list.js';
+	
 	export default {
-		
+		name: 'ProductList',
+		mixins: [config],
+		data() {
+			return {
+				currentTitleTabBarIndex: 0,
+				
+				productList: [],
+			}
+		},
+		async onLoad() {
+			const productListData = data.productList();
+			
+			this.productList = await productListData;
+		},
+		methods: {
+			navBarIconTap(e) {
+				const action = {
+					back() {
+						uni.navigateBack({
+							delta: 1
+						});
+					},
+					// layout() {
+					// 	console.log('点击了布局按钮');
+					// }
+				}
+				
+				if (action[e]) {
+					action[e]();
+				} else {
+					console.log('功能开发中，敬请期待。。。');
+				}
+				
+			},
+			
+			titleTabBarTap(index, id) {
+				//设置图标
+				if (this.currentTitleTabBarIndex !== index) {
+					this.currentTitleTabBarIndex = index;
+					
+					this.titleTabBarConfig.list.forEach((item, itemIndex) => {
+						this.$set(this.titleTabBarConfig.list[itemIndex], 'isTapped', false);
+						this.$set(this.titleTabBarConfig.list[itemIndex], 'tapSwitch', false);
+					});
+					
+					
+				} else {
+					this.$set(this.titleTabBarConfig.list[index], 'isTapped', true);
+					this.$set(this.titleTabBarConfig.list[index], 'tapSwitch', !this.titleTabBarConfig.list[index].tapSwitch);
+				}
+				
+				//响应点击事件
+				const action = {
+					recommend() {
+						
+					},
+					sales() {
+						
+					},
+					price() {
+						
+					},
+					filter() {
+						
+					}
+				};
+				
+				if (action[id]) {
+					action[id]();
+				} else {
+					console.log('功能开发中，敬请期待。。。');
+				}
+			}
+			
+		},
 	}
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+	.nav-bar-bg {
+		background-color: $uni-bg-color;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+	}
+	.nav-bar-search-input {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+		justify-content: center;
+	}
+	
+	.title-tab {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		
+		margin-left: $uni-spacing-col-lg;
+		margin-right: $uni-spacing-col-lg;
+	}
+	.title-tab-bar {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+		height: 60rpx;
+		justify-content: space-between;
+	}
+	.title-tab-bar-item {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.title-tab-bar-text {
+		font-size: $uni-font-size-base;
+	}
+	.title-tab-bar-icon {
+		margin-left: $uni-spacing-col-sm;
+	}
+	.title-tab-bar-icon-line {
+		// margin-top: $uni-spacing-row-sm;
+		height: 3px;
+		background-color: $uni-border-color;
+		background-image: linear-gradient(to right, $uni-bg-color-red, #FFFFFF);
+	}
+	
+	
+	.product-list {
+		
+	}
+	.product {
+		padding: $uni-spacing-row-base $uni-spacing-col-base;
+	}
 </style>

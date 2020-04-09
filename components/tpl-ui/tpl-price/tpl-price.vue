@@ -67,6 +67,7 @@
 	}
 	.price-dot {
 		color: $uni-text-color-red;
+		font-size: $uni-font-size-sm;
 	}
 	.price-decimal {
 		font-size: $uni-font-size-sm;

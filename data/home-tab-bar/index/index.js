@@ -55,14 +55,6 @@ const index = {
 				},
 				{
 					url: '/pages/product/product-detail',
-					image: 'http://img4.imgtn.bdimg.com/it/u=1042180233,2455102147&fm=26&gp=0.jpg',
-					title: '不知道叫什么的电子原件一个',
-					price: '999.11',
-					priceLabel: '',
-					discount: ''
-				},
-				{
-					url: '/pages/product/product-detail',
 					image: 'http://img1.imgtn.bdimg.com/it/u=2234798220,1671592153&fm=26&gp=0.jpg',
 					title: '不能吃的串串一个',
 					price: '99',
@@ -75,14 +67,6 @@ const index = {
 					title: '白衬衫一件',
 					price: '265.98',
 					priceLabel: '满减',
-					discount: ''
-				},
-				{
-					url: '/pages/product/product-detail',
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3587087173,3820998893&fm=26&gp=0.jpg',
-					title: '乐高积木',
-					price: '9.9',
-					priceLabel: '',
 					discount: ''
 				},
 				{
@@ -121,14 +105,6 @@ const index = {
 				},
 				{
 					url: '/pages/product/product-detail',
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3587087173,3820998893&fm=26&gp=0.jpg',
-					title: '乐高积木',
-					price: '9.9',
-					priceLabel: '',
-					discount: ''
-				},
-				{
-					url: '/pages/product/product-detail',
 					image: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2467720071,1163482536&fm=26&gp=0.jpg',
 					title: '女士西装',
 					price: '399.99',
@@ -156,14 +132,6 @@ const index = {
 					image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1608647855,2036056543&fm=26&gp=0.jpg',
 					title: '',
 					price: '899',
-					priceLabel: '',
-					discount: ''
-				},
-				{
-					url: '/pages/product/product-detail',
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3587087173,3820998893&fm=26&gp=0.jpg',
-					title: '乐高积木',
-					price: '9.9',
 					priceLabel: '',
 					discount: ''
 				},
