@@ -52,13 +52,13 @@
 				return this.toPx(this.initTop);
 			}
 		},
-		// watch: {
-		// 	scrollTop(newTop, oldTop) {
-		// 		this.translateY = Math.min(this.toPx(this.threshold)||this.contentHeight, Math.max(0, this.translateY + (newTop - oldTop)));
-		// 		this.$emit('dockScroll', this.translateY);
-		// 		// console.log(this.threshold);
-		// 	}
-		// },
+		watch: {
+			scrollTop(newTop, oldTop) {
+				this.translateY = Math.min(this.toPx(this.threshold)||this.contentHeight, Math.max(0, this.translateY + (newTop - oldTop)));
+				this.$emit('dockScroll', this.translateY);
+				// console.log(this.threshold);
+			}
+		},
 		methods: {
 			// #ifdef APP-PLUS-NVUE
 			//封装系统函数

@@ -67,7 +67,50 @@ const productList = {
 		];
 		
 		return productList;
-	}
+	},
+	
+	serviceOrDiscountList() {
+		const serviceOrDiscountList = [
+			'京东物流', '货到付款', '仅看有货', '新品', '促销', '全球配送'
+		];
+		
+		return serviceOrDiscountList;
+	},
+	
+	brandList() {
+		const brandList = [
+			'三只松鼠', '良品铺子', '舌里', '港荣', '江中食疗', '奥利奥', '百草味',
+			'达利园', '徐福记', '冠生园', '嘉友', '太平', '皇冠',
+		];
+		
+		return brandList;
+	},
+	
+	specificationCateList() {
+		const specificationCateList = [
+			 {
+				 name: '是否加糖',
+				 value: ['添加糖', '未添加糖']
+			 },
+			 {
+				 name: '类别',
+				 value: ['马卡龙', '蛋糕', '华夫饼', '瑞士卷', '铜锣烧', '绿豆糕', 
+					'蛋黄派', '酥饼', '芝麻糕', '麻花', '发糕', '小面包', '夹心面包'
+				 ]
+			 },
+			 {
+				 name: '规格',
+				 value: ['200g以下', '201-300g', '301-500g', '501g-1kg', '1kg以上']
+			 },
+			 {
+				 name: '包装',
+				 value: ['组合装', '整箱装', '礼盒装', '盒装', '罐装', '袋装']
+			 }
+		];
+		
+		return specificationCateList;
+	},
+	
 };
 
 export default productList;

@@ -1,8 +1,8 @@
 <template>
-	<view>
-		<xg-dock>
+	<view class="page">
+		<xg-dock class="dock" :fixed="true" :scrollTop="scrollTop">
+			<view class="dock-bar-bg"></view>
 			<xg-nav-bar status-bar hasCenter :fixedHeight="navBar.fixedHeight" :navBarStyle="navBar.navBarStyle" :left="navBar.left" :right="navBar.right" @iconTap="navBarIconTap">
-				<view class="nav-bar-bg"></view>
 				<view class="nav-bar-search-input" slot="center">
 					<tpl-search-input></tpl-search-input>
 				</view>
@@ -26,6 +26,63 @@
 			</view>
 		</xg-dock>
 		
+		<xg-popup type="right" ref="drawer">
+			<scroll-view  class="drawer-content" :scroll-y="true" @scroll.stop="stopPropagation">
+				<view>
+					<view class="service-or-discount-list">
+						<uni-collapse>
+							<uni-collapse-item title="服务/折扣">
+								<view class="collapse-item">
+									<uni-grid :column="3" :square="false" :showBorder="false">
+										<uni-grid-item v-for="(serviceOrDiscount, serviceOrDiscountIndex) of serviceOrDiscountList" :key="serviceOrDiscountIndex">
+											<view class="collapse-item-value">
+												<text class="collapse-item-value-text">{{serviceOrDiscount}}</text>
+											</view>
+										</uni-grid-item>
+									</uni-grid>
+								</view>
+							</uni-collapse-item>
+						</uni-collapse>
+					</view>
+					
+					<view class="brand-list">
+						<uni-collapse>
+							<uni-collapse-item title="品牌">
+								<view class="collapse-item">
+									<uni-grid :column="3" :square="false" :showBorder="false">
+										<uni-grid-item v-for="(brand, brandIndex) of brandList" :key="brandIndex">
+											<view class="collapse-item-value">
+												<text class="collapse-item-value-text">{{brand}}</text>
+											</view>
+										</uni-grid-item>
+									</uni-grid>
+									
+								</view>
+							</uni-collapse-item>
+						</uni-collapse>
+					</view>
+					
+					<view class="specification-cate-list">
+						<view class="specification-cate" v-for="(specificationCate, specificationCateIndex) of specificationCateList" :key="specificationCateIndex">
+							<uni-collapse>
+								<uni-collapse-item :title="specificationCate.name">
+									<view class="collapse-item">
+										<uni-grid :column="3" :square="false" :showBorder="false">
+											<uni-grid-item v-for="(specification, specificationIndex) of specificationCate.value" :key="specificationIndex">
+												<view class="collapse-item-value">
+													<text class="collapse-item-value-text">{{specification}}</text>
+												</view>
+											</uni-grid-item>
+										</uni-grid>
+									</view>
+								</uni-collapse-item>
+							</uni-collapse>
+						</view>
+					</view>
+				</view>
+			</scroll-view>
+		</xg-popup>
+		
 		<view class="product-list">
 			<view class="product" v-for="(product, productIndex) of productList" :key="productIndex">
 				<tpl-product-one :url="product.url" :image="product.image" :title="product.title" :price="product.price" :priceLabel="product.priceLabel" :productLabelList="product.productLabelList" :commentCount="product.commentCount"></tpl-product-one>
@@ -43,17 +100,39 @@
 		mixins: [config],
 		data() {
 			return {
+				scrollTop: 0,
+				
+				drawerShowed: false,
+				
 				currentTitleTabBarIndex: 0,
 				
 				productList: [],
+				serviceOrDiscountList: [],
+				brandList: [],
+				specificationCateList: [],
 			}
 		},
 		async onLoad() {
 			const productListData = data.productList();
+			const serviceOrDiscountListData = data.serviceOrDiscountList();
+			const brandListData = data.brandList();
+			const specificationCateListData = data.specificationCateList();
 			
 			this.productList = await productListData;
+			this.serviceOrDiscountList = await serviceOrDiscountListData;
+			this.brandList = await brandListData;
+			this.specificationCateList = await specificationCateListData;
+		},
+		onPageScroll(e) {
+			const scrollTop = e.scrollTop;
+			// console.log(e);
+			this.scrollTop = scrollTop;
+			
 		},
 		methods: {
+			stopPropagation(e) {
+				e.stopPropagation();
+			},
 			navBarIconTap(e) {
 				const action = {
 					back() {
@@ -101,8 +180,8 @@
 					price() {
 						
 					},
-					filter() {
-						
+					filter: () => {
+						this.$refs['drawer'].open();
 					}
 				};
 				
@@ -118,13 +197,21 @@
 </script>
 
 <style lang="scss" scoped>
-	.nav-bar-bg {
+	.dock {
+		/* #ifndef APP-PLUS-NVUE */
+		z-index: 2;
+		/* #endif */
+	}
+	.dock-bar-bg {
 		background-color: $uni-bg-color;
 		position: absolute;
 		top: 0;
 		bottom: 0;
 		right: 0;
 		left: 0;
+		
+		border-bottom-left-radius: $uni-border-radius-base;
+		border-bottom-right-radius: $uni-border-radius-base;
 	}
 	.nav-bar-search-input {
 		position: absolute;
@@ -150,6 +237,7 @@
 		
 		margin-left: $uni-spacing-col-lg;
 		margin-right: $uni-spacing-col-lg;
+		margin-bottom: $uni-spacing-row-base;
 	}
 	.title-tab-bar {
 		/* #ifndef APP-PLUS-NVUE */
@@ -179,9 +267,37 @@
 		background-image: linear-gradient(to right, $uni-bg-color-red, #FFFFFF);
 	}
 	
+	.drawer-content {
+		width: 600rpx;
+		background-color: $uni-bg-color;
+	}
+	.collapse-item {
+		margin: 12px;
+	}
+	.collapse-item-value {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		
+		background-color: $uni-bg-color;
+		border-radius: 10000px;
+		margin: $uni-spacing-row-sm $uni-spacing-col-base;
+		
+		height: 60rpx;
+		// padding: $uni-spacing-row-sm $uni-spacing-col-base;
+	}
+	.collapse-item-value-text {
+		font-size: $uni-font-size-sm;
+	}
 	
 	.product-list {
+		background-color: $uni-bg-color;
+		margin-top: $uni-spacing-row-base;
 		
+		border-radius: $uni-border-radius-base;
 	}
 	.product {
 		padding: $uni-spacing-row-base $uni-spacing-col-base;
