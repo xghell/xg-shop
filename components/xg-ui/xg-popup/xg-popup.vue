@@ -1,6 +1,6 @@
 <template>
-	<view v-if="showPopup" class="popup" @tap="maskTap">
-		<view class="mask" :class="maskAnimationClass"></view>
+	<view v-if="showPopup" class="popup">
+		<view class="mask" :class="maskAnimationClass" @tap="maskTap"></view>
 		<view :class="[contentAnimation, contentAnimationCommonClass, contentAnimationClass]">
 			<slot></slot>
 		</view>
@@ -37,11 +37,12 @@
 				
 				this.$nextTick(function () {
 					this.contentAnimationClass = this.type + '-init';
-					this.contentAnimation = 'content';
+					
 					setTimeout(() => {
+						this.contentAnimation = 'content';
 						this.maskAnimationClass = 'mask-in';
 						this.contentAnimationClass = this.type + '-in';
-					}, 200);
+					}, 100);
 				})
 			},
 			close() {

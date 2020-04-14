@@ -30,22 +30,22 @@ const cate = {
 				name: '常用分类',
 				children: [
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '仪器仪表',
 						image: 'http://img1.imgtn.bdimg.com/it/u=2665651064,85922585&fm=15&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '口红',
 						image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2784213932,4049253348&fm=26&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '园艺工具',
 						image: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1841950407,1313467382&fm=26&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '洗发水',
 						image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1839153255,899369297&fm=26&gp=0.jpg'
 					}
@@ -55,22 +55,22 @@ const cate = {
 				name: '常用分类',
 				children: [
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '仪器仪表',
 						image: 'http://img1.imgtn.bdimg.com/it/u=2665651064,85922585&fm=15&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '口红',
 						image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2784213932,4049253348&fm=26&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '园艺工具',
 						image: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1841950407,1313467382&fm=26&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '洗发水',
 						image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1839153255,899369297&fm=26&gp=0.jpg'
 					}
@@ -80,22 +80,22 @@ const cate = {
 				name: '常用分类',
 				children: [
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '仪器仪表',
 						image: 'http://img1.imgtn.bdimg.com/it/u=2665651064,85922585&fm=15&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '口红',
 						image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2784213932,4049253348&fm=26&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '园艺工具',
 						image: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1841950407,1313467382&fm=26&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '洗发水',
 						image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1839153255,899369297&fm=26&gp=0.jpg'
 					}
@@ -105,22 +105,22 @@ const cate = {
 				name: '常用分类',
 				children: [
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '仪器仪表',
 						image: 'http://img1.imgtn.bdimg.com/it/u=2665651064,85922585&fm=15&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '口红',
 						image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2784213932,4049253348&fm=26&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '园艺工具',
 						image: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1841950407,1313467382&fm=26&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '洗发水',
 						image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1839153255,899369297&fm=26&gp=0.jpg'
 					}
@@ -130,22 +130,22 @@ const cate = {
 				name: '常用分类',
 				children: [
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '仪器仪表',
 						image: 'http://img1.imgtn.bdimg.com/it/u=2665651064,85922585&fm=15&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '口红',
 						image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2784213932,4049253348&fm=26&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '园艺工具',
 						image: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1841950407,1313467382&fm=26&gp=0.jpg'
 					},
 					{
-						url: '',
+						url: '/pages/product/product-list',
 						name: '洗发水',
 						image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1839153255,899369297&fm=26&gp=0.jpg'
 					}

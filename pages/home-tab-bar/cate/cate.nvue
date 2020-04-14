@@ -23,10 +23,13 @@
 					<uni-grid :column="3" :square="false" :showBorder="false" :highlight="false">
 						<block v-for="(cate, cateIndex) of cateCard.children" :key="cateIndex">
 							<uni-grid-item>
-								<view class="cate-card-item">
+								<navigator>
+									
+								</navigator>
+								<navigator class="cate-card-item"  :url="cate.url">
 									<image class="cate-card-item-image" :src="cate.image"></image>
 									<text class="cate-card-item-name">{{cate.name}}</text>
-								</view>
+								</navigator>
 							</uni-grid-item>
 						</block>
 					</uni-grid>
@@ -106,6 +109,13 @@
 		position: absolute;
 		left: 0;
 		right: 0;
+		top: 0;
+		bottom: 0;
+		/* #ifndef APP-PLUS */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+		justify-content: center;
 	}
 	
 	.cate {
