@@ -269,6 +269,7 @@
 	
 	.drawer-content {
 		width: 600rpx;
+		// height: 600rpx;
 		background-color: $uni-bg-color;
 	}
 	.collapse-item {
