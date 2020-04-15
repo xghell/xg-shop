@@ -10,31 +10,5 @@
 |left-gap		|String	|0		|[可选]左边的间隙																					|	|
 |right-gap		|String	|0		|[可选]右边的间隙																					|	|
 
-```
-<template>
-	<view>
-		<xg-waterfall>
-			<xg-waterfall-item v-for="(item, index) of 10" :key="index">
-				<view class="cell" :style="{height: Math.random()*100 + 100 + 'px'}">{{item}}</view>
-			</xg-waterfall-item>
-		</xg-waterfall>
-	</view>
-</template>
 
-<script>
-	export default {
-		data() {
-		},
-	}
-</script>
-
-<style>
-	
-	.cell {
-		background-color: red;
-		margin: 20px 0;
-	}
-	
-</style>
-
-```
+* 使用示例参考[xg-shop商城项目](https://ext.dcloud.net.cn/plugin?id=1276)

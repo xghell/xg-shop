@@ -1,0 +1,148 @@
+<template>
+	<view class="page">
+		<xg-nav-bar status-bar :hasTitle="true" :fixedHeight="navBar.fixedHeight" :left="navBar.left" :title="navBar.title" :right="navBar.right" @iconTap="navBarIconTap">
+			<view class="nav-bar-bg"></view>
+		</xg-nav-bar>
+		
+		<view class="title-tab">
+			<view class="title-tab-bar" v-for="(title, titleIndex) of titleTabConfig.list" :key="titleIndex" @tap="titleTap(titleIndex)">
+				<view class="title-tab-bar-item">
+					<text class="title-tab-bar-item-text">{{title}}</text>
+				</view>
+				<view v-if="titleCurrentIndex === titleIndex" class="line"></view>
+			</view>
+		</view>
+		
+		<swiper class="content" :current="titleCurrentIndex" @change="contentChange">
+			<swiper-item>
+				<all></all>
+			</swiper-item>
+			<swiper-item>
+				<receiving></receiving>
+			</swiper-item>
+			<swiper-item>
+				<obligation></obligation>
+			</swiper-item>
+			<swiper-item>
+				<compeleted></compeleted>
+			</swiper-item>
+			<swiper-item>
+				<canceled></canceled>
+			</swiper-item>
+		</swiper>
+	</view>
+</template>
+
+<script>
+	import config from '@/config/order/order.js';
+	
+	import all from './all/all.nvue';
+	import receiving from './receiving/receiving.nvue';
+	import obligation from './obligation/obligation.nvue';
+	import compeleted from './completed/completed.nvue';
+	import canceled from './canceled/canceled.nvue';
+	
+	export default {
+		mixins: [config],
+		components: {
+			all,
+			receiving,
+			obligation,
+			compeleted,
+			canceled
+		},
+		data() {
+			return {
+				titleCurrentIndex: 0,
+			};
+		},
+		methods: {
+			navBarIconTap(id) {
+				const action = {
+					back() {
+						uni.navigateBack({
+							delta: 1
+						});
+					},
+				};
+				
+				if (action[id]) {
+					action[id]();
+				} else {
+					console.log('功能开发中，敬请期待。。。');
+				}
+			},
+			
+			titleTap(index) {
+				this.titleCurrentIndex = index;
+			},
+			contentChange(e) {
+				this.titleCurrentIndex = e.detail.current;
+			}
+		},
+	}
+</script>
+
+<style lang="scss">
+	.page {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+	}
+	
+	.nav-bar-bg {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		
+		background-color: $uni-bg-color;
+	}
+	
+	.title-tab {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: space-between;
+		
+		padding: $uni-spacing-row-base $uni-spacing-col-lg;
+		background-color: $uni-bg-color;
+		
+		border-bottom-left-radius: $uni-border-radius-base;
+		border-bottom-right-radius: $uni-border-radius-base;
+	}
+	.title-tab-bar {
+		height: $uni-font-size-base*1.8;
+		
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.title-tab-bar-item {
+		
+	}
+	.title-tab-bar-item-text {
+		font-size: $uni-font-size-base;
+	}
+	.line {
+		width: $uni-font-size-base*1.8;
+		height: 8rpx;
+		background-image: linear-gradient(to right, $uni-bg-color-red, #FFF);
+	}
+	
+	.content {
+		flex: 1;
+	}
+</style>

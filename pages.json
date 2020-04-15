@@ -141,7 +141,13 @@
 					}
 				}
 			}
-		}
+		},
+        {
+            "path" : "pages/order/order",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

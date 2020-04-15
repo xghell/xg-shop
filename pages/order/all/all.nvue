@@ -1,0 +1,43 @@
+<template>
+	<scroll-view class="page-scroll" :scroll-y="true">
+		<view class="order-list">
+			<tpl-order class="order" v-for="(order, orderIndex) of orderList" :key="orderIndex" :shop="order.shop" :productList="order.productList"></tpl-order>
+		</view>
+	</scroll-view>
+</template>
+
+<script>
+	import data from '@/data/order/all/all.js';
+	
+	export default {
+		data() {
+			return {
+				orderList: []
+			};
+		},
+		async created() {
+			const orderListData = data.orderList();
+			
+			this.orderList = await orderListData;
+		}
+	}
+</script>
+
+<style lang="scss">
+	.page-scroll {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+	
+	.order-list {
+		
+	}
+	.order {
+		margin-top: $uni-spacing-row-base;
+		
+		border-radius: $uni-border-radius-base;
+	}
+</style>

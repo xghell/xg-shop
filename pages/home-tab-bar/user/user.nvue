@@ -34,9 +34,9 @@
 			</view>
 			
 			<view class="order-section">
-				<view class="order-item" v-for="(icon, iconIndex) of orderSectionConfig.iconList" :key="iconIndex" @tap="orderItemTap(icon.id)">
+				<navigator class="order-item" hover-class="none" v-for="(icon, iconIndex) of orderSectionConfig.iconList" :key="iconIndex" :url="icon.url">
 					<xg-icon :fontFamily="orderSectionConfig.fontFamily" :text="icon.text" :textStyle="orderSectionConfig.textStyle + ';' + icon.textStyle" :title="icon.title" :titleStyle="orderSectionConfig.titleStyle" :subtitle="icon.subtitle" :subtitleStyle="orderSectionConfig.subtitleStyle"></xg-icon>
-				</view>
+				</navigator>
 			</view>
 			
 			<view class="service-section">
@@ -137,20 +137,6 @@
 				this.navBarHeight = e;
 			},
 			
-			orderItemTap(id) {
-				const aciton = {
-					uncompeleteComment() {
-						uni.navigateTo({url: '/pages/comment/comment-list'})
-					}
-				}
-				
-				if (aciton[id]) {
-					aciton[id]();
-				} else {
-					console.log('此功能即将开发，敬请期待。。。');
-				}
-				
-			}
 		}
 	}
 </script>

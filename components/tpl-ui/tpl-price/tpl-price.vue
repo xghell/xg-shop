@@ -62,8 +62,9 @@
 	}
 	
 	.price-integer {
-		font-size: $uni-font-size-base;
+		font-size: $uni-font-size-lg;
 		color: $uni-text-color-red;
+		transform: translateY(0.5px);
 	}
 	.price-dot {
 		color: $uni-text-color-red;

@@ -56,31 +56,31 @@ const user = {
 				subtitleStyle: `font-size: ${style.UNI_FONT_SIZE_MI};margin-top: ${style.UNI_SPACING_ROW_SM};`,
 				iconList: [
 					{
-						id: 'uncompeletedPay',
+						url: '/pages/order/order',
 						text: '\ue607',
 						title: '待付款',
 						subtitle: '',
 					},
 					{
-						id: 'uncompeleteReceive',
+						url: '/pages/order/order',
 						text: '\ue604',
 						title: '待收货',
 						subtitle: '',
 					},
 					{
-						id: 'uncompeleteComment',
+						url: '/pages/comment/comment-list',
 						text: '\ue66e',
 						title: '待评价',
 						subtitle: '送积分',
 					},
 					{
-						id: 'afterSale',
+						url: '',
 						text: '\ue60d',
 						title: '退换/售后',
 						subtitle: '',
 					},
 					{
-						id: 'order',
+						url: '/pages/order/order',
 						text: '\ue627',
 						title: '我的订单',
 						subtitle: '全部订单',
