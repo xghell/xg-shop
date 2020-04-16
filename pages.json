@@ -58,12 +58,9 @@
 					"titleNView": {
 						"buttons": [
 							{
-								"type": "back",
-								"float": "left"
-							},
-							{
-								"text": "提交",
-								"fontSize": "14px"
+								"text": "提交  ",
+								"fontSize": "14px",
+								"width": "auto"
 							}
 						]
 					}
@@ -72,12 +69,9 @@
 					"titleNView": {
 						"buttons": [
 							{
-								"type": "back",
-								"float": "left"
-							},
-							{
-								"text": "提交",
-								"fontSize": "14px"
+								"text": "提交  ",
+								"fontSize": "14px",
+								"width": "auto"
 							}
 						]
 					}
@@ -93,7 +87,7 @@
 					"titleNView": {
 						"buttons": [
 							{
-								"text": "评价规则",
+								"text": "评价规则  ",
 								"fontSize": "14px",
 								"width": "auto"
 							}
@@ -104,7 +98,7 @@
 					"titleNView": {
 						"buttons": [
 							{
-								"text": "评价规则",
+								"text": "评价规则  ",
 								"fontSize": "14px",
 								"width": "auto"
 							}
@@ -122,7 +116,7 @@
 					"titleNView": {
 						"buttons": [
 							{
-								"text": "提交",
+								"text": "提交  ",
 								"fontSize": "14px",
 								"width": "auto"
 							}
@@ -133,7 +127,7 @@
 					"titleNView": {
 						"buttons": [
 							{
-								"text": "提交",
+								"text": "提交  ",
 								"fontSize": "14px",
 								"width": "auto"
 							}

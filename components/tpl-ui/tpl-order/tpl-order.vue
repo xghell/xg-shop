@@ -35,7 +35,7 @@
 			</view>
 		</view>
 		<view class="service-btn-list">
-			<navigator class="service-btn" url="/pages/comment/comment-addition">
+			<navigator class="service-btn" url="/pages/comment/comment">
 				<text class="service-btn-text">评价晒单</text>
 			</navigator>
 			<navigator class="service-btn buy-again-btn" open-type="reLaunch" url="/pages/home-tab-bar/home-tab-bar?page=cart">
