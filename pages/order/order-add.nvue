@@ -1,0 +1,203 @@
+<template>
+	<view class="page">
+		<view class="address-section">
+			<view class="district-section">
+				<view class="district-label-list">
+					<view v-if="address.is_default" class="label district-label-default">
+						<text class="label-text district-label-default-text">默认</text>
+					</view>
+					<view class="label district-label">
+						<text class="label-text district-label-text">{{address.tag}}</text>
+					</view>
+				</view>
+				<view class="district">
+					<text class="district-text">{{address.district}}</text>
+				</view>
+			</view>
+			<view class="detail-address-section">
+				<view class="detail-address">
+					<text class="detail-address-text">{{address.detail_address}}</text>
+				</view>
+				<uni-icons type="arrowright"></uni-icons>
+			</view>
+			<view class="consignee-section">
+				<view class="consignee-name">
+					<text class="consignee-name-text">{{address.name}}</text>
+				</view>
+				<view class="consignee-phone">
+					<text class="consignee-phone-text">{{address.phone}}</text>
+				</view>
+			</view>
+		</view>
+	
+		<view class="payment-method-section">
+			<view class="payment-method-label">
+				<text class="payment-method-label-text">支付方式</text>
+			</view>
+			<view class="payment-method">
+				<text class="payment-method-text">{{paymentMethod}}</text>
+				<xg-icon :fontFamily="moreBtnConfig.fontFamily" :text="moreBtnConfig.text" :textStyle="moreBtnConfig.textStyle"></xg-icon>
+			</view>
+		</view>
+		
+		<view class="order-list">
+			<view class="order" v-for="(order, orderIndex) of orderList" :key="orderIndex">
+				<tpl-order-add :shop="order.shop" :productList="order.productList"></tpl-order-add>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import data from '@/data/order/order-add.js';
+	import config from '@/config/order/order-add.js';
+	
+	export default {
+		mixins: [config],
+		data() {
+			return {
+				address: {},
+				
+				paymentMethod: '在线支付',
+				
+				orderList: [],
+			}
+		},
+		async onLoad() {
+			const addressData = data.address();
+			const orderListData = data.orderList();
+			
+			this.address = await addressData;
+			this.orderList = await orderListData;
+		}
+	}
+</script>
+
+<style lang="scss">
+	.address-section {
+		padding: $uni-spacing-row-lg $uni-spacing-col-lg;
+		
+		background-color: $uni-bg-color;
+		border-bottom-left-radius: $uni-border-radius-base;
+		border-bottom-right-radius: $uni-border-radius-base;
+	}
+	.district-section {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.district-label-list {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.label {
+		border-radius: $uni-border-radius-sm;
+		padding: 0px 6rpx;
+		margin-right: $uni-spacing-col-sm;
+	}
+	.label-text {
+		font-size: $uni-font-size-maro;
+		color: $uni-text-color-white;
+	}
+	.district-label-default {
+		background-color: $uni-bg-color-red;
+	}
+	.district-label-default-text {
+		
+	}
+	.district-label {
+		background-color: $uni-bg-color-blue;
+	}
+	.district-label-text {
+	}
+	.district {
+		
+	}
+	.district-text {
+		font-size: $uni-font-size-base;
+	}
+	.detail-address-section {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		
+		margin-top: $uni-spacing-row-sm;
+	}
+	.detail-address {
+		
+	}
+	.detail-address-text {
+		font-size: $uni-font-size-lg;
+		font-weight: bold;
+	}
+	.consignee-section {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		
+		margin-top: $uni-spacing-row-sm;
+	}
+	.consignee-name {
+		
+	}
+	.consignee-name-text {
+		font-size: $uni-font-size-base;
+	}
+	.consignee-phone {
+		
+	}
+	.consignee-phone-text {
+		font-size: $uni-font-size-base;
+	}
+	
+	
+	// 支付方式
+	.payment-method-section {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		
+		padding: $uni-spacing-row-lg $uni-spacing-col-lg;
+		margin-top: $uni-spacing-row-base;
+		
+		background-color: $uni-bg-color;
+	}
+	.payment-method-label {
+		
+	}
+	.payment-method-label-text {
+		font-size: $uni-font-size-base;
+	}
+	.payment-method {
+		/* #ifndef APP-PLUS-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+	}
+	.payment-method-text {
+		font-size: $uni-font-size-base;
+		margin-right: $uni-spacing-col-base;
+	}
+	
+	
+	.order-list {
+		
+	}
+	.order {
+		margin-top: $uni-spacing-row-base;
+	}
+</style>

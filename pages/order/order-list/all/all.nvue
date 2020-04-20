@@ -7,7 +7,7 @@
 </template>
 
 <script>
-	import data from '@/data/order/all/all.js';
+	import data from '@/data/order/order-list/all/all.js';
 	
 	export default {
 		data() {
