@@ -1,0 +1,19 @@
+function onPageScroll(event, ins) {
+	var scrollTop = event.detail.scrollTop;
+	
+	var nav_bar_opacity_duration = 150;
+	
+	ins.selectComponent('#nav-bar').setStyle({
+		opacity: scrollTop/nav_bar_opacity_duration
+	})
+	
+	ins.selectComponent('#nav-bar-left').setStyle({
+		opacity: scrollTop<nav_bar_opacity_duration?0:1
+	})
+}
+
+
+
+module.exports = {
+	onPageScroll: onPageScroll
+}

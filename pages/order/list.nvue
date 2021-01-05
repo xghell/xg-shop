@@ -1,0 +1,199 @@
+<template>
+	<view class="column-start-stretch page">
+		<view class="row-between-start bg-color-white padding-v-side-xl border-bottom-left-radius-xl border-bottom-right-radius-xl">
+			<view class="column-between-center flex-1" v-for="(tabTitleItem, tabTitleItemIndex) of tabTitles" :key="tabTitleItemIndex" @tap="onTabTitleTap(tabTitleItemIndex)">
+				<text class="font-size-lg">{{tabTitleItem.title}}</text>
+				
+				<view v-if="currentTabTitleIndex === tabTitleItemIndex" class="title-line margin-top-xs"></view>
+			</view>
+		</view>
+		<swiper class="flex-1" :duration="300" :current="currentTabTitleIndex" @change="onTabChange">
+			<swiper-item v-for="(tab, tabIndex) of tabOrders" :key="tabIndex">
+				<xg-list class="swiper-item-list">
+					<xg-list-item v-for="(order, orderIndex) of tab" :key="orderIndex">
+						<navigator hover-class="none" class="bg-color-white margin-top-base padding-xl border-radius-xl" url="/pages/order/detail">
+							<view class="row-between-center">
+								<view class="row-center-center">
+									<image class="img-size-base" :src="order.logo" mode="aspectFit"></image>
+									<text class="font-size-lg">{{order.name}}</text>
+								</view>
+								<view class="trash-icon" @tap.prevent.stop="onTrashTap(orderIndex, $event)">
+									<uni-icons :size="12" type="trash"></uni-icons>
+								</view>
+							</view>
+							
+							
+							<view class="row-start-center margin-v-side-xl">
+								<scroll-view  class="row-start-center order-scroll-view" :scroll-x="true" >
+									<view class="row-start-center">
+										<view :class="{'flex-1': order.products.length === 1}" class="row-start-center" v-for="(product, productIndex) of order.products" :key="productIndex">
+											<image class="margin-right-base product-image" :src="product.image" mode=""></image>
+											<view v-if="order.products.length === 1" class="flex-1 margin-side-lg">
+												<text class="lines-2 font-size-base">{{product.title}}</text>
+											</view>
+										</view>
+									</view>
+								</scroll-view>
+								
+								<view class="column-center-center padding-left-base">
+									<xg-money camel :money="order.amount"></xg-money>
+									<text class="font-size-sm margin-top-xs" v-if="order.totalCount > 1">共{{order.totalCount}}件</text>
+								</view>
+							</view>
+							
+							
+							<view class="row-between-center">
+								<view class="order-button-common">
+									<text class=" order-button-text-common">退换/售后</text>
+								</view>
+								<view class="order-button-common">
+									<text class=" order-button-text-common">卖了换钱</text>
+								</view>
+								<view class="order-button-common">
+									<text class=" order-button-text-common">评价晒单</text>
+								</view>
+								<view class="order-button-common">
+									<text class=" order-button-text-common buy-again-button buy-again-button-text">再次购买</text>
+								</view>
+							</view>
+						</navigator>
+						
+					</xg-list-item>
+				</xg-list>
+			</swiper-item>
+		</swiper>
+	</view>
+</template>
+
+<script>
+	import data from '@/data/order/list';
+	import config from './list/config';
+	
+	export default {
+		mixins: [config],
+		data() {
+			return {
+				tabOrders: []
+			}
+		},
+		async created() {
+			this.tabOrders = new Array(this.tabTitles.length).fill([]);
+			this.loadOrders();
+		},
+		methods: {
+			async loadOrders(index=0) {
+				const ordersPromise = data.orders();
+				
+				const orders = await ordersPromise;
+				orders.forEach(order => {
+					let amount = 0
+					let totalCount = 0;
+					
+					order.products.forEach(product => {
+						const price = parseFloat(product.price);
+						const count = parseInt(product.count)
+						amount += price * count;
+						totalCount += count;
+					})
+					
+					order.amount = amount;
+					order.totalCount = totalCount;
+				})
+				
+				this.$set(this.tabOrders, index, this.tabOrders[index].concat(orders))
+			},
+			
+			onTabTitleTap(index) {
+				this.setCurrentTabTitleIndex(index);
+			},
+			onTabChange(e) {
+				const index = e.detail.current;
+				
+				this.setCurrentTabTitleIndex(index);
+				
+				this.loadOrders(index);
+			},
+			onTrashTap(index, e) {
+				e.stopPropagation();
+				
+				uni.showModal({
+					title: '确认删除此订单？',
+					content: '删除后不可恢复！',
+					showCancel: true,
+					cancelText: '取消',
+					confirmText: '删除',
+					success: res => {
+						if (res.confirm === true) {
+							this.tabOrders[this.currentTabTitleIndex].splice(index, 1);
+						}
+						
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+				
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page {
+		/* #ifdef H5 */
+		@include position(fixed, var(--window-top) 0 0 0);
+		/* #endif */
+		/* #ifndef H5 */
+		@include position(fixed, 0 0 0 0);
+		/* #endif */
+	}
+	
+	.title-line {
+		width: 60rpx;
+		height: 8rpx;
+		
+		background-image: linear-gradient(to right, rgba($uni-color-red, 1), rgba($uni-color-red, 0.4));;
+	}
+	
+	.swiper-item-list {
+		@include position(absolute, 0 0 0 0);
+	}
+	
+	
+	.trash-icon {
+		@include flex-layout(row, center, center);
+		@include border-radius($uni-border-radius-circle);
+		width: $uni-img-size-base;
+		height: $uni-img-size-base;
+		
+		background-color: $uni-color-grey;
+	}
+	
+	
+	.order-scroll-view {
+		width: 0;
+		flex: 1;
+	}
+	.product-image {
+		width: 200rpx;
+		height: 200rpx;
+	}
+	
+	.order-button-common {
+		@include flex-layout(row, center, center);
+		@include border(1px solid $uni-color-greyblack);
+		
+		@include border-radius($uni-border-radius-rect-circle);
+		
+		width: 150rpx;
+		height: 60rpx;
+	}
+	.order-button-text-common {
+		font-size: $uni-font-size-base;
+	}
+	.buy-again-button {
+		border-color: $uni-color-red;
+	}
+	.buy-again-button-text {
+		color: $uni-color-red;
+	}
+</style>

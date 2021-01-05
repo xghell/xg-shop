@@ -1,0 +1,204 @@
+<template>
+	<view class="page">
+		<!-- #ifdef MP-WEIXIN -->
+		<uni-nav-bar fixed status-bar>
+			<view slot="left" class="nav-bar-search-bar" :style="{width: searchBarWidth + 'px'}">
+				<tpl-search-bar cancelButton="none" :radius="10000" />
+			</view>
+			
+		</uni-nav-bar>
+		<!-- #endif -->
+		
+		<view class="page-content">
+			<xg-tab-title class="cate-tab-title-list" :vertical="true">
+				<xg-tab-title-item v-for="(cateTabTitle, cateTabTitleIndex) of cateTabTitles" :key="cateTabTitleIndex">
+					<view class="cate-tab-title" :class="{'cate-tab-title-selected': titleCurrentIndex === cateTabTitleIndex, 'cate-tab-title-last': (titleCurrentIndex - 1) === cateTabTitleIndex, 'cate-tab-title-next': (titleCurrentIndex + 1) === cateTabTitleIndex}" @tap="cateTitleTap(cateTabTitleIndex)">
+						<text class="cate-tab-title-text" :class="{'cate-tab-title-text-selected': titleCurrentIndex === cateTabTitleIndex}">{{cateTabTitle}}</text>
+					</view>
+				</xg-tab-title-item>
+			</xg-tab-title>
+			
+			<xg-list class="bg-color-white cate-tab-content" :class="{'border-top-left-radius-common': titleCurrentIndex !== 0}" :scroll-y="true" :show-scrollbar="false">
+				<xg-list-item v-for="(cate, cate_index) of cates" :key="cate_index">
+					<view class="cate_box" v-if="titleCurrentIndex === cate_index">
+						<swiper v-if="cate.slideshows&&(1 < cate.slideshows.length)" class="slideshow-swiper" :indicator-dots="true" :circular="true" :autoplay="true" :interval="5000" :duration="500">
+							<swiper-item v-for="(slideshow, slidshowIndex) of cate.slideshows" :key="slidshowIndex">
+								<navigator class="slideshow-item" hover-class="none" :url="slideshow.url">
+									<image class="slideshow-item-image" :src="slideshow.image" mode=""></image>
+								</navigator>
+							</swiper-item>
+						</swiper>
+						<navigator v-else class="slideshow-item" hover-class="none" :url="cate.slideshows[0].url">
+							<image class="slideshow-item-image" :src="cate.slideshows[0].image" mode=""></image>
+						</navigator>
+						
+						
+						<view class="cate-list">
+							<view class="margin-top-lg cate-level1" v-for="(cate_level1, cate_level1_index) of cate.children" :key="cate_level1_index">
+								<text class="font-size-lg">{{cate_level1.name}}</text>
+								<uni-grid :column="3" :square="false" :highlight="false" :showBorder="false">
+									<uni-grid-item v-for="(cate_level2, cate_level2_index) of cate_level1.children" :key="cate_level2_index">
+										<navigator class="margin-top-base cate-level2" hover-class="none" url="/pages/product/list">
+											<image class="margin-top-base border-radius-lg cate-level2-image" :src="cate_level2.image" mode=""></image>
+											<text class="font-size-base margin-top-base">{{cate_level2.name}}</text>
+										</navigator>
+									</uni-grid-item>
+								</uni-grid>
+							</view>
+						</view>
+					</view>
+			
+				</xg-list-item>
+			</xg-list>
+		</view>
+		
+		
+		<!-- #ifdef H5 -->
+		<view class="tab-bar"></view>
+		<!-- #endif -->
+	</view>
+</template>
+
+<script>
+	import data from '@/data/cate/cate';
+	import config from './config';
+	
+	export default {
+		mixins: [config],
+		data() {
+			return {
+				titleCurrentIndex: 0,
+				cateTabTitles: [],
+				cates: [],
+			};
+		},
+		async onLoad() {
+			const catesPromise = data.cates();
+			const cateTabTitlesPromise = data.cateTabTitles();
+			
+			this.cateTabTitles = await cateTabTitlesPromise;
+			this.cates = await catesPromise;
+		},
+		methods: {
+			cateTitleTap(index) {
+				this.titleCurrentIndex = index;
+			},
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	/* #ifdef H5 */
+	.tab-bar {
+		height: var(--window-bottom);
+	}
+	/* #endif */
+	
+	
+	.page {
+		position: fixed;
+		top: 0;
+		/* #ifdef H5 */
+		top: var(--window-top);
+		/* #endif */
+		right: 0;
+		bottom: 0;
+		left: 0;
+		
+		@include flex-layout(column);
+	}
+	
+	.nav-bar {
+		/* #ifndef APP-NVUE */
+		z-index: 1000;
+		/* #endif */
+	}
+	.nav-bar-search-bar {
+		// width: 500rpx;
+	}
+	
+	.page-content {
+		flex: 1;
+	}
+	
+	$border-radius-common: 30rpx;
+	.border-top-left-radius-common {
+		border-top-left-radius: $border-radius-common;
+	}
+	// .border-top-right-radius-common {
+	// 	border-top-right-radius: $border-radius-common;
+	// }
+	// 左侧标题区
+	$tab-title-width: 200rpx;
+	$tab-content-width: 751rpx - $tab-title-width;
+	
+	.cate-tab-title-list {
+		width: $tab-title-width;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		
+		background-color: $uni-color-white;
+	}
+	.cate-tab-title {
+		@include flex-layout(row, center, center);
+		
+		height: 100rpx;
+		background-color: $page-bg-color;
+	}
+	.cate-tab-title-text {
+		font-size: $uni-font-size-lg;
+	}
+	.cate-tab-title-last {
+		border-bottom-right-radius: $border-radius-common;
+	}
+	.cate-tab-title-next {
+		border-top-right-radius: $border-radius-common;
+	}
+	.cate-tab-title-selected {
+		background-color: $uni-color-white;
+	}
+	.cate-tab-title-text-selected {
+		font-size: $uni-font-size-xl;
+		font-weight: bold;
+	}
+	
+	// 右侧内容区
+	.cate-tab-content {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		width: $tab-content-width;
+		
+		border-top-right-radius: $border-radius-common;
+	}
+	
+	.cate_box {
+		margin: $uni-spacing-row-base $uni-spacing-col-lg;
+	}
+	
+	$slideshow-item-image-width: 750rpx - $tab-title-width - 2*$uni-spacing-col-lg;
+	$slideshow-item-image-height: $slideshow-item-image-width*7/16;
+	.slideshow-swiper {
+		height: $slideshow-item-image-height;
+	}
+	.slideshow-item {
+		@include flex-layout(row, center, center);
+	}
+	.slideshow-item-image {
+		width: $slideshow-item-image-width;
+		height: $slideshow-item-image-height;
+	}
+	
+	.cate-list {}
+	.cate-level1 {}
+	.cate-level2 {
+		@include flex-layout(column, center, center);
+	}
+	.cate-level2-image {
+		width: 150rpx;
+		height: 150rpx;
+	}
+</style>

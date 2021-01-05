@@ -12,9 +12,6 @@
  * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
  */
 
-// 引入自定义scss变量
-@import "@/common/xg.scss";
-
 /* 颜色变量 */
 
 /* 行为相关颜色 */
@@ -37,35 +34,35 @@ $uni-bg-color-hover:#f1f1f1;//点击状态颜色
 $uni-bg-color-mask:rgba(0, 0, 0, 0.4);//遮罩颜色
 
 /* 边框颜色 */
-$uni-border-color: #c8c7cc;
+$uni-border-color:#E5E5E5;
 
 /* 尺寸变量 */
 
 /* 文字尺寸 */
-$uni-font-size-sm:28rpx;
-$uni-font-size-base:32rpx;
-$uni-font-size-lg:36rpx;
+$uni-font-size-sm:24rpx;
+$uni-font-size-base:28rpx;
+$uni-font-size-lg:32rpx;
 
 /* 图片尺寸 */
-$uni-img-size-sm:80rpx;
-$uni-img-size-base:140rpx;
-$uni-img-size-lg:200rpx;
+$uni-img-size-sm:40rpx;
+$uni-img-size-base:52rpx;
+$uni-img-size-lg:80rpx;
 
 /* Border Radius */
-$uni-border-radius-sm: 10rpx;
-$uni-border-radius-base: 20rpx;
-$uni-border-radius-lg: 30rpx;
+$uni-border-radius-sm: 4rpx;
+$uni-border-radius-base: 6rpx;
+$uni-border-radius-lg: 12rpx;
 $uni-border-radius-circle: 50%;
 
 /* 水平间距 */
-$uni-spacing-row-sm: 12rpx;
-$uni-spacing-row-base: 24rpx;
-$uni-spacing-row-lg: 36rpx;
+$uni-spacing-row-sm: 10rpx;
+$uni-spacing-row-base: 20rpx;
+$uni-spacing-row-lg: 30rpx;
 
 /* 垂直间距 */
-$uni-spacing-col-sm: 10rpx;
-$uni-spacing-col-base: 20rpx;
-$uni-spacing-col-lg: 30rpx;
+$uni-spacing-col-sm: 8rpx;
+$uni-spacing-col-base: 16rpx;
+$uni-spacing-col-lg: 24rpx;
 
 /* 透明度 */
 $uni-opacity-disabled: 0.3; // 组件禁用态的透明度
@@ -77,3 +74,6 @@ $uni-color-subtitle: #555555; // 二级标题颜色
 $uni-font-size-subtitle:36rpx;
 $uni-color-paragraph: #3F536E; // 文章段落颜色
 $uni-font-size-paragraph:30rpx;
+
+
+@import '@/common/xg.scss';

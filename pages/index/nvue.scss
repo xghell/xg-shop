@@ -1,0 +1,134 @@
+$nav-bar-fixed-height: 44px; //必须与js中定义的变量值相等
+$nav-bar-movable-height: 44px; //必须与js中定义的变量值相等
+$nav-bar-height: $nav-bar-fixed-height + $nav-bar-movable-height;
+
+.page {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+.nav-bar-poster {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	
+	opacity: 0;
+}
+
+.refresh-placeholder {
+	height: 100rpx;
+}
+.refresh-section {
+	@include flex-layout(row, center, flex-end);
+	
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: $nav-bar-height;
+}
+
+.page-list {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	
+	// @include border(2px solid red)
+}
+
+// 页面顶部背景
+.page-top-bg {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+}
+
+
+// 导航栏部分
+.nav-bar-placeholder {
+	height: $nav-bar-movable-height + $nav-bar-fixed-height;
+}
+.nav-bar-section {
+	position: fixed;
+	top: 0;
+	
+	// @include border(2px, solid, red)
+}
+.nav-bar {
+	
+}
+.nav-bar-bg {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	
+	// background-color: blue;
+	// @include border(1px, solid, red)
+	overflow: hidden;
+}
+.nav-bar-bg-dynamic {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	
+	opacity: 0;
+	// background-color: blue;
+	// @include border(1px, solid, red)
+	overflow: hidden;
+}
+.nav-bar-fixed {
+	height: $nav-bar-fixed-height;
+	@include flex-layout(row, space-between, center)
+}
+.nav-bar-left {
+	// @include border(1px, solid, blue)
+}
+.nav-bar-left-item {
+	margin-left: $uni-spacing-col-lg;
+}
+.nav-bar-left-icon {
+	width: $uni-img-size-base;
+	height: $uni-img-size-base;
+}
+.nav-bar-right {
+	// @include border(1px, solid, green);
+	
+	@include flex-layout(row, center, center);
+}
+.nav-bar-right-item {
+	margin-right: $uni-spacing-col-lg;
+}
+.nav-bar-right-image-wrap {
+	position: relative;
+}
+.nav-bar-right-image {
+	width: 30px;
+	height: 30px;
+}
+.nav-bar-right-image-text {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	
+	text-align: center;
+	padding-bottom: 5px;
+}
+.nav-bar-movable {
+	@include flex-layout(column)
+	height: $nav-bar-movable-height;
+	
+	margin: 0 $uni-spacing-col-lg;
+}
+
+
+

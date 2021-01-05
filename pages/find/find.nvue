@@ -1,0 +1,154 @@
+<template>
+	<view class="page">
+		<!-- #ifdef MP -->
+		<view class="nav-bar">
+			<uni-status-bar></uni-status-bar>
+			<uni-nav-bar :border="false" backgroundColor="rgba(0,0,0,0)">
+				<view slot="left" class="">
+					<uni-icons size="24" color="#FFFFFF" type="person"></uni-icons>
+				</view>
+				
+				<view class="nav-bar-title">
+					<image class="nav-bar-title-image" src="/static/find/nav-bar-title-icon.png" mode="heightFix"></image>
+				</view>
+			</uni-nav-bar>
+		</view>
+		<!-- #endif -->
+		
+		
+		<image class="page-top-bg" :src="navBarBg" mode="widthFix"></image>
+		
+		<uni-status-bar></uni-status-bar>
+		<view class="nav-bar-placeholder"></view>
+		
+		<view class="row-around-center">
+			<view class="flex-1 row-around-center padding-lg" v-for="(title, titleIndex) of tabTitles" :key="titleIndex" @tap="onTabTitleTap(title.index)">
+				<text class="font-size-xl text-color-white">{{title.title}}</text>
+			</view>
+		</view>
+		
+		<swiper class="position-relative flex-1" :indicator-dots="false" :autoplay="false" :duration="300" :current-item-id="currentTabIndex" @change="onSwiperChange">
+			<swiper-item item-id="attention">
+				<tab-attention v-if="tabSwitchs['attention']" class="swiper-item"></tab-attention>
+			</swiper-item>
+			<swiper-item class="swiper-item" item-id="video">
+				<tab-video v-if="tabSwitchs['video']"></tab-video>
+			</swiper-item>
+			<swiper-item class="swiper-item" item-id="live">
+				<tab-live v-if="tabSwitchs['live']"></tab-live>
+			</swiper-item>
+		</swiper>
+		
+		<view class="nav-bar-bg">
+			<image class="nav-bar-bg-img" :src="navBarBg" mode="widthFix"></image>
+		</view>
+		
+		<!-- #ifndef APP-NVUE -->
+		<view class="tab-bar-placeholder"></view>
+		<!-- #endif -->
+	</view>
+</template>
+
+<script>
+	import data from '@/data/find/find';
+	import config from './config';
+	
+	import tabAttention from './tab-attention/tab-attention';
+	import tabVideo from './tab-video/tab-video';
+	import tabLive from './tab-live/tab-live';
+	
+	export default {
+		mixins: [config],
+		components: {
+			tabAttention,
+			tabVideo,
+			tabLive
+		},
+		data() {
+			return {
+				tabSwitchs: {attention: true},
+				
+				navBarBg: '',
+				
+				currentTabIndex: '',
+			};
+		},
+		async created() {
+			this.currentTabIndex = this.tabTitles[0].index;
+			
+			const navBarBgPromise = data.navBarBg();
+			
+			
+			this.navBarBg = await navBarBgPromise;
+		},
+		methods: {
+			onTabTitleTap(index) {
+				this.currentTabIndex = index;
+			},
+			
+			onSwiperChange(e) {
+				const currentItemId = e.detail.currentItemId;
+				
+				if (!this.tabSwitchs[currentItemId]) {
+					this.$set(this.tabSwitchs, currentItemId, true);
+				}
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page {
+		@include position(fixed, 0 0 0 0);
+	}
+	
+	/* #ifdef MP */
+	.nav-bar {
+		@include position(fixed, 0 0 none 0);
+		
+		z-index: 1000;
+	}
+	.nav-bar-title {
+		@include position(absolute, none 0 none 0);
+		
+		@include flex-layout(row);
+	}
+	.nav-bar-title-image {
+		height: 25px;
+	}
+	/* #endif */
+	
+	/* #ifndef APP-NVUE */
+	.tab-bar-placeholder {
+		height: var(--window-bottom);
+	}
+	/* #endif */
+	
+	$nav-bar-height: 44px;
+	.nav-bar-bg {
+		@include position(fixed, 0 0 none 0);
+		
+		overflow: hidden;
+		height: $nav-bar-height;
+	}
+	.nav-bar-bg-img {
+		@include position(absolute, 0 none none none);
+		width: 750rpx;
+	}
+	.page-top-bg {
+		@include position(absolute, 0 none none none);
+		
+		width: 750rpx;
+		height: 1000rpx;
+	}
+	.nav-bar-placeholder {
+		height: $nav-bar-height;
+	}
+	
+	
+	.swiper-item {
+		@include position(absolute, 0 0 0 0);
+		
+		
+	}
+</style>

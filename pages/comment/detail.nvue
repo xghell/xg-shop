@@ -1,0 +1,121 @@
+<template>
+	<view>
+		<view class="row-around-center padding-lg">
+			<image class="border-radius-lg product-image" :src="productImage" mode="aspectFit"></image>
+			<view class="flex-1 margin-left-lg">
+				<text class="lines-2 font-size-lg">{{productTitle}}</text>
+			</view>
+		</view>
+		
+		<view class="bg-color-white border-radius-xl padding-xl">
+			<view class="row-start-center">
+				<image class="img-size-lg" :src="userInfo.avatar||'/static/common/default-avatar.png'" mode="aspectFit"></image>
+				<text class="font-size-base margin-left-lg">{{userInfo.name}}</text>
+			</view>
+			
+			<view class="row-start-center margin-top-lg">
+				<uni-rate :size="toPx(UNI_FONT_SIZE_LG)" :readonly="true" :active-color="UNI_COLOR_RED" :value="productRate"></uni-rate>
+				<text class="lines-1 font-size-base text-color-greyblack margin-left-lg">{{productSku}}</text>
+			</view>
+			<view class="margin-top-base">
+				<text v-if="!comment.content" class="font-size-lg">您没有填写评价内容</text>
+				<text class="font-size-lg">{{comment.content}}</text>
+			</view>
+			
+			<view v-if="hasComment&&comment">
+				<view v-for="(media, mediaIndex) of comment.medias" class="row-center-center" :key="mediaIndex">
+					<image v-if="media.type === 'image'" class="media" :src="media.src" mode="widthFix"></image>
+					<video v-if="media.type === 'video'" class="media" src="media.src" ></video>
+				</view>
+			</view>
+			
+			<view v-if="hasAdditionnalComment" class="margin-top-base">
+				<text class="font-size-xl font-weight-bold">购买{{additionalComment.days}}天后追评</text>
+				<text class="font-size-lg margin-top-sm">{{additionalComment.content}}</text>
+			</view>
+			
+			<view v-if="hasAdditionnalComment&&additionalComment">
+				<view v-for="(media, mediaIndex) of additionalComment.medias" class="row-center-center" :key="mediaIndex">
+					<image v-if="media.type === 'image'" class="media" :src="media.src" mode="widthFix"></image>
+					<video v-if="media.type === 'video'" class="media" src="media.src" ></video>
+				</view>
+			</view>
+		</view>
+		
+		<view class="bg-color-white border-radius-xl padding-xl margin-top-lg">
+			<text class="font-size-xl font-weight-bold">0条回复</text>
+			
+			<view class="row-center-center">
+				<image class="no-comment-image" src="/static/comment/no-comment.png" mode="aspectFit"></image>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import data from '@/data/comment/detail';
+	
+	import mixin from '@/common/mixin';
+	
+	export default {
+		mixins: [mixin],
+		data() {
+			return {
+				userInfo: {},
+				productSku: '',
+				
+				productImage: '',
+				productTitle: '',
+				productRate: '',
+				
+				hasComment: false,
+				comment: {},
+				
+				hasAdditionnalComment: false,
+				additionalComment: {}
+			}
+		},
+		async onLoad(options) {
+			if (options.comment) {
+				const comment = JSON.parse(decodeURIComponent(options.comment));
+				
+				this.productImage = comment.image;
+				this.productTitle = comment.title;
+				this.productRate = comment.productRate;
+				
+				this.hasComment = comment.has_comment;
+				this.comment = comment.comment;
+				
+				this.hasAdditionnalComment = comment.has_additional_comment;
+				this.additionalComment = comment.additional_comment;
+			}
+			
+			
+			const userInfoPromise = data.userInfo();
+			const productSkuPromise = data.productSku();
+			
+			this.userInfo = await userInfoPromise;
+			this.productSku = await productSkuPromise;
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.product-image {
+		width: 150rpx;
+		height: 150rpx;
+	}
+	
+	.no-comment-image {
+		width: 250rpx;
+		height: 250rpx;
+	}
+	
+	.media {
+		width: 700rpx;
+		
+		border-radius: $uni-border-radius-xl;
+		
+		margin-top: $uni-spacing-row-lg;
+	}
+</style>

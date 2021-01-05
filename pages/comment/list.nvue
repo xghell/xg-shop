@@ -1,0 +1,214 @@
+<template>
+	<view class="page column-around-stretch">
+		<view class="row-around-stretch bg-color-white">
+			<view v-for="(tabTitle, tabTitleIndex) of tabTitles" :key="tabTitleIndex" class="flex-1 column-start-center padding-base" @tap="onTabTitleTap(tabTitleIndex)">
+				<text class="font-size-lg margin-bottom-sm">{{tabTitle.title}}</text>
+				
+				<view v-if="tabTitleIndex === currentTabIndex" class="tab-title-line"></view>
+			</view>
+		</view>
+		
+		<view class="flex-1 column-start-stretch">
+			<swiper class="flex-1" :indicator-dots="false" :autoplay="false" :duration="300" :current="currentTabIndex" @change="onSwiperChange">
+				<swiper-item>
+					<view class="row-center-stretch  swiper-item">
+						<xg-list class="flex-1">
+							<xg-list-item v-for="(comment, commentIndex) of commentingList" :key="commentIndex">
+								<view :class="{'border-top-left-radius-xl': commentIndex !== 0, 'border-top-right-radius-xl': commentIndex !== 0, 'border-bottom-left-radius-xl': true, 'border-bottom-right-radius-xl': true}" class="bg-color-white margin-bottom-base padding-lg">
+									<!-- 店铺信息 -->
+									<view class="row-start-center">
+										<image class="img-size-sm margin-right-sm" :src="comment.shop.logo" mode="aspectFit"></image>
+										<text class="font-size-lg">{{comment.shop.name}}</text>
+										<uni-icons :size="12" type="arrowright"></uni-icons>
+									</view>
+									
+									<!-- 产品信息 -->
+									<navigator class="row-center-stretch margin-v-side-base" hover-class="none" url="/pages/product/detail">
+										<image class="border-radius-lg product-image" :src="comment.image" mode="aspectFit"></image>
+										<view class="flex-1 margin-left-base">
+											<view class="">
+												<text class="lines-2 font-size-base">{{comment.title}}</text>
+											</view>
+											
+											<view class="row-end-center">
+												<view class="border-solid-1 border-color-red border-radius-rect-circle margin-top-base" @tap.prevent.stop="onAddCommentTap(comment.image, $event)">
+													<text class="font-size-base text-color-red  padding-v-side-sm padding-side-xl">评价</text>
+												</view>
+											</view>
+										</view>
+									</navigator>
+								</view>
+							</xg-list-item>
+						</xg-list>
+					</view>
+				</swiper-item>
+				
+				<swiper-item>
+					<view class="row-center-stretch  swiper-item">
+						<xg-list class="flex-1">
+							<xg-list-item v-for="(comment, commentIndex) of commentedList" :key="commentIndex">
+								<view :class="{'border-top-left-radius-xl': commentIndex !== 0, 'border-top-right-radius-xl': commentIndex !== 0, 'border-bottom-left-radius-xl': true, 'border-bottom-right-radius-xl': true}" class="bg-color-white margin-bottom-base padding-lg">
+									<!-- 店铺信息 -->
+									<view class="row-start-center">
+										<image class="img-size-sm margin-right-sm" :src="comment.shop.logo" mode="aspectFit"></image>
+										<text class="font-size-lg">{{comment.shop.name}}</text>
+										<uni-icons :size="12" type="arrowright"></uni-icons>
+									</view>
+									
+									<!-- 产品信息 -->
+									<navigator hover-class="none" url="/pages/product/detail">
+										<view class="row-center-stretch margin-v-side-base">
+											<image class="border-radius-lg product-image" :src="comment.image" mode="aspectFit"></image>
+											<view class="flex-1 margin-left-base">
+												<view class="lines-1">
+													<text class="font-size-base">{{comment.title}}</text>
+												</view>
+												<view class="row-start-center margin-top-base" @tap.prevent.stop="onCommentDetailTap(comment, $event)">
+													<text class="font-size-base margin-right-base">评分</text>
+													<uni-rate :readonly="true" :size="toPx(UNI_FONT_SIZE_BASE)*1.2" :active-color="UNI_COLOR_RED" :value="comment.comment.rate"></uni-rate>
+												</view>
+											</view>
+										</view>
+									</navigator>
+									
+									
+									<!-- 评论信息 -->
+									<view class="column-around-stretch" @tap="onCommentDetailTap(comment, $event)">
+										<view class="column-around-stretch">
+											<text v-if="comment.comment&&comment.comment.content" class="font-size-base lines-1">{{comment.comment.content}}</text>
+											<text v-else class="font-size-base">您没有填写评价内容</text>
+										</view>
+										<text v-if="comment.has_additional_comment"  class="font-size-base text-color-greyblack">已追评</text>
+									</view>
+									
+									<view class="row-end-center margin-top-lg">
+										<view v-if="!comment.has_logistics_comment" class="border-solid-1 border-color-red border-radius-rect-circle padding-v-side-sm padding-side-lg" @tap="onLogisticsCommentTap">
+											<text class="font-size-base text-color-red">评价物流</text>
+										</view>
+										<view v-if="!comment.has_additional_comment" class="border-solid-1 border-color-black border-radius-rect-circle padding-v-side-sm padding-side-lg margin-left-lg" @tap="onAdditionCommentTap(comment)">
+											<text class="font-size-base">追评</text>
+										</view>
+									</view>
+								</view>
+							</xg-list-item>
+						</xg-list>
+					</view>
+				</swiper-item>
+				
+			</swiper>
+		</view>
+	</view>
+</template>
+
+<script>
+	import data from '@/data/comment/list';
+	import config from './list/config';
+	
+	import mixin from '@/common/mixin';
+	
+	export default {
+		mixins: [mixin, config],
+		data() {
+			return {
+				commentingList: [],
+				
+				commentedList: []
+			};
+		},
+		async onLoad() {
+			const commentedListPromise = data.commentedList();
+			const commentingListPromise = data.commentingList();
+			
+			this.commentingList = await commentingListPromise;
+			this.commentedList = await commentedListPromise;
+		},
+		methods: {
+			onSwiperChange(e) {
+				const current = e.detail.current;
+				
+				this.setCurrentTab(current);
+			},
+			onTabTitleTap(index) {
+				this.setCurrentTab(index);
+			},
+			
+			// 添加评论
+			onAddCommentTap(image, e) {
+				e.stopPropagation(); // TODO nvue 取消冒泡
+				
+				uni.navigateTo({
+					url: '/pages/comment/add?image=' + image,
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			
+			// 评论详情
+			onCommentDetailTap(comment, e) {
+				e.stopPropagation(); // TODO nvue 取消冒泡
+				
+				uni.navigateTo({
+					url: '/pages/comment/detail?comment=' + encodeURIComponent(JSON.stringify(comment)),
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			
+			//评价物流
+			onLogisticsCommentTap(e) {
+				uni.navigateTo({
+					url: '/pages/comment/logistic',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			//追加评论
+			onAdditionCommentTap(comment) {
+				const options = {
+					hasComment: comment.has_comment,
+					productRate: comment.comment ? comment.comment.rate : 5,
+					productImage: comment.image,
+					productTitle: comment.title
+				}
+				
+				
+				uni.navigateTo({
+					url: '/pages/comment/addition?comment=' + encodeURIComponent(JSON.stringify(options)),
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			}
+		},
+	}
+</script>
+
+<style lang="scss">
+	.page {
+		@include position(fixed, 0 0 0 0);
+		
+		/* #ifdef H5 */
+		top: var(--window-top)
+		/* #endif */
+	}
+	
+	.tab-title-line {
+		width: 80rpx;
+		height: 8rpx;
+		
+		// background-color: $uni-color-red;
+		background-image: linear-gradient(to right,rgba($uni-color-red, 1),rgba($uni-color-red, 0.4));
+	}
+	
+	.swiper-item {
+		@include position(absolute, 0 0 0 0);
+	}
+	
+	.product-image {
+		width: 200rpx;
+		height: 200rpx;
+	}
+</style>

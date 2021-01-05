@@ -1,0 +1,232 @@
+<template>
+	<!-- #ifdef MP -->
+	<page-meta @scroll="wxs.onPageScroll"></page-meta>
+	<!-- #endif -->
+	  
+	<tpl-product-waterfall ref="product-list" :load-more-status="loadMoreStatus" :products="products" @loadmore="onLoadmore">
+		<view class="">
+			<uni-status-bar></uni-status-bar>
+			<view class="nav-bar-placeholder"></view>
+			
+			<image class="nav-bar-bg-image" :src="navBarBg" mode="widthFix"></image>
+			
+			<!-- #ifndef H5 -->
+			<view class="nav-bar" id="nav-bar" ref="nav-bar">
+				<uni-nav-bar :status-bar="true" :border="false" background-color="rgba(0,0,0,0)" title="我的">
+					<view slot="left" id="nav-bar-left" ref="nav-bar-left" class="">
+						<image class="border-radius-circle margin-left-base nav-bar-left-image" :src="userInfo.avatar" mode=""></image>
+					</view>
+					<!-- #ifndef MP-WEIXIN -->
+					<view slot="right" ref="nav-bar-right" class="row-center-center">
+						<uni-icons class="margin-right-base" :size="22" type="gear" @click="onNavBarGearTap"></uni-icons>
+						<uni-icons :size="22" type="chat"></uni-icons>
+					</view>
+					<!-- #endif -->
+				</uni-nav-bar>
+			</view>
+			<!-- #endif -->
+			
+			<!-- 用户信息 -->
+			<view class="row-between-center padding-side-lg">
+				<image class="img-size-lg border-radius-circle" :src="userInfo.avatar" mode="aspectFit"></image>
+				<view class="flex-1 margin-left-lg">
+					<view class="row-between-center">
+						<text class="font-size-xl text-color-white">{{userInfo.nickname}}</text>
+						<view class="row-center-center">
+							<uni-icons class="margin-right-base" :size="22" color="#FFFFFF" type="gear" @click="onNavBarGearTap"></uni-icons>
+							<uni-icons :size="22" color="#FFFFFF" type="chat"></uni-icons>
+						</view>
+					</view>
+					<view class="margin-top-sm">
+						<text class="font-size-base text-color-white">{{userInfo.username}}</text>
+					</view>
+				</view>
+			</view>
+			
+			<!-- 足迹及关注信息 -->
+			<view v-if="trackInfoList.length > 0" class="info-list">
+				<navigator class="info-item" hover-class="none" v-for="(trackItem, trackItemIndex) of trackInfoList" :key="trackItemIndex" :url="trackItem.url">
+					<text class="text-color-white info-value">{{trackItem.value}}</text>
+					<text class="text-color-white info-title">{{trackItem.name}}</text>
+				</navigator>
+			</view>
+			
+			<!-- 订单及售后信息 -->
+			<view v-if="orderInfoList.length > 0" class="bg-color-white info-list">
+				<navigator class="info-item" hover-class="none" v-for="(orderItem, orderItemIndex) of orderInfoList" :key="orderItemIndex" :url="orderItem.url">
+					<image class="info-image" :src="orderItem.image" mode="aspectFit"></image>
+					<text class="info-title">{{orderItem.title}}</text>
+					<text class="info-subtitle">{{orderItem.subtitle}}</text>
+				</navigator>
+			</view>
+			
+			<!-- 钱包信息 -->
+			<view v-if="accountInfoList.length > 0" class="bg-color-white info-list">
+				<navigator class="info-item" hover-class="none" v-for="(accountItem, accountItemIndex) of accountInfoList" :key="accountItemIndex" :url="accountItem.url">
+					<view class="info-item">
+						<text v-if="accountItem.value !== ''" class="info-value">{{accountItem.value}}</text>
+						<image v-else class="info-image" :src="accountItem.image" mode="aspectFit"></image>
+					</view>
+					<text class="info-title">{{accountItem.title}}</text>
+					<text class="info-subtitle">{{accountItem.subtitle}}</text>
+				</navigator>
+			</view>
+		</view>
+	</tpl-product-waterfall>
+</template>
+
+<!-- #ifdef MP -->
+<script lang="wxs" module="wxs" src="./not-nvue.wxs"></script>
+<!-- #endif -->
+
+<script>
+	import data from '@/data/user/user';
+	
+	// #ifdef APP-NVUE
+	import nvue from './nvue.js';
+	// #endif
+	
+	const customData = {
+		page: 0
+	}
+	
+	export default {
+		// #ifdef APP-NVUE
+		mixins: [nvue],
+		// #endif
+		data() {
+			return {
+				navBarBg: '',
+				
+				userInfo: {},
+				trackInfoList: [],
+				orderInfoList: [],
+				accountInfoList: [],
+				
+				
+				loadMoreStatus: 'loading',
+				products: [],
+			};
+		},
+		async created() {
+			const navBarBgPromise = data.navBarBg();
+			const userInfoPromise = data.userInfo();
+			const trackInfoListPromise = data.trackInfoList();
+			const orderInfoListPromise = data.orderInfoList();
+			const accountInfoListPromise = data.accountInfoList();
+			
+			
+			this.accountInfoList = await accountInfoListPromise;
+			this.orderInfoList = await orderInfoListPromise;
+			this.trackInfoList = await trackInfoListPromise;
+			this.userInfo = await userInfoPromise;
+			this.navBarBg = await navBarBgPromise;
+			
+			
+			this.$nextTick(async function(){
+				this.loadMoreStatus = 'loading';
+				
+				this.loadProducts();
+				
+				// #ifdef MP
+				//兼容微信小程序这个坑货，其他小程序暂未验证
+				setTimeout(() => {
+					this.$refs['product-list'].updateWaterfallHeader();
+				}, 500);
+				// #endif
+			});
+		},
+		
+		// #ifndef APP-NVUE
+		onReachBottom() {
+			this.loadMoreProducts();
+		},
+		// #endif
+		
+		methods: {
+			onNavBarGearTap() {
+				uni.navigateTo({
+					url: '/pages/setting/list',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			
+			async loadProducts() {
+				const productsPromise = data.products(customData.page);
+				this.products.push(...(await productsPromise))
+				
+				++customData.page;
+			},
+			async loadMoreProducts() {
+				this.loadMoreStatus = 'loading';
+				
+				await this.loadProducts();
+				
+				this.$nextTick(function(){
+					this.loadMoreStatus = 'more';
+				})
+			},
+			// #ifdef APP-NVUE
+			onLoadmore(e) {
+				this.loadMoreProducts();
+			},
+			// #endif
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	$nav-bar-height: 44px;
+	.nav-bar-bg-image {
+		width: 750rpx;
+		@include position(absolute, 0 0 none 0);
+	}
+	.nav-bar-placeholder {
+		height: $nav-bar-height;
+	}
+	.nav-bar {
+		@include position(fixed, 0 0 none 0);
+		background-color: $uni-color-white;
+		opacity: 0;
+		
+		/* #ifndef APP-NVUE */
+		z-index: 10000;
+		/* #endif */
+	}
+	.nav-bar-left-image {
+		$size: $uni-img-size-base*1.1;
+		width: $size;
+		height: $size;
+	}
+	
+	.info-list {
+		@include flex-layout(row, space-around);
+		
+		border-radius: $uni-border-radius-xl;
+		margin:  0 $uni-spacing-col-lg $uni-spacing-row-lg;
+		padding: $uni-spacing-row-base $uni-spacing-col-lg;
+	}
+	.info-item {
+		@include flex-layout(column, flex-start, center);
+	}
+	.info-image {
+		width: $uni-img-size-base;
+		height: $uni-img-size-base;
+	}
+	.info-title {
+		font-size: $uni-font-size-base;
+		margin-top: $uni-spacing-row-base;
+	}
+	.info-subtitle {
+		font-size: $uni-font-size-xs;
+		margin-top: $uni-spacing-row-xs;
+	}
+	.info-value {
+		font-size: $uni-font-size-xl*1.2;
+		height: $uni-img-size-base;
+		
+		@include flex-layout(row,center,center);
+	}
+</style>

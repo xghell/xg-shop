@@ -1,0 +1,107 @@
+<template>
+	<xg-list class="page-scroll" :show-scrollbar="false">
+		<xg-list-item v-for="(cateLive, cateLiveIndex) of cateLives" :key="cateLiveIndex">
+			<!-- 分类直播商品区域 -->
+			<view class="column-center-center margin-bottom-lg">
+				<!-- 分类直播标题部分 -->
+				<view class="column-center-start padding-side-lg padding-top-lg padding-bottom-base cate-live-title-section">
+					<image class="border-top-left-radius-lg border-top-right-radius-lg cate-live-title-bg" src="/static/mock/index/nav-bar/bg-img.png" mode="widthFix"></image>
+					<text class="font-size-xl text-color-orange">{{cateLive.cate}}</text>
+					<text class="font-size-base text-color-white margin-bottom-sm">{{cateLive.desc}}</text>
+					
+					<!-- 进场按钮 -->
+					<view class="row-center-center bg-color-white border-radius-rect-circle padding-side-base padding-v-side-xs">
+						<text class="font-size-sm text-color-red">进会场</text>
+						<view class="margin-left-sm">
+							<uni-icons :size="toPx(UNI_FONT_SIZE_SM)" type="arrowright"></uni-icons>
+						</view>
+					</view>
+				</view>
+				<view class="bg-color-white cate-live-list">
+					<uni-grid :column="3" :square="false">
+						<uni-grid-item v-for="(product, productIndex) of cateLive.products" :key="productIndex">
+							<view class="position-relative row-center-stretch padding-v-side-base">
+								<!-- 直播商品 -->
+								<view class="cate-live">
+									<image class="margin-bottom-xs cate-live-image" :src="product.poster" mode=""></image>
+									<text class="lines-2 font-size-base">{{product.title}}</text>
+									<view class="margin-v-side-xs">
+										<xg-money :precision="1" :size="toPx(UNI_FONT_SIZE_XL)" :color="UNI_COLOR_RED" :money="product.price"></xg-money>
+									</view>
+									<xg-money :precision="1" :line-through="true" :size="toPx(UNI_FONT_SIZE_BASE)" :color="UNI_COLOR_GREYBLACK" :money="product.promotion_price"></xg-money>
+								</view>
+								
+								<!-- 直播图标标题 -->
+								<view class="bg-color-mask row-center-center border-radius-rect-circle cate-live-label">
+									<view class="bg-color-red padding-v-side-xs padding-side-lg border-top-left-radius-rect-circle border-bottom-left-radius-rect-circle border-bottom-right-radius-rect-circle">
+										<xg-live :pillar-color="UNI_COLOR_WHITE" :animation="false"></xg-live>
+									</view>
+									<text class="font-size-sm text-color-white margin-left-sm margin-right-lg">直播中</text>
+								</view>
+							</view>
+						</uni-grid-item>
+					</uni-grid>
+				</view>
+			</view>
+		</xg-list-item>
+	</xg-list>
+</template>
+
+<script>
+	import data from '@/data/find/tab-live/tab-live';
+	
+	
+	import mixin from '@/common/mixin';
+	
+	export default {
+		mixins: [mixin],
+		data() {
+			return {
+				cateLives: []
+			}
+		},
+		async created() {
+			const cateLivesPromise = data.cateLives();
+			
+			
+			this.cateLives = await cateLivesPromise;
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	/* #ifndef APP-NVUE */
+	.page-scroll {
+		@include position(absolute, 0 0 0 0);
+	}
+	/* #endif */
+	
+	
+	$cate-live-list-column-count: 3;
+	$cate-live-list-width: 750rpx - $uni-spacing-col-lg * 2;
+	$cate-live-image-width: $cate-live-list-width / $cate-live-list-column-count - $uni-spacing-col-lg * 2;
+	$cate-live-image-height: $cate-live-image-width;
+	.cate-live-title-section {
+		width: $cate-live-list-width;
+	}
+	.cate-live-title-bg {
+		width: $cate-live-list-width;
+		height: 150rpx;
+		
+		@include position(absolute, 0 0 none none);
+	}
+	.cate-live-list {
+		width: $cate-live-list-width;
+	}
+	.cate-live {
+		width: $cate-live-image-width;
+		// height: $cate-live-image-height;
+	}
+	.cate-live-image {
+		width: $cate-live-image-width;
+		height: $cate-live-image-height;
+	}
+	.cate-live-label {
+		@include position(absolute, $uni-spacing-row-sm none none $uni-spacing-col-base)
+	}
+</style>

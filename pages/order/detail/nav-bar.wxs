@@ -1,0 +1,25 @@
+function onPageScroll(e, ins) {
+	var scrollTop = e.detail.scrollTop;
+	var opacity_threshold = 200;
+	
+	ins.selectComponent('#nav-bar-bg').setStyle({
+		opacity: scrollTop/opacity_threshold
+	})
+	
+	ins.selectComponent('#nav-bar-title').setStyle({
+		opacity: scrollTop/opacity_threshold
+	})
+	
+	ins.selectComponent('#nav-bar-back-icon-bg').setStyle({
+		opacity: 1-scrollTop/opacity_threshold
+	})
+	
+	ins.selectComponent('#nav-bar-back-icon').setStyle({
+		color: scrollTop < opacity_threshold*0.5 ? '#FFFFFF' : '#333333'
+	})
+}
+
+
+module.exports = {
+	onPageScroll: onPageScroll
+}

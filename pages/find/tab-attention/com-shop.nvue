@@ -1,0 +1,207 @@
+<template>
+	<view class="position-relative">
+		<!-- 店铺logo和店名 -->
+		<view class="margin-bottom-base margin-side-lg shop-title-part">
+			<view class="logo-and-name">
+				<view v-if="!concerned" class="margin-right-base border-radius-circle shop-logo">
+					<image class="border-radius-circle shop-logo-image" :src="logo" mode="aspectFit"></image>
+				</view>
+				<view>
+					<text class="font-size-lg">{{name}}</text>
+					<view v-if="living" class="shop-live-part">
+						<xg-live :pillarColor="UNI_COLOR_RED"></xg-live>
+						<text class="margin-left-sm text-color-red shop-live-part-text">直播中</text>
+					</view>
+				</view>
+			</view>
+			<view v-if="concerned" @tap="onMoreOptionsTap">
+				<uni-icons :size="toPx('40rpx')" :color="UNI_COLOR_GREY" type="more-filled"></uni-icons>
+			</view>
+			<tpl-attention v-else @change="onAttentionChange"></tpl-attention>
+		</view>
+		
+		
+		
+		<!-- 商铺产品列表 -->
+		<view v-if="products.length < 2">
+			<!-- 产品为一个时 -->
+			<view v-for="(product, productIndex) of products" :key="productIndex">
+				<view class="margin-side-lg shop-product-one">
+					<image class="border-radius-xl shop-product-image" :src="product.image" mode="aspectFit"></image>
+					<view class="margin-left-lg product-one-right">
+						<text class="lines-2 product-one-title">{{product.title}}</text>
+						<view class="product-one-price-part">
+							<xg-money :precision="0" :size="UNI_FONT_SIZE_LG" :color="UNI_COLOR_RED" :camel="true" :money="product.price"></xg-money>
+							<xg-money class="margin-left-sm" :lineThrough="true" :precision="0" :size="UNI_FONT_SIZE_SM" :color="UNI_COLOR_GREY" :money="product.promotion_price"></xg-money>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 产品不少于2个时 -->
+		<scroll-view v-else class="shop-scroll-view"  :scroll-x="true" :show-scrollbar="false">
+			<view class="margin-left-lg shop-product-list">
+				<view v-for="(product, productIndex) of products" :key="productIndex">
+					<view class="margin-right-lg shop-product">
+						<image class="border-radius-xl shop-product-image" :src="product.image" mode="aspectFit"></image>
+						<text class="lines-1 margin-top-base font-size-lg">{{product.title}}</text>
+						<view class="margin-v-side-sm">
+							<xg-money :precision="0" :size="UNI_FONT_SIZE_LG" :color="UNI_COLOR_RED" :camel="true" :money="product.price"></xg-money>
+						</view>
+						<xg-money :lineThrough="true" :precision="0" :size="UNI_FONT_SIZE_SM" :color="UNI_COLOR_GREY" :money="product.promotion_price"></xg-money>
+					</view>
+				</view>
+				
+				<view v-if="products.length > 3" class="border-radius-lg shop-product-more">
+					<text class="font-size-base shop-product-more-text" :style="{color: UNI_COLOR_RED}">更多商品</text>
+					<view class="border-radius-circle bg-color-red shop-product-more-icon">
+						<uni-icons :size="toPx(UNI_FONT_SIZE_SM)" :color="UNI_COLOR_WHITE" type="arrowright"></uni-icons>
+					</view>
+				</view>
+			</view>
+		</scroll-view>
+	
+	
+		<view class="bg-color-white border-radius-lg more-options-btn" v-if="concerned&&moreOptionsToggle">
+			<view class="padding-lg border-bottom-solid-1">
+				<text class="font-size-lg">取消置顶</text>
+			</view>
+			<view class="padding-lg">
+				<text class="font-size-lg">取消关注</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import mixin from '@/common/mixin';
+	
+	export default {
+		mixins: [mixin],
+		props: {
+			concerned: {//是否已被关注
+				type: Boolean,
+				default: false,
+			},
+			living: {//是否正在直播
+				type: Boolean,
+				default: false,
+			},
+			logo: {
+				type: String
+			},
+			name: {
+				type: String
+			},
+			products: {
+				type: Array
+			},
+		},
+		data() {
+			return {
+				moreOptionsToggle: false,
+			}
+		},
+		methods: {
+			onAttentionChange(e) {
+				//关注或取消关注店铺逻辑
+			},
+			onMoreOptionsTap() {
+				this.moreOptionsToggle = !this.moreOptionsToggle;
+			},
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	// 店铺
+	.shop-title-part {
+		@include flex-layout(row, space-between, center);
+	}
+	.logo-and-name {
+		@include flex-layout(row, center, center);
+	}
+	.shop-logo {
+		@include border(1px solid);
+	}
+	.shop-logo-image {
+		width: $uni-img-size-sm;
+		height: $uni-img-size-sm;
+		
+		margin: 2px;
+	}
+	.shop-live-part {
+		@include flex-layout(row, flex-start, flex-end);
+		
+		margin-top: 6rpx;
+	}
+	.shop-live-part-text {
+		font-size: $uni-font-size-sm;
+		line-height: $uni-font-size-sm;
+	}
+	
+	.shop-scroll-view {
+		@include flex-layout(row, flex-start);
+	}
+	.shop-product-list {
+		@include flex-layout(row, flex-start);
+	}
+	
+	// 商铺产品列表只有一个
+	.shop-product-one {
+		@include flex-layout(row);
+	}
+	.product-one-right {
+		flex: 1;
+		@include flex-layout(column, space-between);
+	}
+	.product-one-title {
+		$font-size:  $uni-font-size-lg;
+		
+		font-size: $font-size;
+		line-height: $font-size * 1.4;
+	}
+	.product-one-price-part {
+		@include flex-layout(row, flex-start, center);
+	}
+	
+	// 商铺产品列表超过一个
+	$shop-product-width: 250rpx;
+	.shop-product {
+		width: $shop-product-width;
+	}
+	.shop-product-image {
+		width: $shop-product-width;
+		height: $shop-product-width;
+		
+		@include border(1px);
+	}
+	
+	.shop-product-more {
+		@include flex-layout(column, center, center);
+		@include border(1px solid $uni-color-red);
+		
+		height: $shop-product-width;
+		
+		padding: $uni-spacing-col-lg;
+	}
+	.shop-product-more-text {
+		width: $uni-font-size-base;
+	}
+	.shop-product-more-icon {
+		@include flex-layout(row, center, center);
+		
+		width: $uni-font-size-base;
+		height: $uni-font-size-base;
+		
+		margin-top: $uni-spacing-row-sm;
+	}
+	
+	
+	.more-options-btn {
+		@include position(absolute, $uni-font-size-lg*2 0);
+		
+		box-shadow: -1px 1px 5px 1px #999999;
+	}
+</style>

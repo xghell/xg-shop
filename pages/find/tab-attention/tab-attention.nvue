@@ -1,0 +1,137 @@
+<template>
+	<xg-list class="page-scroll" :show-scrollbar="false">
+		<xg-list-item>
+			<view class="row-center-center">
+				<image class="banner-image" src="/static/mock/find/attention/banner.png" mode="widthFix"></image>
+			</view>
+		</xg-list-item>
+		
+		<xg-list-item>
+			<!-- 店铺 -->
+			<!-- 关注的店铺 -->
+			<view class="margin-side-lg margin-top-lg padding-v-side-base border-radius-xl bg-color-white">
+				<view class="margin-side-lg">
+					<text class="font-size-xl font-weight-bold margin-bottom-lg">你关注的店铺有新动态啦</text>
+					<xg-tab-title>
+						<xg-tab-title-item v-for="(shop, shopIndex) of concernedShops" :key="shop.name">
+							<view class="column-between-center concerned-shop-tab-title" @tap="onConcernedShopTabTitleTap(shopIndex)">
+								<view class="column-center-center border-radius-circle concerned-shop-tab-title-ring" :class="{'concerned-shop-tab-title-ring-selected': concernedShopCurrentIndex === shopIndex}">
+									<image class="border-radius-circle concerned-shop-tab-title-image" :src="shop.logo" mode="aspectFit"></image>
+								</view>
+								<text v-if="concernedShopCurrentIndex === shopIndex" class="font-size-base text-color-white bg-color-red padding-side-base border-radius-base concerned-shop-tab-title-text">正在浏览</text>
+								<text v-else class="font-size-base lines-1 concerned-shop-tab-title-text">{{shop.name}}</text>
+							</view>
+						</xg-tab-title-item>
+					</xg-tab-title>
+				</view>
+				
+				<swiper class="margin-top-base concerned-shop-swiper" :indicator-dots="false" :autoplay="false" :interval="3000" :duration="300" :current="concernedShopCurrentIndex" @change="onConcernShopSwiperChange">
+					<swiper-item v-for="(shop, shopIndex) of concernedShops" :key="shop.name" >
+						<view class="column-start-stretch concerned-shop-swiper-item">
+							<com-shop  :concerned="true" :living="shop.living" :logo="shop.logo" :name="shop.name" :products="shop.products"></com-shop>
+						</view>
+					</swiper-item>
+				</swiper>
+			</view>
+		</xg-list-item>
+		
+		<xg-list-item v-for="(shop, shopIndex) of unconcernedShops" :key="shop.name" >
+			<!-- 未关注的店铺 -->
+			<view class="bg-color-white border-radius-xl margin-side-lg margin-top-base padding-v-side-base">
+				<com-shop :concerned="false" :living="shop.living" :logo="shop.logo" :name="shop.name" :products="shop.products"></com-shop>
+			</view>
+		</xg-list-item>
+	</xg-list>
+	
+</template>
+
+<script>
+	import data from '@/data/find/tab-attention/tab-attention';
+	
+	import mixin from '@/common/mixin';
+	
+	import comShop from './com-shop.nvue';
+	
+	export default {
+		mixins: [mixin],
+		components: {
+			comShop
+		},
+		data() {
+			return {
+				concernedShopCurrentIndex: 0,
+				
+				concernedShops: [],
+				
+				unconcernedShops: []
+			}
+		},
+		async created() {
+			const concernedShopsPromise = data.concernedShops();
+			const unconcernedShopsPromise = data.unconcernedShops();
+			
+			this.unconcernedShops = await unconcernedShopsPromise;
+			this.concernedShops = await concernedShopsPromise;
+		},
+		
+		methods: {
+			onConcernedShopTabTitleTap(index) {
+				this.concernedShopCurrentIndex = index;
+			},
+			onConcernShopSwiperChange(e) {
+				const currentIndex = e.detail.current;
+				
+				this.concernedShopCurrentIndex = currentIndex;
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	/* #ifndef APP-NVUE */
+	.page-scroll {
+		@include position(absolute, 0 0 0 0);
+	}
+	/* #endif */
+	
+	
+	.banner-image {
+		width: 750rpx - $uni-spacing-col-lg * 2;
+	}
+	
+	$title-image-size: $uni-img-size-xl;
+	$title-width: $title-image-size + $uni-spacing-row-base * 2;
+	.concerned-shop-tab-title {
+		width: $title-width;
+		
+		height: 190rpx;
+	}
+	.concerned-shop-tab-title-ring {
+		@include border(2px solid rgba(0,0,0,0));
+		
+		padding: 8rpx;
+	}
+	.concerned-shop-tab-title-ring-selected {
+		@include border(2px solid $uni-color-red);
+	}
+	.concerned-shop-tab-title-image {
+		@include border(1px);
+		
+		width: $title-image-size;
+		height: $title-image-size;
+	}
+	.concerned-shop-tab-title-text {
+		height: 40rpx;
+		line-height: 40rpx;
+	}
+	.concerned-shop-swiper {
+		height: 480rpx;
+	}
+	.concerned-shop-swiper-item {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+</style>

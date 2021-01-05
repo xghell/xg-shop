@@ -1,0 +1,54 @@
+$nav-bar-height: 44px;
+
+/* #ifdef MP */
+.nav-bar-top {
+	@include flex-layout(row, center, center);
+}
+/* #endif */
+
+.nav-bar-placeholder {
+	height: $nav-bar-height;
+}
+.nav-bar-wrap {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	
+	z-index: 10000;
+	overflow: hidden;
+}
+.nav-bar {
+	@include flex-layout(row, center, center);
+	
+	height: $nav-bar-height;
+}
+.nav-bar-bg-image {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+}
+.nav-bar-search-bar {
+	flex: 1;
+	
+	margin: 0 $uni-spacing-col-lg;
+}
+.nav-bar-right {
+	@include flex-layout(row, center, center);
+}
+.nav-bar-right-item {
+	margin-right: $uni-spacing-col-lg;
+	
+	@include flex-layout(column, center, center);
+}
+
+
+
+// 页面顶部背景
+.page-top-bg {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+}

@@ -1,0 +1,101 @@
+<template>
+	<view class="bg-color-white border-radius-xl padding-lg">
+		<view class="row-between-center margin-bottom-base">
+			<text class="font-size-lg font-weight-bold">物流服务评价</text>
+			<text class="font-size-lg text-color-greyblack">满意请给5星哦</text>
+		</view>
+		
+		<view class="logistics-comment-item">
+			<view class="logistics-comment-item-label">
+				<text class="logistics-comment-item-label-text">商品符合度</text>
+			</view>
+			<uni-rate :active-color="UNI_COLOR_RED" :size="toPx(UNI_FONT_SIZE_BASE)*1.5" class="logistics-comment-item-rate" v-model="conformityOfGoodsRate"></uni-rate>
+		</view>
+		<view class="logistics-comment-item">
+			<view class="logistics-comment-item-label">
+				<text class="logistics-comment-item-label-text">店家服务态度</text>
+			</view>
+			<uni-rate :active-color="UNI_COLOR_RED" :size="toPx(UNI_FONT_SIZE_BASE)*1.5" class="logistics-comment-item-rate" v-model="shopOwnerServiceAttitudeRate"></uni-rate>
+		</view>
+		<view class="logistics-comment-item">
+			<view class="logistics-comment-item-label">
+				<text class="logistics-comment-item-label-text">快递配送速度</text>
+			</view>
+			<uni-rate :active-color="UNI_COLOR_RED" :size="toPx(UNI_FONT_SIZE_BASE)*1.5" class="logistics-comment-item-rate" v-model="expressDeliverySpeedRate"></uni-rate>
+		</view>
+		<view class="logistics-comment-item">
+			<view class="logistics-comment-item-label">
+				<text class="logistics-comment-item-label-text">快递员服务</text>
+			</view>
+			<uni-rate :active-color="UNI_COLOR_RED" :size="toPx(UNI_FONT_SIZE_BASE)*1.5" class="logistics-comment-item-rate" v-model="courierServiceRate"></uni-rate>
+		</view>
+		<view class="logistics-comment-item">
+			<view class="logistics-comment-item-label">
+				<text class="logistics-comment-item-label-text">快递包装</text>
+			</view>
+			<uni-rate :active-color="UNI_COLOR_RED" :size="toPx(UNI_FONT_SIZE_BASE)*1.5" class="logistics-comment-item-rate" v-model="expressPackageRate"></uni-rate>
+		</view>
+		
+		
+		<!-- #ifdef MP-WEIXIN -->
+		<view class="margin-top-lg" @tap="onConfirmTap">
+			<view class="row-center-center bg-color-red border-radius-lg padding-base">
+				<text class="font-size-lg text-color-white">提交</text>
+			</view>
+		</view>
+		<!-- #endif -->
+	</view>
+</template>
+
+<script>
+	import mixin from '@/common/mixin';
+	
+	export default {
+		mixins: [mixin],
+		data() {
+			return {
+				conformityOfGoodsRate: 0,
+				shopOwnerServiceAttitudeRate: 0,
+				expressDeliverySpeedRate: 0,
+				courierServiceRate: 0,
+				expressPackageRate: 0,
+			}
+		},
+		onNavigationBarButtonTap(e) {
+			const index = e.index;
+			
+			if (0 === index) {
+				this.onConfirmTap();
+			}
+		},
+		methods: {
+			onConfirmTap() {
+				const res = {
+					conformityOfGoodsRate: this.conformityOfGoodsRate,
+					shopOwnerServiceAttitudeRate: this.shopOwnerServiceAttitudeRate,
+					expressDeliverySpeedRate: this.expressDeliverySpeedRate,
+					courierServiceRate: this.courierServiceRate,
+					expressPackageRate: this.expressPackageRate,
+				};
+				
+				console.log(res);
+			},
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.logistics-comment-item {
+		@include flex-layout(row, flex-start, center);
+		
+		height: 80rpx;
+	}
+	.logistics-comment-item-label {
+		width: 200rpx;
+	}
+	.logistics-comment-item-label-text {
+		font-size: $uni-font-size-lg;
+	}
+	.logistics-comment-item-rate {
+	}
+</style>

@@ -1,0 +1,529 @@
+<template>
+	<view class="page">
+		<!-- #ifndef APP-NVUE -->
+		<view id="nav-bar" class="nav-bar-wrap">
+			<uni-status-bar></uni-status-bar>
+			<image class="nav-bar-bg-image" :src="navBarBg" mode="widthFix"></image>
+			
+			<!-- #ifdef MP -->
+			
+			<view class="nav-bar-top" :style="{height: nativeNavBarHeight + 'px'}">
+				<text class="font-size-xl text-color-white">袁瑾购物</text>
+			</view>
+			<!-- #endif -->
+			
+			<view class="nav-bar">
+				<view class="nav-bar-search-bar">
+					<tpl-search-bar radius="10000" cancelButton="none"></tpl-search-bar>
+				</view>
+				<view class="nav-bar-right">
+					<view class="nav-bar-right-item" v-for="(rightIcon, rightIconIndex) of navBarConfig.rightIconList" :key="rightIcon.title">
+						<uni-icons :size="rightIcon.size" :color="rightIcon.color" :type="rightIcon.type"></uni-icons>
+						<text class="font-size-xs" :style="{color: rightIcon.color}">{{rightIcon.title}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- #endif -->
+		
+		<!-- #ifdef APP-NVUE -->
+		<view ref="nav-bar-poster" id="nav-bar-poster" class="nav-bar-poster" :style="{top: (200-navBarPosterHeight) + 'px'}">
+			<image :src="poster" mode="widthFix" @load="onNavBarPosterLoad"></image>
+		</view>
+		<!-- #endif -->
+		
+		<xg-list ref="page-list-ref" id="page-list" class="page-list" :show-scrollbar="false">
+			<!-- #ifdef APP-NVUE -->
+			<xg-list-refresh @refresh="onrefresh" @pullingdown="onpullingdown" :display="refreshing ? 'show' : 'hide'">
+				<!-- 下拉刷新占位符，下拉刷新距离 -->
+				<view class="refresh-placeholder"></view>
+			</xg-list-refresh>
+			<!-- #endif -->
+			
+			<xg-list-item>
+				<view ref="page-top-bg" class="page-top-bg">
+					<image mode="widthFix" :src="navBarBg"></image>
+				</view>
+				
+				<!-- #ifdef APP-NVUE -->
+				<!-- 下拉刷新 -->
+				<view class="refresh-section">
+					<text class="font-size-base text-color-white">{{refreshText}}</text>
+				</view>
+				<!-- #endif -->
+		
+				<!-- #ifndef APP-NVUE -->
+				<image class="page-top-bg" mode="widthFix" :src="navBarBg"></image>
+				<!-- #endif -->
+				
+				<view id="page-header">
+					<uni-status-bar></uni-status-bar>
+					<!-- #ifdef MP -->
+					<!-- 小程序原生导航栏高度 -->
+					<view :style="{height: nativeNavBarHeight + 'px'}"></view>
+					<!-- #endif -->
+					<!-- 导航栏占位符 -->
+					<view class="nav-bar-placeholder"></view>
+					
+					
+					
+					<swiper class="slideshow-swiper" :indicator-dots="true" :circular="true" :autoplay="true" :interval="3000" :duration="1000">
+						<swiper-item v-for="(slideshow, slideshow_index) of slideshows" :key="slideshow_index">
+							<navigator class="slideshow" hover-class="none" :url="slideshow.url">
+								<image class="slideshow-image" :src="slideshow.image" mode=""></image>
+							</navigator>
+						</swiper-item>
+					</swiper>
+					
+					<navigator class="margin-v-side-base banner" hover-class="none" :url="banner.url">
+						<image class="banner-image" :src="banner.image" mode="widthFix"></image>
+					</navigator>
+					
+					<tpl-cate-nav-swiper :list="cateNavs"></tpl-cate-nav-swiper>
+					
+					<!-- 活动 -->
+					<view class="margin-side-lg padding-base bg-color-white border-radius-lg activity-section">
+						<uni-grid :highlight="false" :show-border="false" :square="false" :column="2">
+							<uni-grid-item>
+								<!-- 秒杀活动 -->
+								<view class="activity-part">
+									<view class="activity-part-title">
+										<text class="font-size-lg">袁瑾秒杀</text>
+										<text class="text-color-red font-size-sm">20点场</text>
+										<tpl-countdown color="#FFF" background-color="red" splitorColor="red" :showColon="true" :showDay="false" :day="1" :hour="1" :minute="12" :second="32"></tpl-countdown>
+									</view>
+									
+									<view class="activity-part-content">
+										<view class="margin-base activity-product" v-for="(seckillProduct, seckillProductIndex) of seckillProducts" :key="seckillProductIndex">
+											<image class="activity-product-image" :src="seckillProduct.image" mode="aspectFit"></image>
+											<xg-money :camel="true" size="28rpx" color="red" :money="seckillProduct.price"></xg-money>
+											<xg-money line-through size="24rpx" color="grey" :money="seckillProduct.promotion_price"></xg-money>
+										</view>
+									</view>
+								</view>
+							</uni-grid-item>
+							<uni-grid-item>
+								<!-- 京东直播 -->
+								<view class="activity-part">
+									<view class="activity-part-title">
+										<text class="font-size-lg">袁瑾直播</text>
+										<view class="bg-color-pink activity-part-label">
+											<view class="activity-part-label-icon">
+												<xg-live :animation="true" pillar-max-height="5rpx"></xg-live>
+											</view>
+											<text class="activity-part-label-text">签到领金币</text>
+										</view>
+									</view>
+									<text class="font-size-sm text-color-pink margin-top-sm">主播心选</text>
+									
+									<view class="activity-part-content">
+										<view class="margin-base activity-product" v-for="(liveProduct, liveProductIndex) of liveProducts" :key="liveProductIndex">
+											<image class="activity-product-image" :src="liveProduct.image" mode="aspectFit"></image>
+										</view>
+									</view>
+								</view>
+							</uni-grid-item>
+							<uni-grid-item>
+								<!-- 每日特价 -->
+								<view class="activity-part">
+									<view class="activity-part-title">
+										<text class="font-size-lg">每日特价</text>
+										<!-- <view class="bg-color-pink activity-part-label">
+											<view class="activity-part-label-icon">
+												<xg-live :started="true" pillar-max-height="20rpx"></xg-live>
+											</view>
+											<text class="activity-part-label-text">优惠多多</text>
+										</view> -->
+									</view>
+									<text class="font-size-sm text-color-green margin-top-sm">大牌特价日</text>
+									
+									<view class="activity-part-content">
+										<view class="margin-base activity-product" v-for="(specialOfferProduct, specialOfferProductIndex) of specialOfferProducts" :key="specialOfferProductIndex">
+											<image class="activity-product-image" :src="specialOfferProduct.image" mode="aspectFit"></image>
+										</view>
+									</view>
+								</view>
+							</uni-grid-item>
+							<uni-grid-item>
+								<!-- 拼购 -->
+								<view class="activity-part">
+									<view class="activity-part-title">
+										<text class="font-size-lg">组团拼购</text>
+										<view class="bg-color-orange activity-part-label">
+											<!-- <view class="activity-part-label-icon">
+												<xg-live :started="true" pillar-max-height="20rpx"></xg-live>
+											</view> -->
+											<text class="activity-part-label-text">好物精选</text>
+										</view>
+									</view>
+									<text class="font-size-sm text-color-orange margin-top-sm">全民一起拼好物</text>
+									
+									<view class="activity-part-content">
+										<view class="margin-base activity-product" v-for="(groupBuyProduct, groupBuyProductIndex) of groupBuyProducts" :key="groupBuyProductIndex">
+											<image class="activity-product-image" :src="groupBuyProduct.image" mode="aspectFit"></image>
+										</view>
+									</view>
+								</view>
+							</uni-grid-item>
+						</uni-grid>
+					</view>
+				</view>
+		
+			</xg-list-item>
+			<xg-list-item>
+				<view class="product-tab-section" :style="{height: productTabHeight + 'px'}">
+					<view class="margin-v-side-base product-tab-title-part">
+						<xg-tab-title>
+							<xg-tab-title-item v-for="(tabTitleItem, tabTitleItemIndex) of tabTitles" :key="tabTitleItemIndex">
+								<view class="product-tab-title-item" @tap="productTabTitleTap(tabTitleItemIndex)">
+									<text class="product-tab-title" :class="{'product-tab-title-selected': currentTabIndex === tabTitleItemIndex}">{{tabTitleItem.title}}</text>
+									<text class="font-size-base text-color-greyblack" :class="{'product-tab-subtitle-selected': currentTabIndex === tabTitleItemIndex}">{{tabTitleItem.subtitle}}</text>
+								</view>
+							</xg-tab-title-item>
+						</xg-tab-title>
+					</view>
+					
+					<view class="product-tab-content-part">
+						<swiper class="product-tab-swiper" :indicator-dots="false" :autoplay="false" :duration="300" :current="currentTabIndex" @change="productTabSwiperChange">
+							<swiper-item v-for="(tabProducts, tabIndex) of tabListProducts" :key="tabIndex">
+								<tpl-product-waterfall class="product-tab-swiper-item" ref="product-tab-page-ref" :load-more-status="tabTitles[tabIndex].loadMoreStatus" :products="tabProducts" @scrolltolower="onScrolltolower" @loadmore="onLoadmore"></tpl-product-waterfall>
+							</swiper-item>
+						</swiper>
+					</view>
+				</view>
+			</xg-list-item>
+		</xg-list>
+		
+		<!-- #ifdef APP-NVUE -->
+		<!-- 导航栏 -->
+		<view  class="nav-bar-section">
+			
+			<!-- 向上滚动时逐渐显示的导航栏背景 -->
+			<view ref="nav-bar-bg-dynamic" class="nav-bar-bg-dynamic">
+				<!-- <xg-image width="750rpx" src="/static/mock/index/nav-bar/bg-img.png" mode="widthFix"></xg-image> -->
+			</view>
+			
+			<view id="nav-bar" ref='nav-bar' class="nav-bar" >
+				<uni-status-bar></uni-status-bar>
+				<!-- 导航栏背景 -->
+				<view ref="nav-bar-bg" class="nav-bar-bg">
+					<image :src="navBarBg" mode="widthFix"></image>
+				</view>
+				
+				<view id="nav-bar-fixed">
+					<view class="nav-bar-fixed">
+						<view ref="nav-bar-left">
+							<view  class="nav-bar-left">
+								<view class="nav-bar-left-item">
+									<image class="nav-bar-left-icon" :src="navBarConfig.leftImage" mode="aspectFit"></image>
+								</view>
+							</view>
+						</view>
+						
+						<view id="nav-bar-right">
+							<view class="nav-bar-right">
+								<view class="nav-bar-right-item nav-bar-right-image-wrap">
+									<image  class="nav-bar-right-image" :src="navBarConfig.rightImage" mode="aspectFit"></image>
+									<text class="font-size-base text-color-white nav-bar-right-image-text">{{today}}</text>
+								</view>
+								<view class="nav-bar-right-item" v-for="(rightIcon, rightIconIndex) of navBarConfig.rightIconList" :key="rightIconIndex">
+									<uni-icons :size="rightIcon.size" :color="rightIcon.color" :type="rightIcon.type"></uni-icons>
+									<text class="font-size-sm" :style="{color: rightIcon.color}">{{rightIcon.title}}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view id="nav-bar-movable" ref="nav-bar-movable">
+					<view class="nav-bar-movable">
+						<tpl-search-bar radius="10000" cancel-button="none" @confirm="" @input="" />
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- #endif -->
+	</view>
+</template>
+
+<script>
+	import data from '@/data/index/index';
+	import config from './config';
+	
+	
+	// #ifdef APP-NVUE
+	import nvue from './nvue.js';
+	// #endif
+	
+	// #ifndef APP-NVUE
+	import notNvue from './not-nvue.js';
+	// #endif
+	
+	
+	
+	export default {
+		mixins: [
+			// #ifdef APP-NVUE
+			nvue,
+			// #endif
+			// #ifndef APP-NVUE
+			notNvue,
+			// #endif
+			
+			config,
+		],
+		data() {
+			return {
+				navBarBg: '',
+				productTabHeight: 0,
+				//产品列表tab
+				currentTabIndex: 0,
+				tabTitles: [], //动态增添loadMoreStatus、page属性
+				tabListProducts: [],
+				
+				slideshows: [], //轮播图
+				banner: '', //横幅广告
+				cateNavs: [], //分类导航
+				seckillProducts: [],
+				liveProducts: [],
+				specialOfferProducts: [],
+				groupBuyProducts: [],
+			}
+		},
+		
+		async onLoad() {
+			const navBarBgPromise = data.navBarBg();
+			const slideshowsPromise = data.slideshows();
+			const bannerPromise = data.banner();
+			const cateNavsPromise = data.cateNavs();
+			const seckillProductsPromise = data.seckillProducts();
+			const liveProductsPromise = data.liveProducts();
+			const specialOfferProductsPromise = data.specialOfferProducts();
+			const groupBuyProductsPromise = data.groupBuyProducts();
+			
+			const tabTitlesPromise = data.tabTitles();
+			
+			
+			
+			this.tabTitles = await tabTitlesPromise;
+			
+			this.groupBuyProducts = await groupBuyProductsPromise;
+			this.specialOfferProducts = await specialOfferProductsPromise;
+			this.liveProducts = await liveProductsPromise;
+			this.seckillProducts = await seckillProductsPromise;
+			this.cateNavs = await cateNavsPromise;
+			this.banner = await bannerPromise;
+			this.slideshows = await slideshowsPromise;
+			this.navBarBg = await navBarBgPromise;
+			
+			
+			//初始化产品列表tab
+			this.tabListProducts = new Array(this.tabTitles.length);
+			this.loadTabProducts();
+			
+			//设置滚动嵌套顶部距离
+			this.$nextTick(function(){
+				setTimeout(() => {
+					this.setPageHeaderHeight();
+				}, 500);
+			})
+		},
+		
+		// #ifndef APP-NVUE
+		onPageScroll(e) {
+			this.setTabScrollRef(this.currentTabIndex);
+		},
+		// #endif
+		
+		methods: {
+			setTabScrollRef(tabIndex=0) {
+				// #ifdef APP-NVUE
+				const args = {
+				    id: 'page-list',
+				    headerHeight: this.pageHeaderHeight,
+				};
+				// #endif
+				// #ifndef APP-NVUE
+				const args = {
+				    id: '_root',
+				    headerHeight: this.pageHeaderHeight,
+				};
+				// #endif
+				
+				this.$refs['product-tab-page-ref'][tabIndex].setScrollRef(args);
+			},
+			
+			
+			async loadTabProducts(index=0) {
+				this.$set(this.tabTitles[index], 'loadMoreStatus', 'loading');
+				
+				this.tabTitles[index].page = typeof this.tabTitles[index].page === 'number' ? this.tabTitles[index].page : 0;
+				
+				const cate_id = this.tabTitles[index].cate_id;
+				
+				const products = await data.tabProducts(cate_id, this.tabTitles[index].page);
+				
+				if (!this.tabListProducts[index]) {
+					this.$set(this.tabListProducts, index, products);
+				} else {
+					this.$set(this.tabListProducts, index, this.tabListProducts[index].concat(products));
+				}
+				
+				++this.tabTitles[index].page;
+				
+				this.$nextTick(function(){
+					this.$set(this.tabTitles[index], 'loadMoreStatus', 'more');
+				})
+				
+			},
+			
+			productTabTitleTap(index) {
+				this.currentTabIndex = index;
+			},
+			
+			productTabSwiperChange(e) {
+				const index = e.detail.current;
+				this.currentTabIndex = index;
+				
+				this.setTabScrollRef(index);
+				
+				this.loadTabProducts(index);
+			},
+			
+			// #ifdef APP-NVUE
+			onLoadmore(e) {
+				this.loadTabProducts(this.currentTabIndex);
+			},
+			// #endif
+			
+			// #ifndef APP-NVUE
+			onScrolltolower(e) {
+				this.loadTabProducts(this.currentTabIndex);
+			},
+			// #endif
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	/* #ifdef APP-NVUE */
+	@import './nvue.scss';
+	/* #endif */
+	
+	/* #ifndef APP-NVUE */
+	@import  './not-nvue.scss';
+	/* #endif */
+	
+	// 轮播图
+	$slideshow-swiper-height: 300rpx;
+	.slideshow-swiper {
+		height: $slideshow-swiper-height;
+	}
+	.slideshow {
+		@include flex-layout;
+	}
+	.slideshow-image {
+		width: 700rpx;
+		height: $slideshow-swiper-height;
+	}
+	
+	// 横幅广告
+	.banner {
+		@include flex-layout;
+	}
+	.banner-image {
+		width: 700rpx;
+		// height: 250rpx;
+	}
+	
+	// 活动区
+	.activity-section {
+		
+	}
+	.activity-part {
+		margin: 0 $uni-spacing-col-sm;
+	}
+	.activity-part-title {
+		@include flex-layout(row, flex-start, center);
+	}
+	$uni-activity-part-label-height: 36rpx;
+	.activity-part-label {
+		@include flex-layout(row, center, center);
+		
+		margin-left: $uni-spacing-col-base;
+		
+		border-radius: 10000px;
+		
+		height: $uni-activity-part-label-height;
+	}
+	.activity-part-label-icon {
+		@include flex-layout(row, center, center);
+		
+		background-color: rgba(255, 255, 255, 0.4);
+		border-radius: $uni-border-radius-circle;
+		width: $uni-activity-part-label-height;
+		height: $uni-activity-part-label-height;
+		padding: 2px;
+		
+		/* #ifndef APP-NVUE */
+		box-sizing: border-box;
+		/* #endif */
+	}
+	.activity-part-label-text {
+		color: $uni-color-white;
+		font-size: $uni-font-size-sm;
+		padding: 0 16rpx;
+	}
+	.activity-part-content {
+		@include flex-layout;
+	}
+	.activity-product {
+		@include flex-layout(column, center, center);
+	}
+	.activity-product-image {
+		width: 150rpx;
+		height: 150rpx;
+	}
+	
+	
+	
+	// 产品列表tab部分
+	.product-tab-section {
+		// @include border(2px solid red);
+		@include flex-layout(column);
+	}
+	.product-tab-title-part {
+		
+	}
+	.product-tab-title-item {
+		@include flex-layout(column, flex-end, center);
+		width: 150rpx;
+	}
+	.product-tab-title {
+		font-size: $uni-font-size-lg;
+		font-weight: bold;
+		line-height: $uni-font-size-xl * 1.5;
+	}
+	.product-tab-title-selected {
+		font-size: $uni-font-size-xl;
+		
+		color: $uni-color-red;
+	}
+	.product-tab-subtitle-selected {
+		color: $uni-color-red;
+	}
+	.product-tab-content-part {
+		height: 0px;
+		flex: 1;
+		
+		@include flex-layout(column);
+	}
+	.product-tab-swiper {
+		position: relative;
+		
+		flex: 1;
+	}
+	.product-tab-swiper-item {
+		@include position(absolute, 0 0 0 0);
+		// @include border(2px solid red)
+	}
+</style>

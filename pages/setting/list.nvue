@@ -1,0 +1,177 @@
+<template>
+	<view>
+		<uni-list class="border-bottom-left-radius-xl border-bottom-right-radius-xl"  :border="false">
+			<uni-list-item thumbSize="lg">
+				<view class="list-item-header" slot="header">
+					<image class="list-item-thumb" src="/static/mock/avatars/1.jpg" mode="aspectFit"></image>
+				</view>
+				<view class="list-item-title" slot="body">
+					<text class="list-item-title-text">shjj</text>
+					<text class="list-item-note-text">用户名: jd_eidkajkgajkf</text>
+				</view>
+				<view class="list-item-right" slot="footer">
+					<!-- <text class="list-item-right-text"></text> -->
+					<uni-icons class="list-item-arrowright" :size="16" color="#bbb" type="arrowright" />
+				</view>
+			</uni-list-item>
+			<uni-list-item class="border-bottom-left-radius-xl border-bottom-right-radius-xl" to="/pages/address/list">
+				<view class="list-item-title" slot="body">
+					<text class="list-item-title-text">地址管理</text>
+				</view>
+				<view class="list-item-right" slot="footer">
+					<!-- <text class="list-item-right-text"></text> -->
+					<uni-icons class="list-item-arrowright" :size="16" color="#bbb" type="arrowright" />
+				</view>
+			</uni-list-item>
+		</uni-list>
+		
+		<uni-list class="border-radius-xl margin-top-base" :border="false">
+			<uni-list-item class="border-radius-xl" title="">
+				<view class="list-item-title" slot="body">
+					<text class="list-item-title-text">账户与安全</text>
+				</view>
+				<view class="list-item-right" slot="footer">
+					<text class="list-item-right-text">账户保障可升级</text>
+					<uni-icons class="list-item-arrowright" :size="16" color="#bbb" type="arrowright" />
+				</view>
+			</uni-list-item>
+			<uni-list-item>
+				<view class="list-item-title" slot="body">
+					<text class="list-item-title-text">支付设置</text>
+				</view>
+				<view class="list-item-right" slot="footer">
+					<!-- <text class="list-item-right-text"></text> -->
+					<uni-icons class="list-item-arrowright" :size="16" color="#bbb" type="arrowright" />
+				</view>
+			</uni-list-item>
+			<uni-list-item>
+				<view class="list-item-title" slot="body">
+					<text class="list-item-title-text">增票资质</text>
+				</view>
+				<view class="list-item-right" slot="footer">
+					<text class="list-item-right-text">添加增票资质</text>
+					<uni-icons class="list-item-arrowright" :size="16" color="#bbb" type="arrowright" />
+				</view>
+			</uni-list-item>
+			<uni-list-item>
+				<view class="list-item-title" slot="body">
+					<text class="list-item-title-text">我的档案</text>
+				</view>
+				<view class="list-item-right" slot="footer">
+					<text class="list-item-right-text">添加汽车/宝宝等档案</text>
+					<uni-icons class="list-item-arrowright" :size="16" color="#bbb" type="arrowright" />
+				</view>
+			</uni-list-item>
+			<uni-list-item class="border-radius-xl">
+				<view class="list-item-title" slot="body">
+					<text class="list-item-title-text">通用</text>
+				</view>
+				<view class="list-item-right" slot="footer">
+					<text class="list-item-right-text">清除本地缓存</text>
+					<uni-icons class="list-item-arrowright" :size="16" color="#bbb" type="arrowright" />
+				</view>
+			</uni-list-item>
+		</uni-list>
+		
+		<uni-list class="border-radius-xl margin-top-base" :border="false">
+			<uni-list-item class="border-radius-xl">
+				<view class="list-item-title" slot="body">
+					<text class="list-item-title-text">会员</text>
+				</view>
+				<view class="list-item-right" slot="footer">
+					<text class="list-item-right-text">免费试用 立领1张运费券</text>
+					<uni-icons class="list-item-arrowright" :size="16" color="#bbb" type="arrowright" />
+				</view>
+			</uni-list-item>
+			<uni-list-item>
+				<view class="list-item-title" slot="body">
+					<text class="list-item-title-text">家庭号设置</text>
+				</view>
+				<view class="list-item-right" slot="footer">
+					<text class="list-item-right-text">帮我付/快捷聊/亲密卡等</text>
+					<uni-icons class="list-item-arrowright" :size="16" color="#bbb" type="arrowright" />
+				</view>
+			</uni-list-item>
+			<uni-list-item>
+				<view class="list-item-title" slot="body">
+					<text class="list-item-title-text">功能实验室</text>
+				</view>
+				<view class="list-item-right" slot="footer">
+					<text class="list-item-right-text">提前体验新功能</text>
+					<uni-icons class="list-item-arrowright" :size="16" color="#bbb" type="arrowright" />
+				</view>
+			</uni-list-item>
+			<uni-list-item>
+				<view class="list-item-title" slot="body">
+					<text class="list-item-title-text">功能反馈</text>
+				</view>
+				<view class="list-item-right" slot="footer">
+					<text class="list-item-right-text"></text>
+					<uni-icons class="list-item-arrowright" :size="16" color="#bbb" type="arrowright" />
+				</view>
+			</uni-list-item>
+			<uni-list-item class="border-radius-xl">
+				<view class="list-item-title" slot="body">
+					<text class="list-item-title-text">关于APP</text>
+				</view>
+				<view class="list-item-right" slot="footer">
+					<text class="list-item-right-text">V1.0.0</text>
+					<uni-icons class="list-item-arrowright" :size="16" color="#bbb" type="arrowright" />
+				</view>
+			</uni-list-item>
+		</uni-list>
+		
+		<view class="row-center-center border-radius-xl bg-color-white padding-lg margin-v-side-base">
+			<text class="font-size-lg">退出登录</text>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		
+	}
+</script>
+
+<style lang="scss" scoped>
+	.list-item-header {
+		@include flex-layout(row, center,center);
+	}
+	.list-item-thumb {
+		width: $uni-img-size-xl;
+		height: $uni-img-size-xl;
+		
+		@include border-radius($uni-border-radius-circle);
+		
+		margin-right: $uni-spacing-col-lg;
+	}
+	
+	.list-item-title {
+		// @include border(2px solid)
+		@include flex-layout(column, center);
+		padding: $uni-spacing-row-sm 0;
+	}
+	.list-item-title-text {
+		font-size: $uni-font-size-lg;
+	}
+	.list-item-note-text {
+		font-size: $uni-font-size-base;
+		color: $uni-color-greyblack;
+		margin-top: $uni-spacing-row-base;
+	}
+	
+	.list-item-right {
+		flex: 1;
+		@include flex-layout(row, flex-end, center);
+		
+		// @include border(2px solid)
+	}
+	.list-item-right-text {
+		font-size: $uni-font-size-base;
+		color: $uni-color-greyblack;
+	}
+	
+	.list-item-arrowright {
+		margin-left: $uni-spacing-col-lg;
+	}
+</style>

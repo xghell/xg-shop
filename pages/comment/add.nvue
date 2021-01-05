@@ -1,0 +1,174 @@
+<template>
+	<view>
+		<!-- #ifdef APP-PLUS -->
+		<uni-nav-bar :fixed="true" :status-bar="true" left-icon="back" right-text="提交" title="晒单评论" @clickLeft="onBackPressTap" @clickRight="onConfirmTap"></uni-nav-bar>
+		<!-- #endif -->
+		
+		<view class="bg-color-white border-bottom-left-radius-xl border-bottom-right-radius-xl padding-lg">
+			<view class="row-start-center padding-v-side-lg border-bottom-solid-1">
+				<image class="img-size-lg border-radius-base margin-right-lg" :src="productImage" mode="aspectFit"></image>
+				<text class="font-size-lg font-weight-bold">商品评价</text>
+				<uni-rate class="margin-side-lg" :size="toPx(UNI_FONT_SIZE_BASE)*1.5" :active-color="UNI_COLOR_RED" :value="productRate" v-model="productRate"></uni-rate>
+				<text class="font-size-lg text-color-greyblack">{{rateOptions[parseInt(productRate) - 1]}}</text>
+			</view>
+			
+			<textarea class="font-size-lg margin-top-lg comment-textarea" value="" :maxlength="maxCommentContentCount" placeholder="点击下方小标签写出您的感受,可以帮助更多小伙伴哦~" v-model="commentContent"/>
+			
+			<view class="row-end-center margin-bottom-base">
+				<view class="">
+					<text class="font-size-base text-color-greyblack">{{commentContent.length}}/{{maxCommentContentCount}}</text>
+				</view>
+			</view>
+			
+			<xg-picker-media @confirm="onMediaConfirm"></xg-picker-media>
+			
+			<checkbox-group class="margin-top-base" name=""  @change="onAnonymousChange">
+				<label class="row-start-center">
+					<checkbox value="isAnonymous" class="checkbox" />
+					<text class="font-size-lg">匿名评价</text>
+				</label>
+			</checkbox-group>
+		</view>
+		
+		<view class="bg-color-white border-radius-xl padding-lg margin-top-base">
+			<view class="row-between-center margin-bottom-base">
+				<text class="font-size-lg font-weight-bold">物流服务评价</text>
+				<text class="font-size-lg text-color-greyblack">满意请给5星哦</text>
+			</view>
+			
+			<view class="logistics-comment-item">
+				<view class="logistics-comment-item-label">
+					<text class="logistics-comment-item-label-text">商品符合度</text>
+				</view>
+				<uni-rate :active-color="UNI_COLOR_RED" :size="toPx(UNI_FONT_SIZE_BASE)*1.5" class="logistics-comment-item-rate" v-model="conformityOfGoodsRate"></uni-rate>
+			</view>
+			<view class="logistics-comment-item">
+				<view class="logistics-comment-item-label">
+					<text class="logistics-comment-item-label-text">店家服务态度</text>
+				</view>
+				<uni-rate :active-color="UNI_COLOR_RED" :size="toPx(UNI_FONT_SIZE_BASE)*1.5" class="logistics-comment-item-rate" v-model="shopOwnerServiceAttitudeRate"></uni-rate>
+			</view>
+			<view class="logistics-comment-item">
+				<view class="logistics-comment-item-label">
+					<text class="logistics-comment-item-label-text">快递配送速度</text>
+				</view>
+				<uni-rate :active-color="UNI_COLOR_RED" :size="toPx(UNI_FONT_SIZE_BASE)*1.5" class="logistics-comment-item-rate" v-model="expressDeliverySpeedRate"></uni-rate>
+			</view>
+			<view class="logistics-comment-item">
+				<view class="logistics-comment-item-label">
+					<text class="logistics-comment-item-label-text">快递员服务</text>
+				</view>
+				<uni-rate :active-color="UNI_COLOR_RED" :size="toPx(UNI_FONT_SIZE_BASE)*1.5" class="logistics-comment-item-rate" v-model="courierServiceRate"></uni-rate>
+			</view>
+			<view class="logistics-comment-item">
+				<view class="logistics-comment-item-label">
+					<text class="logistics-comment-item-label-text">快递包装</text>
+				</view>
+				<uni-rate :active-color="UNI_COLOR_RED" :size="toPx(UNI_FONT_SIZE_BASE)*1.5" class="logistics-comment-item-rate" v-model="expressPackageRate"></uni-rate>
+			</view>
+			
+			
+			<!-- #ifdef MP-WEIXIN -->
+			<view class="margin-top-lg" @tap="onConfirmTap">
+				<view class="row-center-center bg-color-red border-radius-lg padding-base">
+					<text class="font-size-lg text-color-white">提交</text>
+				</view>
+			</view>
+			<!-- #endif -->
+		</view>
+	</view>
+</template>
+
+<script>
+	import config from './add/config';
+	
+	import mixin from '@/common/mixin';
+	
+	export default {
+		mixins: [config, mixin],
+		data() {
+			return {
+				productImage: '',
+				productRate: 0,
+				commentContent: '',
+				medias: [],
+				isAnonymous: false,
+				
+				
+				conformityOfGoodsRate: 0,
+				shopOwnerServiceAttitudeRate: 0,
+				expressDeliverySpeedRate: 0,
+				courierServiceRate: 0,
+				expressPackageRate: 0,
+			}
+		},
+		onLoad(options) {
+			this.productImage = options.image;
+		},
+		
+		// #ifdef H5
+		onNavigationBarButtonTap(e) {
+			const index = e.index;
+			
+			if (0 === index) {
+				this.onConfirmTap();
+			}
+		},
+		// #endif
+		
+		methods: {
+			onBackPressTap() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
+			onConfirmTap() {
+				const res = {
+					productRate: this.productRate,
+					commentContent: this.commentContent,
+					medias: this.medias,
+					isAnonymous: this.isAnonymous,
+					
+					conformityOfGoodsRate: this.conformityOfGoodsRate,
+					shopOwnerServiceAttitudeRate: this.shopOwnerServiceAttitudeRate,
+					expressDeliverySpeedRate: this.expressDeliverySpeedRate,
+					courierServiceRate: this.courierServiceRate,
+					expressPackageRate: this.expressPackageRate,
+				};
+				
+				console.log(res);
+			},
+			
+			onAnonymousChange(e) {
+				this.isAnonymous = (e.detail.value.indexOf('isAnonymous') !== -1);
+			},
+			
+			onMediaConfirm(e) {
+				this.medias = e.detail.medias;
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.comment-textarea {
+		height: 300rpx;
+	}
+	.checkbox {
+		transform: scale(0.8);
+	}
+	
+	.logistics-comment-item {
+		@include flex-layout(row, flex-start, center);
+		
+		height: 80rpx;
+	}
+	.logistics-comment-item-label {
+		width: 200rpx;
+	}
+	.logistics-comment-item-label-text {
+		font-size: $uni-font-size-lg;
+	}
+	.logistics-comment-item-rate {
+	}
+</style>

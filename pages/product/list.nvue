@@ -1,0 +1,285 @@
+<template>
+	<view class="">
+		<!-- #ifdef MP-WEIXIN -->
+		<uni-nav-bar fixed status-bar left-icon="back" @clickLeft="onBackPressTap">
+			<view slot="left" class="nav-bar-search-bar" :style="{width: searchBarWidth + 'px'}">
+				<tpl-search-bar cancelButton="none" :radius="10000" @confirm="" @input="" />
+			</view>
+		</uni-nav-bar>
+		<view class="status-bar-placeholder"></view>
+		<!-- #endif -->
+		
+		<view class="tab-title-section-placeholder"></view>
+		<view class="tab-title-section">
+			<!-- #ifdef MP-WEIXIN -->
+			<uni-status-bar></uni-status-bar>
+			<!-- #endif -->
+			<view class="position-relative ">
+				<view class="row-center-center bg-color-white  tab-title-list-wrap">
+					<view class="flex-1 row-between-stretch padding-side-lg  tab-title-list">
+						<view class="row-center-stretch" @tap="onTabTitleTap('sort')">
+							<view class="tab-title-left">
+								<view class="tab-title-left-text">
+									<text class="font-size-lg">{{currentSortOptionTitle}}</text>
+								</view>
+								<view v-if="currentTabTitleIndex === 'sort'" class="title-line"></view>
+							</view>
+							
+							<view class="tab-title-right-icon">
+								<uni-icons :type="showSortOptions ? 'arrowup' : 'arrowdown'" :size="12"></uni-icons>
+							</view>
+						</view>
+						<view class="row-center-stretch" @tap="onTabTitleTap('volume')">
+							<view class="tab-title-left">
+								<view class="tab-title-left-text">
+									<text class="font-size-lg">销量</text>
+								</view>
+								<view v-if="currentTabTitleIndex === 'volume'" class="title-line"></view>
+							</view>
+						</view>
+						<view class="row-center-stretch" @tap="onTabTitleTap('price')">
+							<view class="tab-title-left">
+								<view class="tab-title-left-text">
+									<text class="font-size-lg">价格</text>
+								</view>
+								<view v-if="currentTabTitleIndex === 'price'" class="title-line"></view>
+							</view>
+							<view class="column-center-center tab-title-right-icon">
+								<view class="column-center-center" v-if="priceIconStatus === 'all'">
+									<uni-icons class="" v-if="priceIconStatus === 'all' || priceIconStatus === 'up'" type="arrowup" :size="12"></uni-icons>
+									<uni-icons class="" v-if="priceIconStatus === 'all' || priceIconStatus === 'down'" type="arrowdown" :size="12"></uni-icons>
+								</view>
+								<view v-else>
+									<uni-icons v-if="priceIconStatus === 'up'" type="arrowup" :size="12"></uni-icons>
+									<uni-icons v-if="priceIconStatus === 'down'" type="arrowdown" :size="12"></uni-icons>
+								</view>
+							</view>
+						</view>
+						<view class="row-center-stretch" @tap="onTabTitleTap('filter')">
+							<view class="tab-title-left">
+								<view class="tab-title-left-text">
+									<text class="font-size-lg">筛选</text>
+								</view>
+								<view v-if="currentTabTitleIndex === 'filter'" class="title-line"></view>
+							</view>
+						</view>
+					
+						<!-- #ifdef MP-WEIXIN -->
+						<view class="" @tap="onWaterfallSwitchTap">
+							<image class="img-size-base" :src="!waterfall ? '/static/product/waterfall.png' : '/static/product/list.png'" mode=""></image>
+						</view>
+						<!-- #endif -->
+					</view>
+					
+				</view>
+				
+				
+				<view v-if="showTabTitleMask" :style="{height: screenHeight + 'px'}" class="tab-title-mask" @tap="onTabMaskTap"></view>
+				<view v-if="showSortOptions" class="bg-color-grey border-bottom-left-radius-xl border-bottom-right-radius-xl padding-lg sort-options-section">
+					<view class="row-start-center sort-option" v-for="(sortOption, sortOptionIndex) of sortOptions" :key="sortOptionIndex" @tap="onSortOptionTap(sortOptionIndex)">
+						<uni-icons v-if="sortOptionIndex === currentSortOptionIndex" type="checkmarkempty" :size="20" :color="UNI_COLOR_RED"></uni-icons>
+						<text class="font-size-lg" :class="{'font-weight-bold': sortOptionIndex === currentSortOptionIndex}">{{sortOption.desc}}</text>
+					</view>
+					
+				</view>
+						
+			</view>
+			
+		</view>
+		
+		
+		<com-product-list :waterfall="waterfall" :products="products"></com-product-list>
+		
+		<com-drawer ref="filter-popup" mode="right" :width="toPx('600rpx')">
+			<com-filter class="filter-popup-content" :serviceOptions="serviceOptions" :brandOptions="brandOptions" :specificationOptions="specificationOptions" @confirm="onFilterConfirm"></com-filter>
+		</com-drawer>
+	</view>
+</template>
+
+<script>
+	import data from '@/data/product/list';
+	import config from './list/config.js';
+	
+	import mixin from '@/common/mixin';
+	
+	import comProductList from './list/com-product-list';
+	import comFilter from './list/com-filter';
+	import comDrawer from './list/com-drawer';
+	
+	export default {
+		mixins: [mixin, config],
+		components: {
+			comProductList,
+			comFilter,
+			comDrawer
+		},
+		data() {
+			return {
+				serviceOptions: [],
+				brandOptions: [],
+				specificationOptions: [],
+				
+				products: []
+			}
+		},
+		
+		async created() {
+			const productsPromise = data.products();
+			const serviceOptionsPromise = data.serviceOptions();
+			const brandOptionsPromise = data.brandOptions();
+			const specificationOptionsPromise = data.specificationOptions();
+			
+			this.specificationOptions = await specificationOptionsPromise;
+			this.brandOptions = await brandOptionsPromise;
+			this.serviceOptions = await serviceOptionsPromise;
+			this.products = await productsPromise;
+		},
+		
+		onNavigationBarButtonTap(e) {
+			this.toggleWaterfall();
+		},
+		
+		methods: {
+			// #ifdef MP-WEIXIN
+			onBackPressTap() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
+			onWaterfallSwitchTap() {
+				this.toggleWaterfall();
+			},
+			// #endif
+			
+			
+			onTabMaskTap() {
+				this.hiddenSortOptions();
+			},
+			
+			onTabTitleTap(index) {
+				this.setCurrentTabTitleIndex(index);
+				
+				if ('price' !== index) {
+					this.resetPriceIconStatus();
+				}
+				
+				if ('sort' !== index) {
+					this.hiddenSortOptions();
+				}
+				
+				
+				if ('sort' === index) {
+					this.toggleSortOptions();
+					
+					return ;
+				}
+				
+				if ('volume' === index) {
+					
+					return ;
+				}
+				
+				if ('price' === index) {
+					this.togglePriceIconStatus();
+					
+					return ;
+				}
+				
+				if ('filter' === index) {
+					this.$refs['filter-popup'].open();
+					return ;
+				}
+			},
+
+
+			onSortOptionTap(index) {
+				this.setCurrentSortOptionIndex(index);
+				this.hiddenSortOptions();
+			},
+			
+			
+			onFilterConfirm(e) {
+				console.log(e);
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.title-line {
+		width: 50rpx;
+		height: 8rpx;
+		background-color: $uni-color-red;
+	}
+	
+	/* #ifdef MP-WEIXIN */
+	.status-bar-placeholder {
+		@include position(fixed, 0 0 none 0);
+		
+		height: var(--status-bar-height);
+		
+		z-index: 10000;
+		background-color: $uni-color-white;
+	}
+	.nav-bar-search-bar {
+		// width: 430rpx;
+	}
+	/* #endif */
+	
+	
+	$tab-title-section-height: 100rpx;
+	
+	$tab-title-item-top-section-height: 50rpx;
+	.tab-title-section-placeholder {
+		height: $tab-title-section-height;
+	}
+	.tab-title-section {
+		@include position(fixed, 0 0 none 0);
+		/* #ifdef MP-WEIXIN */
+		top: 44px;
+		/* #endif */
+		/* #ifdef H5 */
+		top: var(--window-top);
+		/* #endif */
+		
+		/* #ifndef APP-NVUE */
+		z-index: 1;
+		/* #endif */
+	}
+	.tab-title-list-wrap {
+		height: $tab-title-section-height;
+	}
+	.tab-title-list {
+		height: $tab-title-item-top-section-height + 20rpx;
+	}
+	.tab-title-left {
+		@include flex-layout(column, space-between, center);
+	}
+	.tab-title-left-text {
+		height: $tab-title-item-top-section-height;
+		@include flex-layout(column, center, center);
+	}
+	.tab-title-right-icon {
+		height: $tab-title-item-top-section-height;
+		@include flex-layout(column, center, center);
+	}
+	.tab-title-mask {
+		background-color: rgba($color: #000000, $alpha: 0.8);
+	}
+	
+	.sort-options-section {
+		@include position(absolute, $tab-title-section-height 0 none 0);
+	}
+	.sort-option {
+		height: 60rpx;
+	}
+	
+	
+	.filter-popup-content {
+		@include position(absolute, 0 0 0 0);
+		
+		/* #ifdef MP-WEIXIN */
+		top: var(--status-bar-height);
+		/* #endif */
+	}
+</style>

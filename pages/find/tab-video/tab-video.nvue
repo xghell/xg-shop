@@ -1,0 +1,39 @@
+<template>
+	<view class="tab-video">
+		<part-interests class="part" v-if="showInterests" @confirm="onInterestsConfirm"></part-interests>
+		
+		<part-content class="part" v-else></part-content>
+	</view>
+</template>
+
+<script>
+	import partInterests from './part-interests';
+	import partContent from './part-content';
+	
+	export default {
+		components: {
+			partInterests,
+			partContent
+		},
+		data() {
+			return {
+				showInterests: true,
+			}
+		},
+		methods: {
+			onInterestsConfirm(e) {
+				this.showInterests = false;
+				//TODO上传兴趣
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.tab-video {
+		@include position(absolute, 0 0 0 0);
+	}
+	.part {
+		@include position(absolute, 0 0 0 0);
+	}
+</style>

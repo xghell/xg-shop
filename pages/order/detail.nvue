@@ -1,0 +1,285 @@
+<template>
+	<!-- #ifdef MP-WEIXIN -->
+	<page-meta @scroll="wxs.onPageScroll"></page-meta>
+	<!-- #endif -->
+	
+	<view>
+		<image class="page-top-bg" :src="bgImage" mode="widthFix"></image>
+		<uni-nav-bar statusBar :border="false" backgroundColor="rgba(0,0,0,0)"></uni-nav-bar>
+		
+		<!-- #ifdef MP-WEIXIN -->
+		<view class="nav-bar">
+			<view id="nav-bar-bg" class="nav-bar-bg"></view>
+			<uni-nav-bar :border="false" status-bar background-color="rgba(0,0,0,0)">
+				<view class="nav-bar-left" slot="left">
+					<view id="nav-bar-back-icon" class="nav-bar-back-icon" @tap="onNavBarBackTap">
+						<view id="nav-bar-back-icon-bg" class="nav-bar-back-icon-bg"></view>
+						<uni-icons color="" :size="22" type="back"></uni-icons>
+					</view>
+				</view>
+				<view id="nav-bar-title" class="row-around-center nav-bar-title">
+					<text class="font-size-lg">订单详情</text>
+				</view>
+			</uni-nav-bar>
+		</view>
+		<!-- #endif -->
+		
+		<!-- 物流信息 -->
+		<view class="row-center-stretch border-radius-xl bg-color-white padding-xl margin-top-base">
+			<image class="img-size-sm" src="/static/order/detail/car.png" mode="aspectFit"></image>
+			<view class="row-center-center flex-1">
+				<view class="row-center-center flex-1 padding-side-lg">
+					<view class="flex-1">
+						<text class="font-size-base font-weight-bold">您的订单已由{{logistics.signer&&logistics.signer.name||''}}代收。点击快递员头像可进行评价或打赏，快递员：{{logistics.signer&&logistics.courier.name||''}}，电话：{{logistics.signer&&logistics.courier.phone||''}}</text>
+					</view>
+					<uni-icons type="arrowright"></uni-icons>
+				</view>
+				<view class="column-center-center">
+					<image class="img-size-lg border-radius-circle" src="/static/mock/avatars/3.jpg" mode=""></image>
+					<text class="font-size-sm margin-top-xs">{{logistics.signer&&logistics.courier.name||''}}</text>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 收货地址及联系人 -->
+		<view class="row-center-stretch bg-color-white  border-radius-xl padding-xl margin-top-base">
+			<image class="img-size-sm" src="/static/order/detail/location.png" mode="aspectFit"></image>
+			<view class="flex-1 margin-left-lg">
+				<view class="row-start-center margin-bottom-sm">
+					<text class="font-size-base font-weight-bold">{{consignee.name||''}}</text>
+					<text class="font-size-base font-weight-bold margin-left-xl">{{consignee.phone||''}}</text>
+				</view>
+				<text class="font-size-sm text-color-greyblack">地址：{{consignee.address&&consignee.address.province||''}}{{consignee.address&&consignee.address.town||''}}{{consignee.address&&consignee.address.district||''}}，{{consignee.address&&consignee.address.detail||''}}</text>
+			</view>
+		</view>
+		
+		
+		<!-- 订单信息 -->
+		<view class="bg-color-white border-radius-xl margin-top-base padding-left-xl">
+			<view class="row-start-center margin-top-xl">
+				<image class="img-size-base " :src="shop.logo" mode="aspectFit"></image>
+				<text class="font-size-base margin-side-base">{{shop.name}}</text>
+				<uni-icons type="arrowright"></uni-icons>
+			</view>
+			
+			<navigator hover-class="none" :class="{'border-top-solid-1': productIndex !== 0}" class="padding-right-xl padding-v-side-lg" v-for="(product, productIndex) of shop.products" :key="productIndex" url="/pages/product/detail">
+				<view class="row-center-stretch">
+					<image class="product-image" :src="product.image" mode="aspectFit"></image>
+					<view class="flex-1 margin-left-base">
+						<text class="font-size-base lines-1">{{product.title}}</text>
+						<text class="font-size-sm text-color-greyblack margin-top-sm">数量：{{product.count}}</text>
+						
+						<xg-money class="margin-top-base" weight="bold" :size="toPx(UNI_FONT_SIZE_BASE)" :money="product.price"></xg-money>
+					</view>
+				</view>
+				<view class="row-end-center margin-top-base">
+					<view class="product-btn">
+						<text class="product-btn-text">卖了换钱</text>
+					</view>
+					<view class="product-btn">
+						<text class="product-btn-text">申请售后</text>
+					</view>
+					<view class="product-btn">
+						<text class="product-btn-text">加购物车</text>
+					</view>
+				</view>
+			</navigator>
+			
+		</view>
+		<view class="row-center-center bg-color-white border-bottom-left-radius-xl border-bottom-right-radius-xl  border-top-solid-1 padding-v-side-lg">
+			<uni-icons :size="14" type="headphones"></uni-icons>
+			<text class="font-size-lg margin-left-base">联系客服</text>
+		</view>
+		
+		
+		<view class="bg-color-white border-radius-xl margin-top-base padding-side-xl padding-bottom-lg">
+			<view class="order-info-item">
+				<text class="order-info-item-title">订单编号：</text>
+				<text class="order-info-item-content">{{orderInfo.number}}</text>
+			</view>
+			<view class="order-info-item">
+				<text class="order-info-item-title">下单时间：</text>
+				<text class="order-info-item-content">{{orderInfo.order_time||''}}</text>
+			</view>
+			<view class="order-info-item">
+				<text class="order-info-item-title">支付方式：</text>
+				<text class="order-info-item-content">{{orderInfo.payment_method||''}}</text>
+			</view>
+			<view class="order-info-item">
+				<text class="order-info-item-title">支付时间：</text>
+				<text class="order-info-item-content">{{orderInfo.payment_time||''}}</text>
+			</view>
+			<view class="order-info-item">
+				<text class="order-info-item-title">配送方式：</text>
+				<text class="order-info-item-content">{{orderInfo.delivery_method||''}}</text>
+			</view>
+			<view class="order-info-item">
+				<text class="order-info-item-title">期望配送日期：</text>
+				<text class="order-info-item-content">{{orderInfo.expected_delivery_time||''}}</text>
+			</view>
+		</view>
+		
+		<view class="bg-color-white border-radius-xl margin-top-base padding-bottom-lg padding-side-xl">
+			<view class="order-info-item">
+				<text class="order-info-item-title">商品总额：</text>
+				<xg-money weight="bold" :size="toPx(UNI_FONT_SIZE_BASE)" :money="totalAmount"></xg-money>
+			</view>
+			<view class="order-info-item">
+				<text class="order-info-item-title">运费：+</text>
+				<xg-money weight="bold" :size="toPx(UNI_FONT_SIZE_BASE)" :money="orderInfo.transportation_expense"></xg-money>
+			</view>
+			<view class="order-info-item">
+				<text class="order-info-item-title">优惠：-</text>
+				<xg-money weight="bold" :size="toPx(UNI_FONT_SIZE_BASE)" :money="orderInfo.promotion_amount"></xg-money>
+			</view>
+			<view class="row-end-center">
+				<text class="font-size-base">实付款：</text>
+				<xg-money camel weight="bold" :color="UNI_COLOR_RED" :size="toPx(UNI_FONT_SIZE_LG)" :money="realAmount"></xg-money>
+			</view>
+		</view>
+	</view>
+</template>
+
+<!-- #ifdef MP-WEIXIN -->
+<script lang="wxs" module="wxs" src="./detail/nav-bar.wxs"></script>
+<!-- #endif -->
+
+<script>
+	import data from '@/data/order/detail';
+	
+	import mixin from '@/common/mixin';
+	
+	export default {
+		mixins: [mixin],
+		data() {
+			return {
+				bgImage: '',
+				
+				logistics: {},
+				consignee: {},
+				shop: {},
+				orderInfo: {}
+			}
+		},
+		computed: {
+			totalAmount() {
+				let sum = 0;
+				
+				this.shop.products&&this.shop.products.forEach(item => {
+					sum += parseFloat(item.price) * parseInt(item.count);
+				})
+				
+				return sum;
+			},
+			
+			realAmount() {
+				return this.totalAmount - parseFloat(this.orderInfo.promotion_amount) ;
+			}
+		},
+		async created() {
+			const bgImagePromise = data.bgImage();
+			const logisticsPromise = data.logistics();
+			const consigneePromise = data.consignee();
+			const shopPromise = data.shop();
+			const orderInfoPromise = data.orderInfo();
+			
+			this.orderInfo = await orderInfoPromise;
+			this.shop = await shopPromise;
+			this.consignee = await consigneePromise;
+			this.logistics = await logisticsPromise;
+			this.bgImage = await bgImagePromise;
+		},
+		methods: {
+			// #ifdef MP-WEIXIN
+			onNavBarBackTap() {
+				uni.navigateBack({
+					delta: 1
+				});
+			}
+			// #endif
+			
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page-top-bg {
+		@include position(absolute, 0 0 none 0);
+		
+		width: 750rpx;
+	}
+	
+	
+	
+	/* #ifdef MP-WEIXIN */
+	.nav-bar {
+		@include position(fixed, 0 0 none 0);
+		
+		/* #ifndef APP-NVUE */
+		z-index: 10000;
+		/* #endif */
+	}
+	.nav-bar-bg {
+		@include position(absolute, 0 0 0 0);
+		background-color: $uni-color-white;
+		opacity: 0;
+	}
+	.nav-bar-left {
+		opacity: 1;
+	}
+	.nav-bar-back-icon {
+		@include flex-layout(row,center,center);
+		color: $uni-color-white;
+		
+		width: 25px;
+		height: 25px;
+	}
+	.nav-bar-back-icon-bg {
+		@include position(absolute, 0 0 0 0);
+		background-color: $uni-bg-color-mask;
+		border-radius: $uni-border-radius-circle;
+		
+		width: 25px;
+		height: 25px;
+	}
+	.nav-bar-title {
+		@include position(absolute, 0 0 0 0);
+		opacity: 0;
+	}
+	/* #endif */
+	
+	
+	
+	.product-image {
+		@include border-radius($uni-border-radius-lg);
+		width: 180rpx;
+		height: 180rpx;
+	}
+	.product-btn {
+		@include flex-layout(row, center, center);
+		@include border(1px solid $uni-color-greyblack);
+		@include border-radius($uni-border-radius-rect-circle);
+		width: 150rpx;
+		height: 60rpx;
+		
+		margin-left: $uni-spacing-col-lg;
+	}
+	.product-btn-text {
+		font-size: $uni-font-size-base;
+	}
+	
+	
+	.order-info-item {
+		@include flex-layout(row, flex-start, center);
+		
+		margin-top: $uni-spacing-row-lg;
+	}
+	.order-info-item-title {
+		font-size: $uni-font-size-base;
+		color: $uni-color-greyblack;
+	}
+	.order-info-item-content {
+		font-size: $uni-font-size-base;
+		font-weight: bold;
+	}
+</style>

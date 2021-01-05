@@ -1,0 +1,122 @@
+<template>
+	<view class="bg-color-white border-bottom-left-radius-xl border-bottom-right-radius-xl padding-lg">
+		<!-- #ifdef APP-PLUS -->
+		<uni-nav-bar :fixed="true" :status-bar="true" left-icon="back" right-text="提交" title="追加评论" @clickLeft="onBackPressTap" @clickRight="onConfirmTap"></uni-nav-bar>
+		<!-- #endif -->
+		
+		<view class="row-start-center padding-v-side-lg border-bottom-solid-1">
+			<image class="border-radius-base margin-right-lg product-image" :src="productImage" mode="aspectFit"></image>
+			
+			<view class="flex-1">
+				<view class="margin-bottom-base">
+					<text class="lines-1 font-size-lg">{{productTitle}}</text>
+				</view>
+				
+				<view v-if="hasComment" class="row-start-center">
+					<text class="font-size-base text-color-red">已评价</text>
+					<text class="font-size-base text-color-red margin-side-lg">{{productRate}}星</text>
+					<text class="font-size-lg text-color-red">{{rateOptions[parseInt(productRate) - 1]}}</text>
+				</view>
+				
+				
+				<view v-else class="row-start-center">
+					<!-- <text class="font-size-lg font-weight-bold">商品评价</text> -->
+					<uni-rate class="margin-side-lg" :size="toPx(UNI_FONT_SIZE_BASE)*1.5" :active-color="UNI_COLOR_RED" :value="productRate" v-model="productRate"></uni-rate>
+					
+					<text class="font-size-lg text-color-greyblack">{{rateOptions[parseInt(productRate) - 1]}}</text>
+				</view>
+			</view>
+		</view>
+		
+		<textarea class="font-size-lg margin-top-lg comment-textarea" value="" :maxlength="maxCommentContentCount" placeholder="点击下方小标签写出您的感受,可以帮助更多小伙伴哦~" v-model="commentContent"/>
+		
+		<view class="row-end-center margin-bottom-base">
+			<view class="">
+				<text class="font-size-base text-color-greyblack">{{commentContent.length}}/{{maxCommentContentCount}}</text>
+			</view>
+		</view>
+		
+		<xg-picker-media @confirm="onMediaConfirm"></xg-picker-media>
+		
+		<!-- #ifdef MP-WEIXIN -->
+		<view class="margin-top-lg" @tap="onConfirmTap">
+			<view class="row-center-center bg-color-red border-radius-lg padding-base">
+				<text class="font-size-lg text-color-white">提交</text>
+			</view>
+		</view>
+		<!-- #endif -->
+	</view>
+</template>
+
+<script>
+	import config from './addition/config.js';
+	
+	import mixin from '@/common/mixin';
+	
+	export default {
+		mixins: [config, mixin],
+		data() {
+			return {
+				productImage: '',
+				productTitle: '',
+				
+				hasComment: false,
+				productRate: 5,
+				commentContent: '',
+			}
+		},
+		onLoad(options) {
+			if (options.comment) {
+				const comment = JSON.parse(decodeURIComponent(options.comment));
+				
+				this.hasComment = comment.hasComment;
+				this.productRate = comment.productRate;
+				this.productImage = comment.productImage;
+				this.productTitle = comment.productTitle
+			}
+			
+		},
+		// #ifdef H5
+		onNavigationBarButtonTap(e) {
+			const index = e.index;
+			
+			if (0 === index) {
+				this.onConfirmTap();
+			}
+		},
+		// #endif
+		methods: {
+			onBackPressTap() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
+			onConfirmTap() {
+				const res = {
+					productRate: this.productRate,
+					commentContent: this.commentContent,
+					medias: this.medias,
+				};
+				
+				console.log(res);
+			},
+			
+			onMediaConfirm(e) {
+				this.medias = e.detail.medias;
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.product-image {
+		width: 150rpx;
+		height: 150rpx;
+	}
+	.comment-textarea {
+		height: 300rpx;
+	}
+	.checkbox {
+		transform: scale(0.8);
+	}
+</style>

@@ -1,0 +1,602 @@
+<template>
+	<view>
+		<!-- #ifdef MP-WEIXIN -->
+		<uni-nav-bar fixed>
+		<!-- #endif -->
+		<!-- #ifdef APP-PLUS || H5 -->
+		<uni-nav-bar status-bar fixed left-icon="back" right-icon="more-filled" @clickLeft="onNavBarLeftClick">
+		<!-- #endif -->
+			<view class="row-center-start flex-1">
+				<view class="column-center-center nav-bar-title-item" @tap="onNavBarTitleTap('product')">
+					<text class="font-size-lg">商品</text>
+					<view v-if="currentItemId === 'product'" class="nav-bar-title-line margin-top-sm"></view>
+				</view>
+				<view class="column-center-center nav-bar-title-item" @tap="onNavBarTitleTap('comment')">
+					<text class="font-size-lg">评价</text>
+					<view v-if="currentItemId === 'comment'" class="nav-bar-title-line margin-top-sm"></view>
+				</view>
+				<view class="column-center-center nav-bar-title-item" @tap="onNavBarTitleTap('detail')">
+					<text class="font-size-lg">详情</text>
+					<view v-if="currentItemId === 'detail'" class="nav-bar-title-line margin-top-sm"></view>
+				</view>
+			</view>
+		</uni-nav-bar>
+		<!-- 商品 -->
+		<view ref="product-section" id="product-section">
+			<view class="bg-color-white border-bottom-left-radius-lg border-bottom-right-radius-lg">
+				<swiper class="media-swiper" :indicator-dots="true" :duration="500" @change="onProductMediaChange">
+					<swiper-item v-for="(media, mediaIndex) of info.mediaList" :key="mediaIndex">
+						<video :id="'product-media-' + mediaIndex" class="media" v-if="media.type === 'video'" :enable-progress-gesture="false" :poster="media.poster" :src="media.src" @play="onProductVideoPlay(mediaIndex)" @pause="onProductVideoPause(mediaIndex)"></video>
+						<image :id="'product-media-' + mediaIndex" class="media" v-if="media.type === 'image'" :src="media.src" mode="aspectFit"></image>
+					</swiper-item>
+				</swiper>
+				
+				<view class="padding-lg">
+					<view class="">
+						<xg-money :camel="true" :color="UNI_COLOR_RED" :size="20" :money="info.price"></xg-money>
+					</view>
+					<text class="font-size-lg font-weight-bold margin-top-base">{{info.title}}</text>
+				</view>
+			</view>
+			
+			<!-- 优惠 -->
+			<view class="row-between-start bg-color-white margin-top-base padding-lg border-radius-lg">
+				<text class="font-size-base font-weight-bold">优惠</text>
+				<view class="flex-1 margin-side-lg">
+					<view class="row-center-center margin-bottom-base" v-for="(promotion, promotionIndex) of promotionList" :key="promotionIndex">
+						<text class="font-size-xs text-color-red border-radius-base margin-right-lg bg-color-pink padding-side-sm padding-v-side-xs">{{promotion.name}}</text>
+						<view class="flex-1">
+							<text class="font-size-base lines-1">{{promotion.content}}</text>
+						</view>
+					</view>
+				</view>
+				<uni-icons type="more"></uni-icons>
+			</view>
+			
+			<!-- sku信息 -->
+			<view class="row-between-start bg-color-white padding-top-lg margin-top-base border-top-left-radius-lg border-top-right-radius-lg" @tap="onSkuOpenTap">
+				<text class="font-size-base font-weight-bold margin-side-lg">已选</text>
+				<view class="row-center-center flex-1 padding-bottom-lg border-bottom-solid-1">
+					<view class="flex-1 ">
+						<text class="font-size-base lines-1">{{skuOptionsSelectedText}}</text>
+					</view>
+					<view class="margin-right-lg">
+						<uni-icons type="more"></uni-icons>
+					</view>
+				</view>
+			</view>
+			
+			<!-- 配送地址信息 -->
+			<view class="row-between-start bg-color-white padding-v-side-lg  border-bottom-left-radius-lg border-bottom-right-radius-lg" @tap="onAddressOpenTap">
+				<text class="font-size-base font-weight-bold margin-side-lg">送至</text>
+				<view class="flex-1">
+					<text class="font-size-base lines-1">{{address.province + address.town + address.district + address.detail || ''}}</text>
+				</view>
+				<view class="margin-right-lg">
+					<uni-icons type="more"></uni-icons>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 评价 -->
+		<view ref="comment-section" id="comment-section">
+			<!-- 评价 -->
+			<view class="bg-color-white border-radius-lg margin-top-lg padding-xl">
+				<!-- 评论头部 -->
+				<view class="row-between-center">
+					<view class="row-center-center">
+						<view class="title-line"></view>
+						<text class="font-size-lg font-weight-bold margin-side-base">评价</text>
+						<text class="font-size-sm">19万+</text>
+					</view>
+					<view class="row-center-center">
+						
+						<text class="font-size-sm text-color-greyblack">好评度</text>
+						<text class="font-size-sm text-color-greyblack margin-side-base">93%</text>
+						<uni-icons type="arrowright"></uni-icons>
+					</view>
+				</view>
+				
+				<!-- 评论标签 -->
+				<view class="row-start-center margin-top-lg">
+					<view class="border-radius-rect-circle bg-color-pink padding-side-lg padding-v-side-sm margin-right-lg" v-for="(commentLabel, commentLabelIndex) of commentInfo.labels" :key="commentLabelIndex">
+						<text class="font-size-sm">{{commentLabel}}</text>
+					</view>
+				</view>
+				
+				<!-- 评论内容 -->
+				<view class="">
+					<view class="margin-top-xl" v-for="(comment, commentIndex) of commentInfo.list" :key="commentIndex">
+						<!-- 发表评论的用户信息 -->
+						<view class="row-start-center">
+							<image class="img-size-base border-radius-circle" :src="comment.avatar" mode="aspectFit"></image>
+							<view class="margin-left-lg">
+								<text class="font-size-sm margin-bottom-sm">{{comment.username}}</text>
+								<uni-rate :size="13" :value="comment.star"></uni-rate>
+							</view>
+						</view>
+						
+						<!-- 评论内容 -->
+						<view class="margin-v-side-base">
+							<text class="lines-2 font-size-base">{{comment.comment}}</text>
+						</view>
+						
+						<scroll-view scroll-x="true" >
+							<view class="row-start-center">
+								<view class="" v-for="(media, mediaIndex) of comment.mediaList" :key="mediaIndex" @tap="onCommentMediaTap(comment.mediaList, mediaIndex)">
+									<view v-if="media.type === 'video'" class="position-relative row-center-center">
+										<image class="comment-media" :src="media.poster" mode="aspectFit"></image>
+										<view class="bg-color-mask media-duration">
+											<text class="font-size-base text-color-white">{{media.duration}}秒</text>
+										</view>
+										<view class="media-play">
+											<view class="row-center-center img-size-lg border-solid-1 border-radius-circle bg-color-mask ">
+												<image class="img-size-sm" src="/static/common/play.png" mode=""></image>
+											</view>
+										</view>
+									</view>
+									
+									
+									<image class="comment-media" v-if="media.type === 'image'" :src="media.src" mode="aspectFit"></image>
+								</view>
+							</view>
+						</scroll-view>
+					</view>
+				</view>
+			</view>
+			
+		</view>
+		
+		<!-- 详情 -->
+		<view ref="detail-section" id="detail-section">
+			<view class="bg-color-white border-radius-lg margin-top-base">
+				<view class="margin-lg">
+					<text class="font-size-base">商品介绍</text>
+				</view>
+				<image class="introduction-image" v-for="(item, itemIndex) of introduction" :src="item.image" mode="widthFix" :key="itemIndex"></image>
+			</view>
+			
+		</view>
+		
+		
+		<view class="good-nav-placeholder">
+			<uni-goods-nav/>
+		</view>
+		<view class="good-nav">
+			<uni-goods-nav :fill="true" @click="" @buttonClick="" />
+		</view>
+		
+		
+		<!-- 预览图片及视频 -->
+		<xg-media-preview ref="media-preview" title="晒图相册" :urls="info.mediaList" ></xg-media-preview>
+		
+		<!-- sku选项弹窗 -->
+		<uni-popup ref="sku-popup" type="bottom">
+			<view :style="{height: bottomPopupHeight + 'px'}" class="bg-color-white border-top-left-radius-xl border-top-right-radius-xl column-center-stretch padding-side-xl">
+				<view class="padding-v-side-base">
+					<view class="row-end-center">
+						<uni-icons type="close" :size="20" @click="onSkuPopupCloseTap"></uni-icons>
+					</view>
+					<view class="row-center-center ">
+						<xg-money camel :size="UNI_FONT_SIZE_XL" :color="UNI_COLOR_RED" :money="amount"></xg-money>
+					</view>
+					<view class="row-center-center margin-top-lg">
+						<view class="row-center-center bg-color-grey padding-v-side-sm padding-side-lg border-radius-base">
+							<text class="font-size-base text-color-greyblack">已选：</text>
+							<text class="font-size-base text-color-greyblack">{{skuOptionsSelectedText}}</text>
+						</view>
+					</view>
+				</view>
+				<view class="row-center-stretch flex-1">
+					<xg-list class="flex-1 sku-popup-list" :show-scrollbar="false">
+						<xg-list-item v-for="(skuOption, skuOptionIndex) of skuOptions" :key="skuOptionIndex">
+							<view class="">
+								<text class="sku-option-title">{{skuOption.name}}</text>
+								<view class="row-start-center flex-wrap-wrap">
+									<view class="sku-option-item border-radius-lg" :class="{'sku-option-item-selected': skuOption.currentIndex === skuOptionItemIndex}" v-for="(skuOptionItem, skuOptionItemIndex) of skuOption.value"  v-if="skuOptionItem.type === 'image'" :key="skuOptionItemIndex" @tap="onSkuOptionItemTap(skuOption, skuOptionItemIndex)">
+										<image class="sku-option-image border-top-left-radius-lg border-top-right-radius-lg" :src="skuOptionItem.value" mode=""></image>
+										<text class="font-size-base padding-v-side-sm">{{skuOptionItem.name}}</text>
+									</view>
+									
+									<view class="sku-option-item border-radius-rect-circle padding-side-lg padding-v-side-sm" :class="{'sku-option-item-selected': skuOption.currentIndex === skuOptionItemIndex}" v-for="(skuOptionItem, skuOptionItemIndex) of skuOption.value"  v-if="skuOptionItem.type === 'text'" :key="skuOptionItemIndex" @tap="onSkuOptionItemTap(skuOption, skuOptionItemIndex)">
+										<text class="font-size-base">{{skuOptionItem.value}}</text>
+									</view>
+								</view>
+							</view>
+						</xg-list-item>
+						<xg-list-item>
+							<view class="row-between-center">
+								<text class="sku-option-title">数量</text>
+								<uni-number-box class="sku-option-number-box" :min="1" :value="count" @change="onProductCountChange"></uni-number-box>
+							</view>
+						</xg-list-item>
+					</xg-list>
+				</view>
+				<view class="row-center-center margin-v-side-base">
+					<view class="row-center-center flex-1 bg-color-red border-radius-rect-circle padding-base margin-right-base" @tap="onCartTap">
+						<text class="text-color-white font-size-lg ">加入购物车</text>
+					</view>
+					<view class="row-center-center flex-1 bg-color-orange border-radius-rect-circle padding-base margin-left-base">
+						<text class="text-color-white font-size-lg "  @tap="onBuyTap">立即购买</text>
+					</view>
+				</view>
+			</view>
+		</uni-popup>
+		
+		<!-- 地址选项弹窗 -->
+		<uni-popup ref="address-popup" type="bottom">
+			<view :style="{height: bottomPopupHeight + 'px'}" class="column-center-stretch bg-color-white border-top-left-radius-xl border-top-right-radius-xl padding-side-xl padding-v-side-base">
+				<view class="row-end-center">
+					<uni-icons type="close" :size="20" @click="onAddressPopupClose"></uni-icons>
+				</view>
+				<view class="row-center-center">
+					<text class="font-size-xl">配送至</text>
+				</view>
+				<view class="column-center-stretch flex-1 margin-top-xl">
+					<xg-list class="flex-1 address-popup-list" :show-scrollbar="false">
+						<xg-list-item v-for="(address, addressIndex) of addressOption.list" :key="addressIndex">
+							<view class="row-start-center padding-bottom-xl" @tap="onAddressItemTap(addressIndex)">
+								<view class="margin-right-base">
+									<uni-icons v-if="addressIndex == addressOption.currentIndex" type="checkmarkempty" :color="UNI_COLOR_RED"></uni-icons>
+									<uni-icons v-else type="location-filled" :color="UNI_COLOR_BLUE"></uni-icons>
+								</view>
+								<view class="column-center-stretch">
+									<text class="font-size-xl" :class="{'font-weight-bold': addressIndex == addressOption.currentIndex}">{{address.detail || ''}}</text>
+									<text class="font-size-base margin-top-sm">{{address.province + address.town + address.district || ''}}</text>
+								</view>
+							</view>
+						</xg-list-item>
+					</xg-list>
+				</view>
+				
+				<view class="row-center-center padding-v-side-base margin-top-base bg-color-red border-radius-rect-circle">
+					<text class="font-size-lg text-color-white">新增地址</text>
+				</view>
+			</view>
+		</uni-popup>
+	</view>
+</template>
+
+<script>
+	import data from '@/data/product/detail';
+	
+	import mixin from '@/common/mixin';
+	
+	// #ifdef APP-NVUE
+	const dom = uni.requireNativePlugin('dom');
+	// #endif
+	
+	const system_info = uni.getSystemInfoSync();
+	const window_height = system_info.windowHeight;
+	const status_bar_height = system_info.statusBarHeight;
+	
+	const custom_data = {
+		productSectionTop: 0,
+		commentSectionTop: 0,
+		detailSectionTop: 0,
+		lastProductMediaItemIndex: 0,
+	}
+	
+	export default {
+		mixins: [
+			mixin,
+		],
+		data() {
+			return {
+				bottomPopupHeight: window_height*0.9 - 44 -status_bar_height,
+				currentItemId: 'product',
+				
+				info: {},
+				promotionList: [],
+				skuOptions: [],
+				count: 0,
+				addressOption: {},
+				commentInfo: {},
+				
+				introduction: [],
+			}
+		},
+		computed: {
+			amount() {
+				return parseInt(this.count) * parseFloat(this.info.price) || 0; 
+			},
+			// 已选中的sku选项
+			skuOptionsSelectedText() {
+				let skuOptionsSelectedText = '';
+				
+				this.skuOptions.forEach(item => {
+					const valueItem = item.value[item.currentIndex];
+					if (valueItem.type === 'image') {
+						skuOptionsSelectedText += valueItem.name + ',';
+					} else if (valueItem.type === 'text') {
+						skuOptionsSelectedText += valueItem.value + ',';
+					}
+				})
+				
+				return skuOptionsSelectedText + this.count + '件';
+			},
+			
+			address() {
+				return this.addressOption && this.addressOption.list && this.addressOption.list[this.addressOption.currentIndex] || {};
+			}
+		},
+		async onLoad() {
+			const skuOptionsPromise = data.skuOptions();
+			const countPromise = data.count();
+			const addressOptionPromise = data.addressOption();
+			const commentInfoPromise = data.commentInfo();
+			const introductionPromise = data.introduction();
+			
+			this.introduction = await introductionPromise;
+			this.commentInfo = await commentInfoPromise;
+			this.addressOption = await addressOptionPromise;
+			this.count = await countPromise;
+			this.skuOptions = await skuOptionsPromise;
+			
+			await this.loadProductDetail();
+			
+			
+			this.$nextTick(function(){
+				setTimeout(() => {
+					this.calculateLayout();
+				}, 10)
+			})
+		},
+		onUnload() {
+			uni.hideLoading();
+		},
+		onPageScroll(e) {
+			const scrollTop = e.scrollTop;
+			
+			if (custom_data.commentSectionTop > scrollTop) {
+				this.currentItemId = 'product';
+				
+				return ;
+			}
+			
+			if (custom_data.detailSectionTop > scrollTop) {
+				this.currentItemId = 'comment';
+				
+				return ;
+			} else {
+				this.currentItemId = 'detail';
+			}
+			
+			
+		},
+		methods: {
+			onNavBarLeftClick() {
+				uni.navigateBack({
+					delta: 1
+				});
+			},
+			onNavBarTitleTap(e) {
+				// #ifndef APP-NVUE
+				uni.pageScrollTo({
+					scrollTop: custom_data[e + 'SectionTop'] + 10,
+					duration: 100
+				})
+				// #endif
+				// #ifdef APP-NVUE
+				dom.scrollToElement(this.$refs[e + '-section'],{
+					offset: 0
+				});
+				// #endif
+			},
+			
+			calculateLayout() {
+				const query = uni.createSelectorQuery().in(this);
+				
+				query.select('#product-section').fields({size: true});
+				query.select('#comment-section').fields({size: true});
+				query.select('#detail-section').fields({size: true});
+				
+				query.exec(data => {
+					custom_data.productSectionTop = 0;
+					custom_data.commentSectionTop = data[0].height;
+					custom_data.detailSectionTop = data[0].height + data[1].height;
+				})
+			},
+			
+			// 载入产品信息
+			async loadProductDetail(skuOptions) {
+				uni.showLoading()
+				const infoPromise = data.info();
+				const promotionListPromise = data.promotionList();
+				
+				this.promotionList = await promotionListPromise;
+				this.info = await infoPromise;
+				uni.hideLoading();
+			},
+			
+			// 切换产品视频或图片展示
+			onProductMediaChange(e) {
+				const current_index = e.detail.current;
+				const current_type = this.info.mediaList[current_index].type;
+				const current_id = 'product-media-' + current_index;
+				const current_video = this.info.mediaList[current_index].video;
+				
+				
+				const last_index = parseInt(custom_data.lastProductMediaItemIndex);
+				const last_type = this.info.mediaList[last_index].type;
+				const last_id = 'product-media-' + last_index;
+				
+				
+				if (last_type === 'video') {
+					this.info.mediaList[last_index].video = this.info.mediaList[last_index].video ? this.info.mediaList[last_index].video : uni.createVideoContext(last_id, this);
+					
+					if (this.info.mediaList[last_index].playing) {
+						this.info.mediaList[last_index].disableChangePlaying = true;
+						this.info.mediaList[last_index].video.pause();
+					}
+				}
+				
+				if (current_type === 'video') {
+					this.info.mediaList[current_index].video = this.info.mediaList[current_index].video ? this.info.mediaList[current_index].video : uni.createVideoContext(current_id, this);
+					
+					
+					if (this.info.mediaList[current_index].playing) {
+						this.info.mediaList[current_index].video.play();
+					}
+				}
+				
+				
+				custom_data.lastProductMediaItemIndex = current_index;
+			},
+			onProductVideoPlay(index) {
+				this.info.mediaList[index].playing = true;
+			},
+			onProductVideoPause(index) {
+				if (!this.info.mediaList[index].disableChangePlaying) {
+					this.info.mediaList[index].playing = false;
+				}
+				
+				this.info.mediaList[index].disableChangePlaying = false;
+			},
+			// 打开sku选项弹窗
+			onSkuOpenTap() {
+				this.$refs['sku-popup'].open();
+			},
+			// 关闭sku选项弹窗
+			onSkuPopupCloseTap() {
+				this.$refs['sku-popup'].close();
+			},
+			// 点击sku选项
+			onSkuOptionItemTap(skuOption, index) {
+				this.$set(skuOption, 'currentIndex', index);
+				
+				this.loadProductDetail(this.skuOptions);
+			},
+			// 产品数量变化
+			onProductCountChange(e) {
+				this.count = e;
+			},
+			// 加入购物车
+			onCartTap() {
+				
+			},
+			// 立即购买
+			onBuyTap() {
+				
+			},
+			
+			
+			onAddressOpenTap() {
+				this.$refs['address-popup'].open();
+			},
+			onAddressPopupClose() {
+				this.$refs['address-popup'].close();
+			},
+			onAddressItemTap(index) {
+				this.$set(this.addressOption, 'currentIndex', index);
+			},
+			
+			onCommentMediaTap(mediaList, mediaIndex) {
+				this.$refs['media-preview'].preview(mediaList, mediaIndex);
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.nav-bar-title-line {
+		height: 8rpx;
+		width: 80rpx;
+		background-image: linear-gradient(to right, rgba($uni-color-red, 1), rgba($uni-color-red, 0.5));
+	}
+	
+	.title-line {
+		width: 8rpx;
+		height: $uni-font-size-xl;
+		
+		background-image: linear-gradient(to bottom, rgba($uni-color-red, 1), rgba($uni-color-red, 0.3));
+
+	}
+	
+	.nav-bar-title-item {
+		width: 120rpx;
+	}
+	
+	$media-width: 750rpx;
+	$media-height: 750rpx;
+	.media-swiper {
+		width: $media-width;
+		height: $media-height;
+	}
+	.media {
+		width: $media-width;
+		height: $media-height;
+	}
+	
+	
+	.good-nav-placeholder {
+		opacity: 0;
+	}
+	.good-nav {
+		@include position(fixed, none 0 0 0);
+	}
+	
+	
+	.sku-option-item {
+		@include flex-layout(column, center, center);
+		
+		@include border(1px solid $uni-color-grey);
+		
+		margin-right: $uni-spacing-col-base;
+		margin-top: $uni-spacing-row-base;
+	}
+	.sku-option-item-selected {
+		@include border(1px solid $uni-color-red);
+		background-color: $uni-color-pink;
+	}
+	.sku-option-title {
+		font-size: $uni-font-size-lg;
+		font-weight: bold;
+		
+		margin-top: $uni-spacing-row-lg;
+	}
+	.sku-option-image {
+		width: 200rpx;
+		height: 200rpx;
+	}
+	.sku-option-number-box {
+		transform-origin: 100% 50%;
+		transform: scale(0.7);
+	}
+	
+	
+	.comment-media {
+		width: 200rpx;
+		height: 200rpx;
+		
+		border-radius: $uni-border-radius-lg;
+		margin-right: $uni-spacing-col-base;
+	}
+	.media-duration {
+		@include position(absolute, 0 none none 0);
+		
+		padding: 2rpx $uni-spacing-col-base;
+	}
+	.media-play {
+		@include position(absolute, 0 0 0 0);
+		
+		@include flex-layout(row, center, center);
+	}
+	
+	.sku-popup-list {
+		/* #ifdef MP */
+		height: 100%;
+		/* #endif */
+	}
+	
+	.address-popup-list {
+		/* #ifdef MP */
+		height: 100%;
+		/* #endif */
+	}
+	
+	
+	.introduction-image {
+		width: 750rpx;
+	}
+</style>

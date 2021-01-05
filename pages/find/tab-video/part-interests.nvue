@@ -1,0 +1,171 @@
+<template>
+	<view class="column-center-stretch interest">
+		<checkbox-group class="checkbox-group" name="" @change="onInterestChange">
+			<xg-waterfall ref="checkbox-group-waterfall" class="checkbox-group-waterfall" :show-scrollbar="false" :column-count="3" :columnGap="columnGap" :leftGap="leftGap" :rightGap="rightGap">
+				<xg-waterfall-header ref="waterfall-header">
+					<view class="margin-side-lg margin-bottom-base interest-section-title">
+						<view class="interest-section-title-left">
+							<text class="font-size-xl font-weight-bold ">选择你喜欢的兴趣</text>
+							<text class="font-size-sm margin-left-sm">定制专属社区</text>
+						</view>
+						<text class="font-size-sm text-color-greyblack">跳过</text>
+					</view>
+				</xg-waterfall-header>
+				
+				<xg-waterfall-item v-for="(interest, interestIndex) of interestOptions" :key="interestIndex">
+					<view class="column-center-center margin-bottom-base">
+						<label :style="{width: interestWidth + 'px', height: interestHeight + 'px'}" class="position-relative ">
+							<image :style="{width: interestWidth + 'px', height: interestHeight + 'px'}" class="" :src="interest.image" mode="aspectFit"></image>
+							<checkbox class="interest-check-box" :value="interest._id" /><text></text>
+						</label>
+						<text class="margin-v-side-base font-size-base">{{interest.title}}</text>
+					</view>
+				</xg-waterfall-item>
+				
+				<xg-waterfall-footer ref="waterfall-footer">
+					<view class="interest-select-tip-placeholder"></view>
+					
+				</xg-waterfall-footer>
+			</xg-waterfall>
+		</checkbox-group>
+		
+		<view class="padding-bottom-lg interest-select-tip">
+			<view v-if="selectedInterestesCount < minInterestCount" class="bg-color-greyblack interest-select-tip-btn">
+				<text class="interest-select-tip-btn-text">至少选择个兴趣({{selectedInterestesCount}}/{{minInterestCount}})</text>
+			</view>
+			
+			<view v-else class="bg-color-red interest-select-tip-btn" @tap="onConfirmInterestTap">
+				<text class="interest-select-tip-btn-text">确定</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import data from '@/data/find/tab-video/part-interests.js';
+	import mixin from '@/common/mixin';
+
+	export default {
+		mixins: [mixin],
+		data() {
+			return {
+				interestImageRatio: 1,
+				columnCount: 3,
+				minInterestCount: 4,
+				
+				interestOptions: [],
+				
+				selectedInterestes: [],
+			}
+		},
+		
+		computed: {
+			columnGap() {
+				return this.toPx(this.UNI_SPACING_COL_LG);
+			},
+			leftGap() {
+				return this.toPx(this.UNI_SPACING_COL_XL);
+			},
+			rightGap() {
+				return this.toPx(this.UNI_SPACING_COL_XL);
+			},
+			interestWidth() {
+				return (this.toPx('750rpx') - this.toPx(this.leftGap) - this.toPx(this.rightGap) - this.toPx(this.columnGap) * (this.columnCount - 1)) / this.columnCount;
+			},
+			interestHeight() {
+				return this.interestImageRatio * this.interestWidth;
+			},
+			
+			selectedInterestesCount() {
+				return this.selectedInterestes.length;
+			}
+		},
+		async created() {
+			
+			const interestsPromise = data.interests();
+			const interestOptionsPromise = data.interestOptions();
+			
+			this.interestOptions = await interestOptionsPromise;
+			this.interests = await interestsPromise;
+			
+			
+			// #ifdef MP
+			//兼容微信小程序
+			this.$nextTick(function(){
+				setTimeout(() => {
+					this.$refs['waterfall-header'].update();
+					// this.$refs['waterfall-footer'].update();
+				}, 500);
+			})
+			// #endif
+		},
+		methods: {
+			onInterestChange(e) {
+				this.selectedInterestes = e.detail.value;
+			},
+			onConfirmInterestTap(e) {
+				this.$emit('confirm', {detail: {interests: this.selectedInterestes}});
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.interest {
+		/* #ifdef MP */
+		height: 100%;
+		/* #endif */
+	}
+	.checkbox-group {
+		height: 0;
+		flex: 1;
+		
+		@include flex-layout(column);
+	}
+	.checkbox-group-waterfall {
+		height: 0;
+		flex: 1;
+	}
+	
+	
+	.interest-section-title {
+		@include flex-layout(row, space-between, flex-end);
+	}
+	.interest-section-title-left {
+		@include flex-layout(row, space-between, flex-end);
+	}
+	
+	.interest-check-box {
+		@include position(absolute, none $uni-spacing-col-base $uni-spacing-col-base none);
+		
+		transform: scale(0.8);
+		opacity: 0.6;
+	}
+	
+	
+	$interest-select-tip-height: 80rpx + $uni-spacing-row-lg;
+	.interest-select-tip-placeholder {
+		height: $interest-select-tip-height;
+	}
+	.interest-select-tip {
+		@include position(absolute, none 0 0 0);
+		@include flex-layout(row);
+		
+		height: $interest-select-tip-height;
+		
+		/* #ifndef APP-NVUE */
+		z-index: 1000;
+		/* #endif */
+	}
+	.interest-select-tip-btn {
+		@include flex-layout(row, center, center);
+		
+		width: 450rpx;
+		
+		border-radius: $uni-border-radius-rect-circle;
+	}
+	.interest-select-tip-btn-text {
+		font-size: $uni-font-size-lg;
+		color: $uni-color-white;
+	}
+</style>

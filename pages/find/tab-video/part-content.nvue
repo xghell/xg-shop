@@ -1,0 +1,59 @@
+<template>
+	<tpl-video-list ref="video-list" :videos="videos">
+		<view class="row-center-center">
+			<swiper class="slideshow-swiper" :circular="true" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="300">
+				<swiper-item v-for="(slideshow, slideshowIndex) of slideshows" :key="slideshowIndex">
+					<navigator class="row-center-center" :url="slideshow.url">
+						<image class="slideshow-image" :src="slideshow.image" mode="aspectFit"></image>
+					</navigator>
+				</swiper-item>
+			</swiper>
+		</view>
+	</tpl-video-list>
+</template>
+
+<script>
+	import data from '@/data/find/tab-video/part-content.js';
+	
+	
+	export default {
+		data() {
+			return {
+				slideshows: [],
+				
+				videos: [],
+			}
+		},
+		
+		async created() {
+			const slideshowsPromise = data.slideshows();
+			const videosPromise = data.videos();
+			
+			this.videos = await videosPromise;
+			this.slideshows = await slideshowsPromise;
+			
+			
+			this.$nextTick(function(){
+				setTimeout(() => {
+					// #ifdef MP-WEIXIN
+					this.$refs['video-list'].updateWaterfallHeader();
+					// #endif
+					
+				}, 10);
+			})
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	$slideshow-width: 750rpx;
+	$slideshow-height: 300rpx;
+	.slideshow-swiper {
+		width: $slideshow-width;
+		height: $slideshow-height;
+	}
+	.slideshow-image {
+		width: $slideshow-width - $uni-spacing-col-lg * 2;
+		height: $slideshow-height;
+	}
+</style>

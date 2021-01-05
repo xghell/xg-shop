@@ -1,45 +1,36 @@
+$page-bg-color: #F8F8F8;
+
+/* 颜色 */
+$uni-color-white: #FFFFFF;
+$uni-color-red: #dd524d;
+$uni-color-pink: pink;
+$uni-color-green: #06A688;
+$uni-color-blue: blue;
+$uni-color-orange: orange;
+$uni-color-grey: #E5E5E5;
+$uni-color-greyblack: #777;
+$uni-color-black: #000;
+
 /* 文字尺寸 */
-$uni-font-size-maro: 20rpx;
-$uni-font-size-mi: 24rpx;
-$uni-font-size-hg: 40rpx;
-$uni-font-size-mx: 44rpx;
+$uni-font-size-xs:20rpx;
+$uni-font-size-xl:36rpx;
 
-/* 文字颜色 */
-$uni-text-color-red: #ed1c24;
-$uni-text-color-white: #FFFFFF;
+// 图片尺寸
+$uni-img-size-xs: 30rpx;
+$uni-img-size-xl: 110rpx;
 
-/* 图标尺寸 */
-$uni-icon-size-mi: 20rpx;
-$uni-icon-size-sm: 40rpx;
-$uni-icon-size-md: 50rpx;
-$uni-icon-size-base: 80rpx;
-$uni-icon-size-lg: 120rpx;
-$uni-icon-size-hg: 160rpx;
-$uni-icon-size-mx: 200rpx;
+//圆角
+$uni-border-radius-xs: 2rpx;
+$uni-border-radius-xl: 24rpx;
+$uni-border-radius-rect-circle: 10000px;
 
 /* 水平间距 */
-$uni-spacing-row-mi: 8rpx;
-$uni-spacing-row-hg: 48rpx;
-$uni-spacing-row-mx: 60rpx;
+$uni-spacing-row-xs: 5rpx;
+$uni-spacing-row-xl: 40rpx;
 
 /* 垂直间距 */
-$uni-spacing-col-mi: 6rpx;
-$uni-spacing-col-hg: 40rpx;
-$uni-spacing-col-mx: 50rpx;
-
-/* 背景颜色 */
-$uni-bg-color-pink: pink;
-$uni-bg-color-red: red;
-$uni-bg-color-yellow: yellow;
-$uni-bg-color-orange: orange;
-$uni-bg-color-blue: blue;
-$uni-bg-color-black: black;
-$uni-bg-color-mask-white:rgba(255, 255, 255, 0.4);//遮罩颜色
-
-/* Border Radius */
-$uni-border-radius-mi: 8rpx;
-$uni-border-radius-hg: 40rpx;
+$uni-spacing-col-xs: 4rpx;
+$uni-spacing-col-xl: 32rpx;
 
 
-/* 边框颜色 */
-$uni-border-color-red: red;
+@import './scss/common.scss';
