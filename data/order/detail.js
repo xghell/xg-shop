@@ -6,7 +6,7 @@ class Data {
 	}
 	
 	async logistics() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const logistics = {
 			signer: {
@@ -22,7 +22,7 @@ class Data {
 	}
 	
 	async consignee() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const consignee = {
 			name: '王二老',
@@ -40,7 +40,7 @@ class Data {
 	
 	
 	async shop(cate_id) {
-		await sleep(1000);
+		await sleep(300);
 		const shop = {
 			_id: '',
 			logo: '/static/mock/shop/1/logo.jpg',

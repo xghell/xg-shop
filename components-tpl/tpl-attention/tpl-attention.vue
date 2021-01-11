@@ -6,6 +6,9 @@
 </template>
 
 <script>
+	/**
+	 * @event {Function()} change 
+	 */
 	export default {
 		props: {
 			selected: {//是否已关注
@@ -14,7 +17,7 @@
 			},
 			width: {
 				type: Number|String,
-				default: '100rpx'
+				default: '110rpx'
 			},
 			height: {
 				type: Number|String,

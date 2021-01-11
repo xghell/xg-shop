@@ -1,26 +1,26 @@
 <template>
 	<view class="position-relative">
 		<!-- 店铺logo和店名 -->
-		<view class="margin-bottom-base margin-side-lg shop-title-part">
-			<view class="logo-and-name">
-				<view v-if="!concerned" class="margin-right-base border-radius-circle shop-logo">
-					<image class="border-radius-circle shop-logo-image" :src="logo" mode="aspectFit"></image>
-				</view>
-				<view>
-					<text class="font-size-lg">{{name}}</text>
-					<view v-if="living" class="shop-live-part">
-						<xg-live :pillarColor="UNI_COLOR_RED"></xg-live>
-						<text class="margin-left-sm text-color-red shop-live-part-text">直播中</text>
+		<navigator hover-class="none" url="/pages/shop/shop">
+			<view class="margin-bottom-base margin-side-lg shop-title-part">
+				<view class="logo-and-name">
+					<view v-if="!concerned" class="margin-right-base border-radius-circle shop-logo">
+						<image class="border-radius-circle shop-logo-image" :src="logo" mode="aspectFit"></image>
+					</view>
+					<view>
+						<text class="font-size-lg">{{name}}</text>
+						<view v-if="living" class="shop-live-part">
+							<xg-live :pillarColor="UNI_COLOR_RED"></xg-live>
+							<text class="margin-left-sm text-color-red shop-live-part-text">直播中</text>
+						</view>
 					</view>
 				</view>
+				<view v-if="concerned" @tap.prevent.stop="onMoreOptionsTap">
+					<uni-icons :size="toPx('40rpx')" :color="UNI_COLOR_GREY" type="more-filled"></uni-icons>
+				</view>
+				<tpl-attention v-else @change="onAttentionChange"></tpl-attention>
 			</view>
-			<view v-if="concerned" @tap="onMoreOptionsTap">
-				<uni-icons :size="toPx('40rpx')" :color="UNI_COLOR_GREY" type="more-filled"></uni-icons>
-			</view>
-			<tpl-attention v-else @change="onAttentionChange"></tpl-attention>
-		</view>
-		
-		
+		</navigator>
 		
 		<!-- 商铺产品列表 -->
 		<view v-if="products.length < 2">
@@ -107,7 +107,10 @@
 			onAttentionChange(e) {
 				//关注或取消关注店铺逻辑
 			},
-			onMoreOptionsTap() {
+			onMoreOptionsTap(e) {
+				//nvue页面阻止事件冒泡
+				e.stopPropagation();
+				
 				this.moreOptionsToggle = !this.moreOptionsToggle;
 			},
 		},

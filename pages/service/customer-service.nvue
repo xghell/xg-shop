@@ -1,0 +1,15 @@
+<template>
+	<view>
+		客户服务
+	</view>
+</template>
+
+<script>
+	export default {
+		
+	}
+</script>
+
+<style lang="scss" scoped>
+
+</style>

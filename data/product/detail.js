@@ -2,13 +2,13 @@ import {generateList,sleep} from '@/common/helper.js'
 
 class Data {
 	async count() {
-		await sleep(1000);
+		await sleep(300);
 		
 		return '2';
 	}
 	
 	async skuOptions() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const list = [
 			{
@@ -84,7 +84,7 @@ class Data {
 	}
 	
 	async info(skuOptions) {
-		await sleep(1000);
+		await sleep(300);
 		
 		return {
 			title: '【换修无忧年付版】Apple iPhone 12(A2404)64GB 白色 支持移动联通电信5G双卡双待手机',
@@ -135,7 +135,7 @@ class Data {
 	}
 	
 	async addressOption() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const list = generateList(10, () => {
 			return [

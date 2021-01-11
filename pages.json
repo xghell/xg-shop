@@ -322,9 +322,43 @@
 				}
 		    }
 		    
+		},
+		{
+			"path":"pages/shop/shop",
+			"style":{
+				// #ifndef MP-WEIXIN
+				"transparentTitle": "always",
+				// #endif
+				"app-plus": {
+					"titleNView": {
+						"backgroundColor":"rgba(0,0,0,0)",
+						"titleColor": "#FFFFFF",
+						"buttons": [
+							{
+								"type":"menu"
+							}
+						],
+						"searchInput": {
+							"align":"left",
+							"placeholder":"请输入搜索内容",
+							"borderRadius":"10000px"
+						}
+					}
+				},
+				"mp-weixin": {
+					"navigationStyle": "custom"
+				}
+			}
+		},
+		{
+			"path": "pages/service/customer-service",
+			"style": {
+				
+			}
 		}
     ],
 	"tabBar": {
+		"backgroundColor":"#FFFFFF",
 		"color": "#2c2c2c",
 		"selectedColor": "#d81e06",
 		"list": [
@@ -378,7 +412,7 @@
 		"list": [
 			{
 				"name": "", //模式名称
-				"path": "pages/index/index", //启动页面，必选
+				"path": "pages/shop/shop", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]

@@ -2,7 +2,7 @@ import {generateList,sleep} from '@/common/helper.js'
 
 class Data {
 	async products(page) {
-		await sleep(1000);
+		await sleep(300);
 		
 		const products = generateList(5, (index) => {
 			return [
@@ -28,7 +28,7 @@ class Data {
 	}
 	
 	async shops() {
-		await sleep(2000);
+		await sleep(300);
 		const list = [
 			{
 				_id: '',

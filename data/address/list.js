@@ -2,7 +2,7 @@ import {generateList,sleep} from '@/common/helper.js'
 
 class Data {
 	async addresses() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const list = generateList(1, () => {
 			return [

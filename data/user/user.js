@@ -8,7 +8,7 @@ class Data {
 	}
 	
 	async userInfo() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const userInfo = {
 			username: 'jd182984375349',
@@ -21,7 +21,7 @@ class Data {
 	
 	
 	async trackInfoList() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const trackList = [
 			{
@@ -51,7 +51,7 @@ class Data {
 	
 	
 	async orderInfoList() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const list = [
 			{
@@ -90,7 +90,7 @@ class Data {
 	}
 	
 	async accountInfoList() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const accountInfoList = [
 			{
@@ -172,7 +172,7 @@ class Data {
 		return titles;
 	}
 	async products(cate_id, page) {
-		await sleep(1000);
+		await sleep(300);
 		
 		const products = generateList(5, (index) => {
 			return [

@@ -224,7 +224,7 @@ class Data{
 	}
 	
 	async tabProducts(cate_id, page) {
-		await sleep(1000);
+		await sleep(300);
 		const products = generateList(5, (index) => {
 			return [
 				{

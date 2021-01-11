@@ -1,0 +1,143 @@
+<template>
+	<view class="page">
+		<!-- #ifdef MP-WEIXIN -->
+		<uni-nav-bar :border="false" :fixed="true" :statusBar="true" backgroundColor="rgba(0,0,0,0)" color="#FFFFFF"   left-icon="back" @clickLeft="onBackPressTap">
+			<view :style="{width: searchBarWidth + 'px'}" slot="left">
+				<tpl-search-bar placeholder="搜商品" :radius="10000"></tpl-search-bar>
+			</view>
+		</uni-nav-bar>
+		<!-- #endif -->
+		<!-- #ifndef MP-WEIXIN -->
+		<!-- 导航栏占位 -->
+		<uni-nav-bar :status-bar="true" :border="false" background-color="rgba(0,0,0,0)"></uni-nav-bar>
+		<!-- #endif -->
+		
+		<!-- 页面顶部背景图片 -->
+		<image class="top-bg-image" :src="topBgImage" mode="widthFix"></image>
+		<!-- 店铺基本信息 -->
+		<view class="row-center-center margin-side-lg margin-top-base">
+			<image class="img-size-xl border-radius-lg" :src="shopInfo.logo" mode="aspectFit"></image>
+			<view class="flex-1 column-center-stretch margin-side-base">
+				<view class="row-start-center">
+					<text class="font-size-xl text-color-white">{{shopInfo.name}}</text>
+					<uni-icons :color="UNI_COLOR_WHITE" type="arrowright"></uni-icons>
+				</view>
+				<view class="row-start-center">
+					<uni-rate :readonly="true" :active-color="UNI_COLOR_RED" :size="toPx(UNI_FONT_SIZE_BASE)" :value="shopInfo.rate"></uni-rate>
+					<text class="font-size-sm">{{shopInfo.concernedCount > 10000 ? shopInfo.concernedCount/10000 + '万' : shopInfo.concernedCount}}人关注</text>
+				</view>
+			</view>
+			
+			<view class="">
+				<tpl-attention selected-border-color="#FFFFFF" selected-color="#FFFFFF" :selected="shopInfo.isConcerned"></tpl-attention>
+			</view>
+		</view>
+	
+		<view class="flex-1 position-relative column-center-stretch margin-top-lg">
+			<swiper class="swiper" :disable-touch="true" :indicator-dots="false" :autoplay="false" :duration="300" :current="currentTabIndex">
+				<swiper-item>
+					<view class="swiper-item">
+						<tab-index class="flex-1"></tab-index>
+					</view>
+				</swiper-item>
+				<swiper-item>
+					<view class="swiper-item">
+						<tab-product v-if="hasTabIndexSetItem(1)" class="flex-1"></tab-product>
+					</view>
+				</swiper-item>
+				<swiper-item>
+					<view class="swiper-item">
+						<tab-cate v-if="hasTabIndexSetItem(2)" class="flex-1"></tab-cate>
+					</view>
+				</swiper-item>
+			</swiper>
+		</view>
+		
+		<view class="">
+			<xg-tab-bar :background-color="tabbar.backgroundColor" :color="tabbar.color" :selected-color="tabbar.selectedColor" :current="currentTabIndex" :list="tabbar.list" @change="onTabbarItemChange"></xg-tab-bar>
+		</view>
+	</view>
+</template>
+
+<script>
+	import data from '@/data/shop/shop';
+	
+	import config from './shop/config';
+	import mixin from '@/common/mixin';
+	
+	import tabIndex from './shop/tab-index';
+	import tabProduct from './shop/tab-product';
+	import tabCate from './shop/tab-cate';
+	
+	
+	export default {
+		mixins: [mixin, config],
+		components: {
+			tabIndex,
+			tabProduct,
+			tabCate
+		},
+		data() {
+			return {
+				topBgImage: '',
+				
+				shopInfo: ''
+			}
+		},
+		async onLoad() {
+			const topBgImagePromise = data.topBgImage();
+			const shopInfoPromise = data.shopInfo();
+			
+			this.topBgImage = await topBgImagePromise;
+			this.shopInfo = await shopInfoPromise;
+		},
+		methods: {
+			// #ifdef MP-WEIXIN
+			onBackPressTap() {
+				uni.navigateBack({
+					delta: 1
+				});
+			},
+			// #endif
+			
+			onTabbarItemChange(e) {
+				const index = e.detail.current;
+				
+				if (3 === index) {
+					uni.navigateTo({
+						url: '/pages/service/customer-service'
+					});
+					
+					return ;
+				}
+				this.setCurrentTabIndex(index);
+				this.addTabIndexSetItem(index);
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page {
+		@include position(fixed, 0 0 0 0);
+		
+		@include flex-layout(column);
+	}
+	.top-bg-image {
+		@include position(absolute, 0 0 none 0);
+		
+		width: 750rpx;
+	}
+	
+	.swiper {
+		/* #ifdef MP-WEIXIN */
+		height: 100%;
+		/* #endif */
+		flex: 1;
+	}
+	.swiper-item {
+		@include position(absolute, 0 0 0 0);
+		
+		@include flex-layout(column);
+	}
+</style>

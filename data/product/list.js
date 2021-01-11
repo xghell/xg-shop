@@ -2,7 +2,7 @@ import {generateList,sleep} from '@/common/helper.js'
 
 class Data {
 	async products(page) {
-		await sleep(1000);
+		await sleep(300);
 		
 		const products = generateList(5, (index) => {
 			return [
@@ -35,7 +35,7 @@ class Data {
 	
 	
 	async serviceOptions() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const list = [
 			{
@@ -68,7 +68,7 @@ class Data {
 	}
 
 	async brandOptions() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const list = [
 			{
@@ -107,7 +107,7 @@ class Data {
 	}
 
 	async specificationOptions() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const specificationOptions = [
 			{

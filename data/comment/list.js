@@ -2,7 +2,7 @@ import {generateList, sleep} from '@/common/helper.js';
 
 class Data {
 	async commentedList() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const list = generateList(2, () => {
 			return [
@@ -138,7 +138,7 @@ class Data {
 	}
 	
 	async commentingList() {
-		await sleep(1000);
+		await sleep(300);
 		
 		const list = generateList(2, () => {
 			return [
