@@ -50,12 +50,13 @@
 		methods: {
 			onTabTitleTap(index) {
 				this.setCurrentTabIndex(index);
+				this.addTabIndexSetItem(index);
 			},
 			
 			onSwiperChange(e) {
 				const index = e.detail.current;
 				this.setCurrentTabIndex(index);
-				this.addTabIndexSetItem(index)
+				this.addTabIndexSetItem(index);
 			}
 		},
 	}
