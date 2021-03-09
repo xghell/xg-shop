@@ -403,8 +403,6 @@
 	"easycom": {
 	  "autoscan": true,
 	  "custom": {
-	    "^tpl-(.*)": "@/components-tpl/tpl-$1/tpl-$1.vue",
-		"^xg-(.*)": "@/components-xg/xg-$1/xg-$1.vue"
 	  }
 	},
 	"condition" : { //模式配置，仅开发期间生效

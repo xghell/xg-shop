@@ -5,7 +5,7 @@
 	  
 	<tpl-product-waterfall ref="product-list" :load-more-status="loadMoreStatus" :products="products" @loadmore="onLoadmore">
 		<view class="">
-			<uni-status-bar></uni-status-bar>
+			<xg-status-bar></xg-status-bar>
 			<view class="nav-bar-placeholder"></view>
 			
 			<image class="nav-bar-bg-image" :src="navBarBg" mode="widthFix"></image>

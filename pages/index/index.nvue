@@ -2,7 +2,7 @@
 	<view class="page">
 		<!-- #ifndef APP-NVUE -->
 		<view id="nav-bar" class="nav-bar-wrap">
-			<uni-status-bar></uni-status-bar>
+			<xg-status-bar></xg-status-bar>
 			<image class="nav-bar-bg-image" :src="navBarBg" mode="widthFix"></image>
 			
 			<!-- #ifdef MP -->
@@ -57,7 +57,7 @@
 				<!-- #endif -->
 				
 				<view id="page-header">
-					<uni-status-bar></uni-status-bar>
+					<xg-status-bar></xg-status-bar>
 					<!-- #ifdef MP -->
 					<!-- 小程序原生导航栏高度 -->
 					<view :style="{height: nativeNavBarHeight + 'px'}"></view>
@@ -204,7 +204,7 @@
 			</view>
 			
 			<view id="nav-bar" ref='nav-bar' class="nav-bar" >
-				<uni-status-bar></uni-status-bar>
+				<xg-status-bar></xg-status-bar>
 				<!-- 导航栏背景 -->
 				<view ref="nav-bar-bg" class="nav-bar-bg">
 					<image :src="navBarBg" mode="widthFix"></image>

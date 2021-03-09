@@ -2,6 +2,5 @@ manifest.json
 .git/
 .hbuilderx/
 unpackage/
-components-xg/
-components/
 common/
+uni_modules/

@@ -12,7 +12,7 @@
 		<view class="tab-title-section-placeholder"></view>
 		<view class="tab-title-section">
 			<!-- #ifdef MP-WEIXIN -->
-			<uni-status-bar></uni-status-bar>
+			<xg-status-bar></xg-status-bar>
 			<!-- #endif -->
 			<view class="position-relative ">
 				<view class="row-center-center bg-color-white  tab-title-list-wrap">
