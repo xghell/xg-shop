@@ -1,0 +1,162 @@
+// 布局
+.flex-1 {
+	flex: 1;
+}
+.flex-2 {
+	flex: 2;
+}
+.flex-3 {
+	flex: 3;
+}
+
+.row-start-start {
+	@include flex-layout(row, flex-start, flex-start);
+}
+.row-start-center {
+	@include flex-layout(row, flex-start, center);
+}
+.row-start-end {
+	@include flex-layout(row, flex-start, flex-end);
+}
+.row-start-stretch {
+	@include flex-layout(row, flex-start, stretch);
+}
+
+.row-center-start {
+	@include flex-layout(row, center, flex-start);
+}
+.row-center-center {
+	@include flex-layout(row, center, center);
+}
+.row-center-end {
+	@include flex-layout(row, center, flex-end);
+}
+.row-center-stretch {
+	@include flex-layout(row, center, stretch);
+}
+
+.row-end-start {
+	@include flex-layout(row, flex-end, flex-start);
+}
+.row-end-center {
+	@include flex-layout(row, flex-end, center);
+}
+.row-end-end {
+	@include flex-layout(row, flex-end, flex-end);
+}
+.row-end-stretch {
+	@include flex-layout(row, flex-end, stretch);
+}
+
+.row-around-start {
+	@include flex-layout(row, space-around, flex-start);
+}
+.row-around-center {
+	@include flex-layout(row, space-around, center);
+}
+.row-around-end {
+	@include flex-layout(row, space-around, flex-end);
+}
+.row-around-stretch {
+	@include flex-layout(row, space-around, stretch);
+}
+
+.row-between-start {
+	@include flex-layout(row, space-between, flex-start);
+}
+.row-between-center {
+	@include flex-layout(row, space-between, center);
+}
+.row-between-end {
+	@include flex-layout(row, space-between, flex-end);
+}
+.row-between-stretch {
+	@include flex-layout(row, space-between, stretch);
+}
+
+
+
+.column-start-start {
+	@include flex-layout(column, flex-start, flex-start);
+}
+.column-start-center {
+	@include flex-layout(column, flex-start, center);
+}
+.column-start-end {
+	@include flex-layout(column, flex-start, flex-end);
+}
+.column-start-stretch {
+	@include flex-layout(column, flex-start, stretch);
+}
+
+.column-center-start {
+	@include flex-layout(column, center, flex-start);
+}
+.column-center-center {
+	@include flex-layout(column, center, center);
+}
+.column-center-end {
+	@include flex-layout(column, center, flex-end);
+}
+.column-center-stretch {
+	@include flex-layout(column, center, stretch);
+}
+
+.column-end-start {
+	@include flex-layout(column, flex-end, flex-start);
+}
+.column-end-center {
+	@include flex-layout(column, flex-end, center);
+}
+.column-end-end {
+	@include flex-layout(column, flex-end, flex-end);
+}
+.column-end-stretch {
+	@include flex-layout(column, flex-end, stretch);
+}
+
+.column-around-start {
+	@include flex-layout(column, space-around, flex-start);
+}
+.column-around-center {
+	@include flex-layout(column, space-around, center);
+}
+.column-around-end {
+	@include flex-layout(column, space-around, flex-end);
+}
+.column-around-stretch {
+	@include flex-layout(column, space-around, stretch);
+}
+
+.column-between-start {
+	@include flex-layout(column, space-between, flex-start);
+}
+.column-between-center {
+	@include flex-layout(column, space-between, center);
+}
+.column-between-end {
+	@include flex-layout(column, space-between, flex-end);
+}
+.column-between-stretch {
+	@include flex-layout(column, space-between, stretch);
+}
+
+.flex-wrap-nowrap {
+	flex-wrap: nowrap;
+}
+.flex-wrap-wrap {
+	flex-wrap: wrap;
+}
+.flex-wrap-wrap-reverse {
+	flex-wrap: wrap-reverse;
+}
+
+
+/* #ifndef APP-NVUE */
+.border-box {
+	box-sizing: border-box;
+}
+.content-box {
+	box-sizing: content-box;
+}
+/* #endif */

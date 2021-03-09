@@ -1,0 +1,51 @@
+// 文字
+.font-size-xs {
+	font-size: $uni-font-size-xs;
+	line-height: $uni-font-size-xs * 1.4;
+}
+.font-size-sm {
+	font-size: $uni-font-size-sm;
+	line-height: $uni-font-size-sm * 1.4;
+}
+.font-size-base {
+	font-size: $uni-font-size-base;
+	line-height: $uni-font-size-base * 1.4;
+}
+.font-size-lg {
+	font-size: $uni-font-size-lg;
+	line-height: $uni-font-size-lg * 1.4;
+}
+.font-size-xl {
+	font-size: $uni-font-size-xl;
+	line-height: $uni-font-size-xl * 1.4;
+}
+
+.font-weight-normal {
+	font-weight: normal;
+}
+.font-weight-bold {
+	font-weight: bold;
+}
+
+
+//图片
+.img-size-xs {
+	width: $uni-img-size-xs;
+	height: $uni-img-size-xs;
+}
+.img-size-sm {
+	width: $uni-img-size-sm;
+	height: $uni-img-size-sm;
+}
+.img-size-base {
+	width: $uni-img-size-base;
+	height: $uni-img-size-base;
+}
+.img-size-lg {
+	width: $uni-img-size-lg;
+	height: $uni-img-size-lg;
+}
+.img-size-xl {
+	width: $uni-img-size-xl;
+	height: $uni-img-size-xl;
+}

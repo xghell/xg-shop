@@ -1,0 +1,16 @@
+//函数
+@import './function.scss';
+//边距相关样式包括（border,border-radius）
+@import './border.scss';
+//布局相关样式，主要是flex布局
+@import './layout.scss';
+//颜色相关样式，包括字体颜色、背景颜色、边框颜色
+@import './color.scss';
+//尺寸相关样式，包括字体大小、图片大小
+@import './size.scss';
+//文本相关样式，包括文字显示行数
+@import './text.scss';
+//定位相关布局，包括absolute,fixed,relative,sticky
+@import './position.scss';
+//距离相关样式，包括内边距、外边距
+@import './gap.scss';

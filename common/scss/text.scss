@@ -1,0 +1,10 @@
+// 行数
+.lines-1 {
+	@include lines(1);
+}
+.lines-2 {
+	@include lines(2);
+}
+.lines-3 {
+	@include lines(3);
+}

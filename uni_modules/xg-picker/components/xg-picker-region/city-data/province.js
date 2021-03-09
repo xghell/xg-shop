@@ -1,0 +1,141 @@
+export default [{
+	"code": "110000",
+	"name": "北京",
+	"pinyin": "Beijing"
+}, {
+	"code": "120000",
+	"name": "天津",
+	"pinyin": "Tianjin"
+}, {
+	"code": "130000",
+	"name": "河北省",
+	"pinyin": "Hebei"
+}, {
+	"code": "140000",
+	"name": "山西省",
+	"pinyin": "Shanxi"
+}, {
+	"code": "150000",
+	"name": "内蒙古自治区",
+	"pinyin": "Inner Mongolia"
+}, {
+	"code": "210000",
+	"name": "辽宁省",
+	"pinyin": "Liaoning"
+}, {
+	"code": "220000",
+	"name": "吉林省",
+	"pinyin": "Jilin"
+}, {
+	"code": "230000",
+	"name": "黑龙江省",
+	"pinyin": "Heilongjiang"
+}, {
+	"code": "310000",
+	"name": "上海",
+	"pinyin": "Shanghai"
+}, {
+	"code": "320000",
+	"name": "江苏省",
+	"pinyin": "Jiangsu"
+}, {
+	"code": "330000",
+	"name": "浙江省",
+	"pinyin": "Zhejiang"
+}, {
+	"code": "340000",
+	"name": "安徽省",
+	"pinyin": "Anhui"
+}, {
+	"code": "350000",
+	"name": "福建省",
+	"pinyin": "Fujian"
+}, {
+	"code": "360000",
+	"name": "江西省",
+	"pinyin": "Jiangxi"
+}, {
+	"code": "370000",
+	"name": "山东省",
+	"pinyin": "Shandong"
+}, {
+	"code": "410000",
+	"name": "河南省",
+	"pinyin": "Henan"
+}, {
+	"code": "420000",
+	"name": "湖北省",
+	"pinyin": "Hubei"
+}, {
+	"code": "430000",
+	"name": "湖南省",
+	"pinyin": "Hunan"
+}, {
+	"code": "440000",
+	"name": "广东省",
+	"pinyin": "Guangdong"
+}, {
+	"code": "450000",
+	"name": "广西壮族自治区",
+	"pinyin": "Guangxi"
+}, {
+	"code": "460000",
+	"name": "海南省",
+	"pinyin": "Hainan"
+}, {
+	"code": "500000",
+	"name": "重庆",
+	"pinyin": "Chongqing"
+}, {
+	"code": "510000",
+	"name": "四川省",
+	"pinyin": "Sichuan"
+}, {
+	"code": "520000",
+	"name": "贵州省",
+	"pinyin": "Guizhou"
+}, {
+	"code": "530000",
+	"name": "云南省",
+	"pinyin": "Yunnan"
+}, {
+	"code": "540000",
+	"name": "西藏自治区",
+	"pinyin": "Tibet"
+}, {
+	"code": "610000",
+	"name": "陕西省",
+	"pinyin": "Shaanxi"
+}, {
+	"code": "620000",
+	"name": "甘肃省",
+	"pinyin": "Gansu"
+}, {
+	"code": "630000",
+	"name": "青海省",
+	"pinyin": "Qinghai"
+}, {
+	"code": "640000",
+	"name": "宁夏回族自治区",
+	"pinyin": "Ningxia"
+}, {
+	"code": "650000",
+	"name": "新疆维吾尔自治区",
+	"pinyin": "Xinjiang"
+}, {
+	"code": "710000",
+	"name": "台湾",
+	"pinyin": "Taiwan"
+}, {
+	"code": "810000",
+	"name": "香港特别行政区",
+	"pinyin": "Hong Kong"
+}, {
+	"code": "820000",
+	"name": "澳门特别行政区",
+	"pinyin": "Macau"
+}, {
+	"code": "900000",
+	"name": "钓鱼岛",
+	"pinyin": "DiaoyuDao"
+}]

@@ -1,0 +1,1493 @@
+export default [{
+	"code": "110100",
+	"name": "北京市",
+	"pinyin": "Beijing"
+}, {
+	"code": "120100",
+	"name": "天津市",
+	"pinyin": "Tianjin"
+}, {
+	"code": "130100",
+	"name": "石家庄市",
+	"pinyin": "Shijiazhuang"
+}, {
+	"code": "130200",
+	"name": "唐山市",
+	"pinyin": "Tangshan"
+}, {
+	"code": "130300",
+	"name": "秦皇岛市",
+	"pinyin": "Qinhuangdao"
+}, {
+	"code": "130400",
+	"name": "邯郸市",
+	"pinyin": "Handan"
+}, {
+	"code": "130500",
+	"name": "邢台市",
+	"pinyin": "Xingtai"
+}, {
+	"code": "130600",
+	"name": "保定市",
+	"pinyin": "Baoding"
+}, {
+	"code": "130700",
+	"name": "张家口市",
+	"pinyin": "Zhangjiakou"
+}, {
+	"code": "130800",
+	"name": "承德市",
+	"pinyin": "Chengde"
+}, {
+	"code": "130900",
+	"name": "沧州市",
+	"pinyin": "Cangzhou"
+}, {
+	"code": "131000",
+	"name": "廊坊市",
+	"pinyin": "Langfang"
+}, {
+	"code": "131100",
+	"name": "衡水市",
+	"pinyin": "Hengshui"
+}, {
+	"code": "140100",
+	"name": "太原市",
+	"pinyin": "Taiyuan"
+}, {
+	"code": "140200",
+	"name": "大同市",
+	"pinyin": "Datong"
+}, {
+	"code": "140300",
+	"name": "阳泉市",
+	"pinyin": "Yangquan"
+}, {
+	"code": "140400",
+	"name": "长治市",
+	"pinyin": "Changzhi"
+}, {
+	"code": "140500",
+	"name": "晋城市",
+	"pinyin": "Jincheng"
+}, {
+	"code": "140600",
+	"name": "朔州市",
+	"pinyin": "Shuozhou"
+}, {
+	"code": "140700",
+	"name": "晋中市",
+	"pinyin": "Jinzhong"
+}, {
+	"code": "140800",
+	"name": "运城市",
+	"pinyin": "Yuncheng"
+}, {
+	"code": "140900",
+	"name": "忻州市",
+	"pinyin": "Xinzhou"
+}, {
+	"code": "141000",
+	"name": "临汾市",
+	"pinyin": "Linfen"
+}, {
+	"code": "141100",
+	"name": "吕梁市",
+	"pinyin": "Lvliang"
+}, {
+	"code": "150100",
+	"name": "呼和浩特市",
+	"pinyin": "Hohhot"
+}, {
+	"code": "150200",
+	"name": "包头市",
+	"pinyin": "Baotou"
+}, {
+	"code": "150300",
+	"name": "乌海市",
+	"pinyin": "Wuhai"
+}, {
+	"code": "150400",
+	"name": "赤峰市",
+	"pinyin": "Chifeng"
+}, {
+	"code": "150500",
+	"name": "通辽市",
+	"pinyin": "Tongliao"
+}, {
+	"code": "150600",
+	"name": "鄂尔多斯市",
+	"pinyin": "Ordos"
+}, {
+	"code": "150700",
+	"name": "呼伦贝尔市",
+	"pinyin": "Hulunber"
+}, {
+	"code": "150800",
+	"name": "巴彦淖尔市",
+	"pinyin": "Bayan Nur"
+}, {
+	"code": "150900",
+	"name": "乌兰察布市",
+	"pinyin": "Ulanqab"
+}, {
+	"code": "152200",
+	"name": "兴安盟",
+	"pinyin": "Hinggan"
+}, {
+	"code": "152500",
+	"name": "锡林郭勒盟",
+	"pinyin": "Xilin Gol"
+}, {
+	"code": "152900",
+	"name": "阿拉善盟",
+	"pinyin": "Alxa"
+}, {
+	"code": "210100",
+	"name": "沈阳市",
+	"pinyin": "Shenyang"
+}, {
+	"code": "210200",
+	"name": "大连市",
+	"pinyin": "Dalian"
+}, {
+	"code": "210300",
+	"name": "鞍山市",
+	"pinyin": "Anshan"
+}, {
+	"code": "210400",
+	"name": "抚顺市",
+	"pinyin": "Fushun"
+}, {
+	"code": "210500",
+	"name": "本溪市",
+	"pinyin": "Benxi"
+}, {
+	"code": "210600",
+	"name": "丹东市",
+	"pinyin": "Dandong"
+}, {
+	"code": "210700",
+	"name": "锦州市",
+	"pinyin": "Jinzhou"
+}, {
+	"code": "210800",
+	"name": "营口市",
+	"pinyin": "Yingkou"
+}, {
+	"code": "210900",
+	"name": "阜新市",
+	"pinyin": "Fuxin"
+}, {
+	"code": "211000",
+	"name": "辽阳市",
+	"pinyin": "Liaoyang"
+}, {
+	"code": "211100",
+	"name": "盘锦市",
+	"pinyin": "Panjin"
+}, {
+	"code": "211200",
+	"name": "铁岭市",
+	"pinyin": "Tieling"
+}, {
+	"code": "211300",
+	"name": "朝阳市",
+	"pinyin": "Chaoyang"
+}, {
+	"code": "211400",
+	"name": "葫芦岛市",
+	"pinyin": "Huludao"
+}, {
+	"code": "211500",
+	"name": "金普新区",
+	"pinyin": "Jinpuxinqu"
+}, {
+	"code": "220100",
+	"name": "长春市",
+	"pinyin": "Changchun"
+}, {
+	"code": "220200",
+	"name": "吉林市",
+	"pinyin": "Jilin"
+}, {
+	"code": "220300",
+	"name": "四平市",
+	"pinyin": "Siping"
+}, {
+	"code": "220400",
+	"name": "辽源市",
+	"pinyin": "Liaoyuan"
+}, {
+	"code": "220500",
+	"name": "通化市",
+	"pinyin": "Tonghua"
+}, {
+	"code": "220600",
+	"name": "白山市",
+	"pinyin": "Baishan"
+}, {
+	"code": "220700",
+	"name": "松原市",
+	"pinyin": "Songyuan"
+}, {
+	"code": "220800",
+	"name": "白城市",
+	"pinyin": "Baicheng"
+}, {
+	"code": "222400",
+	"name": "延边朝鲜族自治州",
+	"pinyin": "Yanbian"
+}, {
+	"code": "230100",
+	"name": "哈尔滨市",
+	"pinyin": "Harbin"
+}, {
+	"code": "230200",
+	"name": "齐齐哈尔市",
+	"pinyin": "Qiqihar"
+}, {
+	"code": "230300",
+	"name": "鸡西市",
+	"pinyin": "Jixi"
+}, {
+	"code": "230400",
+	"name": "鹤岗市",
+	"pinyin": "Hegang"
+}, {
+	"code": "230500",
+	"name": "双鸭山市",
+	"pinyin": "Shuangyashan"
+}, {
+	"code": "230600",
+	"name": "大庆市",
+	"pinyin": "Daqing"
+}, {
+	"code": "230700",
+	"name": "伊春市",
+	"pinyin": "Yichun"
+}, {
+	"code": "230800",
+	"name": "佳木斯市",
+	"pinyin": "Jiamusi"
+}, {
+	"code": "230900",
+	"name": "七台河市",
+	"pinyin": "Qitaihe"
+}, {
+	"code": "231000",
+	"name": "牡丹江市",
+	"pinyin": "Mudanjiang"
+}, {
+	"code": "231100",
+	"name": "黑河市",
+	"pinyin": "Heihe"
+}, {
+	"code": "231200",
+	"name": "绥化市",
+	"pinyin": "Suihua"
+}, {
+	"code": "232700",
+	"name": "大兴安岭地区",
+	"pinyin": "DaXingAnLing"
+}, {
+	"code": "310100",
+	"name": "上海市",
+	"pinyin": "Shanghai"
+}, {
+	"code": "320100",
+	"name": "南京市",
+	"pinyin": "Nanjing"
+}, {
+	"code": "320200",
+	"name": "无锡市",
+	"pinyin": "Wuxi"
+}, {
+	"code": "320300",
+	"name": "徐州市",
+	"pinyin": "Xuzhou"
+}, {
+	"code": "320400",
+	"name": "常州市",
+	"pinyin": "Changzhou"
+}, {
+	"code": "320500",
+	"name": "苏州市",
+	"pinyin": "Suzhou"
+}, {
+	"code": "320600",
+	"name": "南通市",
+	"pinyin": "Nantong"
+}, {
+	"code": "320700",
+	"name": "连云港市",
+	"pinyin": "Lianyungang"
+}, {
+	"code": "320800",
+	"name": "淮安市",
+	"pinyin": "Huai'an"
+}, {
+	"code": "320900",
+	"name": "盐城市",
+	"pinyin": "Yancheng"
+}, {
+	"code": "321000",
+	"name": "扬州市",
+	"pinyin": "Yangzhou"
+}, {
+	"code": "321100",
+	"name": "镇江市",
+	"pinyin": "Zhenjiang"
+}, {
+	"code": "321200",
+	"name": "泰州市",
+	"pinyin": "Taizhou"
+}, {
+	"code": "321300",
+	"name": "宿迁市",
+	"pinyin": "Suqian"
+}, {
+	"code": "330100",
+	"name": "杭州市",
+	"pinyin": "Hangzhou"
+}, {
+	"code": "330200",
+	"name": "宁波市",
+	"pinyin": "Ningbo"
+}, {
+	"code": "330300",
+	"name": "温州市",
+	"pinyin": "Wenzhou"
+}, {
+	"code": "330400",
+	"name": "嘉兴市",
+	"pinyin": "Jiaxing"
+}, {
+	"code": "330500",
+	"name": "湖州市",
+	"pinyin": "Huzhou"
+}, {
+	"code": "330600",
+	"name": "绍兴市",
+	"pinyin": "Shaoxing"
+}, {
+	"code": "330700",
+	"name": "金华市",
+	"pinyin": "Jinhua"
+}, {
+	"code": "330800",
+	"name": "衢州市",
+	"pinyin": "Quzhou"
+}, {
+	"code": "330900",
+	"name": "舟山市",
+	"pinyin": "Zhoushan"
+}, {
+	"code": "331000",
+	"name": "台州市",
+	"pinyin": "Taizhou"
+}, {
+	"code": "331100",
+	"name": "丽水市",
+	"pinyin": "Lishui"
+}, {
+	"code": "331200",
+	"name": "舟山群岛新区",
+	"pinyin": "Zhoushan"
+}, {
+	"code": "340100",
+	"name": "合肥市",
+	"pinyin": "Hefei"
+}, {
+	"code": "340200",
+	"name": "芜湖市",
+	"pinyin": "Wuhu"
+}, {
+	"code": "340300",
+	"name": "蚌埠市",
+	"pinyin": "Bengbu"
+}, {
+	"code": "340400",
+	"name": "淮南市",
+	"pinyin": "Huainan"
+}, {
+	"code": "340500",
+	"name": "马鞍山市",
+	"pinyin": "Ma'anshan"
+}, {
+	"code": "340600",
+	"name": "淮北市",
+	"pinyin": "Huaibei"
+}, {
+	"code": "340700",
+	"name": "铜陵市",
+	"pinyin": "Tongling"
+}, {
+	"code": "340800",
+	"name": "安庆市",
+	"pinyin": "Anqing"
+}, {
+	"code": "341000",
+	"name": "黄山市",
+	"pinyin": "Huangshan"
+}, {
+	"code": "341100",
+	"name": "滁州市",
+	"pinyin": "Chuzhou"
+}, {
+	"code": "341200",
+	"name": "阜阳市",
+	"pinyin": "Fuyang"
+}, {
+	"code": "341300",
+	"name": "宿州市",
+	"pinyin": "Suzhou"
+}, {
+	"code": "341500",
+	"name": "六安市",
+	"pinyin": "Lu'an"
+}, {
+	"code": "341600",
+	"name": "亳州市",
+	"pinyin": "Bozhou"
+}, {
+	"code": "341700",
+	"name": "池州市",
+	"pinyin": "Chizhou"
+}, {
+	"code": "341800",
+	"name": "宣城市",
+	"pinyin": "Xuancheng"
+}, {
+	"code": "350100",
+	"name": "福州市",
+	"pinyin": "Fuzhou"
+}, {
+	"code": "350200",
+	"name": "厦门市",
+	"pinyin": "Xiamen"
+}, {
+	"code": "350300",
+	"name": "莆田市",
+	"pinyin": "Putian"
+}, {
+	"code": "350400",
+	"name": "三明市",
+	"pinyin": "Sanming"
+}, {
+	"code": "350500",
+	"name": "泉州市",
+	"pinyin": "Quanzhou"
+}, {
+	"code": "350600",
+	"name": "漳州市",
+	"pinyin": "Zhangzhou"
+}, {
+	"code": "350700",
+	"name": "南平市",
+	"pinyin": "Nanping"
+}, {
+	"code": "350800",
+	"name": "龙岩市",
+	"pinyin": "Longyan"
+}, {
+	"code": "350900",
+	"name": "宁德市",
+	"pinyin": "Ningde"
+}, {
+	"code": "360100",
+	"name": "南昌市",
+	"pinyin": "Nanchang"
+}, {
+	"code": "360200",
+	"name": "景德镇市",
+	"pinyin": "Jingdezhen"
+}, {
+	"code": "360300",
+	"name": "萍乡市",
+	"pinyin": "Pingxiang"
+}, {
+	"code": "360400",
+	"name": "九江市",
+	"pinyin": "Jiujiang"
+}, {
+	"code": "360500",
+	"name": "新余市",
+	"pinyin": "Xinyu"
+}, {
+	"code": "360600",
+	"name": "鹰潭市",
+	"pinyin": "Yingtan"
+}, {
+	"code": "360700",
+	"name": "赣州市",
+	"pinyin": "Ganzhou"
+}, {
+	"code": "360800",
+	"name": "吉安市",
+	"pinyin": "Ji'an"
+}, {
+	"code": "360900",
+	"name": "宜春市",
+	"pinyin": "Yichun"
+}, {
+	"code": "361000",
+	"name": "抚州市",
+	"pinyin": "Fuzhou"
+}, {
+	"code": "361100",
+	"name": "上饶市",
+	"pinyin": "Shangrao"
+}, {
+	"code": "370100",
+	"name": "济南市",
+	"pinyin": "Jinan"
+}, {
+	"code": "370200",
+	"name": "青岛市",
+	"pinyin": "Qingdao"
+}, {
+	"code": "370300",
+	"name": "淄博市",
+	"pinyin": "Zibo"
+}, {
+	"code": "370400",
+	"name": "枣庄市",
+	"pinyin": "Zaozhuang"
+}, {
+	"code": "370500",
+	"name": "东营市",
+	"pinyin": "Dongying"
+}, {
+	"code": "370600",
+	"name": "烟台市",
+	"pinyin": "Yantai"
+}, {
+	"code": "370700",
+	"name": "潍坊市",
+	"pinyin": "Weifang"
+}, {
+	"code": "370800",
+	"name": "济宁市",
+	"pinyin": "Jining"
+}, {
+	"code": "370900",
+	"name": "泰安市",
+	"pinyin": "Tai'an"
+}, {
+	"code": "371000",
+	"name": "威海市",
+	"pinyin": "Weihai"
+}, {
+	"code": "371100",
+	"name": "日照市",
+	"pinyin": "Rizhao"
+}, {
+	"code": "371200",
+	"name": "莱芜市",
+	"pinyin": "Laiwu"
+}, {
+	"code": "371300",
+	"name": "临沂市",
+	"pinyin": "Linyi"
+}, {
+	"code": "371400",
+	"name": "德州市",
+	"pinyin": "Dezhou"
+}, {
+	"code": "371500",
+	"name": "聊城市",
+	"pinyin": "Liaocheng"
+}, {
+	"code": "371600",
+	"name": "滨州市",
+	"pinyin": "Binzhou"
+}, {
+	"code": "371700",
+	"name": "菏泽市",
+	"pinyin": "Heze"
+}, {
+	"code": "410100",
+	"name": "郑州市",
+	"pinyin": "Zhengzhou"
+}, {
+	"code": "410200",
+	"name": "开封市",
+	"pinyin": "Kaifeng"
+}, {
+	"code": "410300",
+	"name": "洛阳市",
+	"pinyin": "Luoyang"
+}, {
+	"code": "410400",
+	"name": "平顶山市",
+	"pinyin": "Pingdingshan"
+}, {
+	"code": "410500",
+	"name": "安阳市",
+	"pinyin": "Anyang"
+}, {
+	"code": "410600",
+	"name": "鹤壁市",
+	"pinyin": "Hebi"
+}, {
+	"code": "410700",
+	"name": "新乡市",
+	"pinyin": "Xinxiang"
+}, {
+	"code": "410800",
+	"name": "焦作市",
+	"pinyin": "Jiaozuo"
+}, {
+	"code": "410900",
+	"name": "濮阳市",
+	"pinyin": "Puyang"
+}, {
+	"code": "411000",
+	"name": "许昌市",
+	"pinyin": "Xuchang"
+}, {
+	"code": "411100",
+	"name": "漯河市",
+	"pinyin": "Luohe"
+}, {
+	"code": "411200",
+	"name": "三门峡市",
+	"pinyin": "Sanmenxia"
+}, {
+	"code": "411300",
+	"name": "南阳市",
+	"pinyin": "Nanyang"
+}, {
+	"code": "411400",
+	"name": "商丘市",
+	"pinyin": "Shangqiu"
+}, {
+	"code": "411500",
+	"name": "信阳市",
+	"pinyin": "Xinyang"
+}, {
+	"code": "411600",
+	"name": "周口市",
+	"pinyin": "Zhoukou"
+}, {
+	"code": "411700",
+	"name": "驻马店市",
+	"pinyin": "Zhumadian"
+}, {
+	"code": "419000",
+	"name": "直辖县级",
+	"pinyin": "null"
+}, {
+	"code": "420100",
+	"name": "武汉市",
+	"pinyin": "Wuhan"
+}, {
+	"code": "420200",
+	"name": "黄石市",
+	"pinyin": "Huangshi"
+}, {
+	"code": "420300",
+	"name": "十堰市",
+	"pinyin": "Shiyan"
+}, {
+	"code": "420500",
+	"name": "宜昌市",
+	"pinyin": "Yichang"
+}, {
+	"code": "420600",
+	"name": "襄阳市",
+	"pinyin": "Xiangyang"
+}, {
+	"code": "420700",
+	"name": "鄂州市",
+	"pinyin": "Ezhou"
+}, {
+	"code": "420800",
+	"name": "荆门市",
+	"pinyin": "Jingmen"
+}, {
+	"code": "420900",
+	"name": "孝感市",
+	"pinyin": "Xiaogan"
+}, {
+	"code": "421000",
+	"name": "荆州市",
+	"pinyin": "Jingzhou"
+}, {
+	"code": "421100",
+	"name": "黄冈市",
+	"pinyin": "Huanggang"
+}, {
+	"code": "421200",
+	"name": "咸宁市",
+	"pinyin": "Xianning"
+}, {
+	"code": "421300",
+	"name": "随州市",
+	"pinyin": "Suizhou"
+}, {
+	"code": "422800",
+	"name": "恩施土家族苗族自治州",
+	"pinyin": "Enshi"
+}, {
+	"code": "429000",
+	"name": "直辖县级",
+	"pinyin": "null"
+}, {
+	"code": "430100",
+	"name": "长沙市",
+	"pinyin": "Changsha"
+}, {
+	"code": "430200",
+	"name": "株洲市",
+	"pinyin": "Zhuzhou"
+}, {
+	"code": "430300",
+	"name": "湘潭市",
+	"pinyin": "Xiangtan"
+}, {
+	"code": "430400",
+	"name": "衡阳市",
+	"pinyin": "Hengyang"
+}, {
+	"code": "430500",
+	"name": "邵阳市",
+	"pinyin": "Shaoyang"
+}, {
+	"code": "430600",
+	"name": "岳阳市",
+	"pinyin": "Yueyang"
+}, {
+	"code": "430700",
+	"name": "常德市",
+	"pinyin": "Changde"
+}, {
+	"code": "430800",
+	"name": "张家界市",
+	"pinyin": "Zhangjiajie"
+}, {
+	"code": "430900",
+	"name": "益阳市",
+	"pinyin": "Yiyang"
+}, {
+	"code": "431000",
+	"name": "郴州市",
+	"pinyin": "Chenzhou"
+}, {
+	"code": "431100",
+	"name": "永州市",
+	"pinyin": "Yongzhou"
+}, {
+	"code": "431200",
+	"name": "怀化市",
+	"pinyin": "Huaihua"
+}, {
+	"code": "431300",
+	"name": "娄底市",
+	"pinyin": "Loudi"
+}, {
+	"code": "433100",
+	"name": "湘西土家族苗族自治州",
+	"pinyin": "Xiangxi"
+}, {
+	"code": "440100",
+	"name": "广州市",
+	"pinyin": "Guangzhou"
+}, {
+	"code": "440200",
+	"name": "韶关市",
+	"pinyin": "Shaoguan"
+}, {
+	"code": "440300",
+	"name": "深圳市",
+	"pinyin": "Shenzhen"
+}, {
+	"code": "440400",
+	"name": "珠海市",
+	"pinyin": "Zhuhai"
+}, {
+	"code": "440500",
+	"name": "汕头市",
+	"pinyin": "Shantou"
+}, {
+	"code": "440600",
+	"name": "佛山市",
+	"pinyin": "Foshan"
+}, {
+	"code": "440700",
+	"name": "江门市",
+	"pinyin": "Jiangmen"
+}, {
+	"code": "440800",
+	"name": "湛江市",
+	"pinyin": "Zhanjiang"
+}, {
+	"code": "440900",
+	"name": "茂名市",
+	"pinyin": "Maoming"
+}, {
+	"code": "441200",
+	"name": "肇庆市",
+	"pinyin": "Zhaoqing"
+}, {
+	"code": "441300",
+	"name": "惠州市",
+	"pinyin": "Huizhou"
+}, {
+	"code": "441400",
+	"name": "梅州市",
+	"pinyin": "Meizhou"
+}, {
+	"code": "441500",
+	"name": "汕尾市",
+	"pinyin": "Shanwei"
+}, {
+	"code": "441600",
+	"name": "河源市",
+	"pinyin": "Heyuan"
+}, {
+	"code": "441700",
+	"name": "阳江市",
+	"pinyin": "Yangjiang"
+}, {
+	"code": "441800",
+	"name": "清远市",
+	"pinyin": "Qingyuan"
+}, {
+	"code": "441900",
+	"name": "东莞市",
+	"pinyin": "Dongguan"
+}, {
+	"code": "442000",
+	"name": "中山市",
+	"pinyin": "Zhongshan"
+}, {
+	"code": "445100",
+	"name": "潮州市",
+	"pinyin": "Chaozhou"
+}, {
+	"code": "445200",
+	"name": "揭阳市",
+	"pinyin": "Jieyang"
+}, {
+	"code": "445300",
+	"name": "云浮市",
+	"pinyin": "Yunfu"
+}, {
+	"code": "450100",
+	"name": "南宁市",
+	"pinyin": "Nanning"
+}, {
+	"code": "450200",
+	"name": "柳州市",
+	"pinyin": "Liuzhou"
+}, {
+	"code": "450300",
+	"name": "桂林市",
+	"pinyin": "Guilin"
+}, {
+	"code": "450400",
+	"name": "梧州市",
+	"pinyin": "Wuzhou"
+}, {
+	"code": "450500",
+	"name": "北海市",
+	"pinyin": "Beihai"
+}, {
+	"code": "450600",
+	"name": "防城港市",
+	"pinyin": "Fangchenggang"
+}, {
+	"code": "450700",
+	"name": "钦州市",
+	"pinyin": "Qinzhou"
+}, {
+	"code": "450800",
+	"name": "贵港市",
+	"pinyin": "Guigang"
+}, {
+	"code": "450900",
+	"name": "玉林市",
+	"pinyin": "Yulin"
+}, {
+	"code": "451000",
+	"name": "百色市",
+	"pinyin": "Baise"
+}, {
+	"code": "451100",
+	"name": "贺州市",
+	"pinyin": "Hezhou"
+}, {
+	"code": "451200",
+	"name": "河池市",
+	"pinyin": "Hechi"
+}, {
+	"code": "451300",
+	"name": "来宾市",
+	"pinyin": "Laibin"
+}, {
+	"code": "451400",
+	"name": "崇左市",
+	"pinyin": "Chongzuo"
+}, {
+	"code": "460100",
+	"name": "海口市",
+	"pinyin": "Haikou"
+}, {
+	"code": "460200",
+	"name": "三亚市",
+	"pinyin": "Sanya"
+}, {
+	"code": "460300",
+	"name": "三沙市",
+	"pinyin": "Sansha"
+}, {
+	"code": "469000",
+	"name": "直辖县级",
+	"pinyin": "null"
+}, {
+	"code": "500100",
+	"name": "重庆市",
+	"pinyin": "Chongqing"
+}, {
+	"code": "500300",
+	"name": "两江新区",
+	"pinyin": "Liangjiangxinqu"
+}, {
+	"code": "510100",
+	"name": "成都市",
+	"pinyin": "Chengdu"
+}, {
+	"code": "510300",
+	"name": "自贡市",
+	"pinyin": "Zigong"
+}, {
+	"code": "510400",
+	"name": "攀枝花市",
+	"pinyin": "Panzhihua"
+}, {
+	"code": "510500",
+	"name": "泸州市",
+	"pinyin": "Luzhou"
+}, {
+	"code": "510600",
+	"name": "德阳市",
+	"pinyin": "Deyang"
+}, {
+	"code": "510700",
+	"name": "绵阳市",
+	"pinyin": "Mianyang"
+}, {
+	"code": "510800",
+	"name": "广元市",
+	"pinyin": "Guangyuan"
+}, {
+	"code": "510900",
+	"name": "遂宁市",
+	"pinyin": "Suining"
+}, {
+	"code": "511000",
+	"name": "内江市",
+	"pinyin": "Neijiang"
+}, {
+	"code": "511100",
+	"name": "乐山市",
+	"pinyin": "Leshan"
+}, {
+	"code": "511300",
+	"name": "南充市",
+	"pinyin": "Nanchong"
+}, {
+	"code": "511400",
+	"name": "眉山市",
+	"pinyin": "Meishan"
+}, {
+	"code": "511500",
+	"name": "宜宾市",
+	"pinyin": "Yibin"
+}, {
+	"code": "511600",
+	"name": "广安市",
+	"pinyin": "Guang'an"
+}, {
+	"code": "511700",
+	"name": "达州市",
+	"pinyin": "Dazhou"
+}, {
+	"code": "511800",
+	"name": "雅安市",
+	"pinyin": "Ya'an"
+}, {
+	"code": "511900",
+	"name": "巴中市",
+	"pinyin": "Bazhong"
+}, {
+	"code": "512000",
+	"name": "资阳市",
+	"pinyin": "Ziyang"
+}, {
+	"code": "513200",
+	"name": "阿坝藏族羌族自治州",
+	"pinyin": "Aba"
+}, {
+	"code": "513300",
+	"name": "甘孜藏族自治州",
+	"pinyin": "Garze"
+}, {
+	"code": "513400",
+	"name": "凉山彝族自治州",
+	"pinyin": "Liangshan"
+}, {
+	"code": "520100",
+	"name": "贵阳市",
+	"pinyin": "Guiyang"
+}, {
+	"code": "520200",
+	"name": "六盘水市",
+	"pinyin": "Liupanshui"
+}, {
+	"code": "520300",
+	"name": "遵义市",
+	"pinyin": "Zunyi"
+}, {
+	"code": "520400",
+	"name": "安顺市",
+	"pinyin": "Anshun"
+}, {
+	"code": "520500",
+	"name": "毕节市",
+	"pinyin": "Bijie"
+}, {
+	"code": "520600",
+	"name": "铜仁市",
+	"pinyin": "Tongren"
+}, {
+	"code": "522300",
+	"name": "黔西南布依族苗族自治州",
+	"pinyin": "Qianxinan"
+}, {
+	"code": "522600",
+	"name": "黔东南苗族侗族自治州",
+	"pinyin": "Qiandongnan"
+}, {
+	"code": "522700",
+	"name": "黔南布依族苗族自治州",
+	"pinyin": "Qiannan"
+}, {
+	"code": "530100",
+	"name": "昆明市",
+	"pinyin": "Kunming"
+}, {
+	"code": "530300",
+	"name": "曲靖市",
+	"pinyin": "Qujing"
+}, {
+	"code": "530400",
+	"name": "玉溪市",
+	"pinyin": "Yuxi"
+}, {
+	"code": "530500",
+	"name": "保山市",
+	"pinyin": "Baoshan"
+}, {
+	"code": "530600",
+	"name": "昭通市",
+	"pinyin": "Zhaotong"
+}, {
+	"code": "530700",
+	"name": "丽江市",
+	"pinyin": "Lijiang"
+}, {
+	"code": "530800",
+	"name": "普洱市",
+	"pinyin": "Pu'er"
+}, {
+	"code": "530900",
+	"name": "临沧市",
+	"pinyin": "Lincang"
+}, {
+	"code": "532300",
+	"name": "楚雄彝族自治州",
+	"pinyin": "Chuxiong"
+}, {
+	"code": "532500",
+	"name": "红河哈尼族彝族自治州",
+	"pinyin": "Honghe"
+}, {
+	"code": "532600",
+	"name": "文山壮族苗族自治州",
+	"pinyin": "Wenshan"
+}, {
+	"code": "532800",
+	"name": "西双版纳傣族自治州",
+	"pinyin": "Xishuangbanna"
+}, {
+	"code": "532900",
+	"name": "大理白族自治州",
+	"pinyin": "Dali"
+}, {
+	"code": "533100",
+	"name": "德宏傣族景颇族自治州",
+	"pinyin": "Dehong"
+}, {
+	"code": "533300",
+	"name": "怒江傈僳族自治州",
+	"pinyin": "Nujiang"
+}, {
+	"code": "533400",
+	"name": "迪庆藏族自治州",
+	"pinyin": "Deqen"
+}, {
+	"code": "540100",
+	"name": "拉萨市",
+	"pinyin": "Lhasa"
+}, {
+	"code": "540200",
+	"name": "日喀则市",
+	"pinyin": "Rikaze"
+}, {
+	"code": "540300",
+	"name": "昌都市",
+	"pinyin": "Qamdo"
+}, {
+	"code": "542200",
+	"name": "山南地区",
+	"pinyin": "Shannan"
+}, {
+	"code": "542400",
+	"name": "那曲地区",
+	"pinyin": "Nagqu"
+}, {
+	"code": "542500",
+	"name": "阿里地区",
+	"pinyin": "Ngari"
+}, {
+	"code": "542600",
+	"name": "林芝地区",
+	"pinyin": "Nyingchi"
+}, {
+	"code": "610100",
+	"name": "西安市",
+	"pinyin": "Xi'an"
+}, {
+	"code": "610200",
+	"name": "铜川市",
+	"pinyin": "Tongchuan"
+}, {
+	"code": "610300",
+	"name": "宝鸡市",
+	"pinyin": "Baoji"
+}, {
+	"code": "610400",
+	"name": "咸阳市",
+	"pinyin": "Xianyang"
+}, {
+	"code": "610500",
+	"name": "渭南市",
+	"pinyin": "Weinan"
+}, {
+	"code": "610600",
+	"name": "延安市",
+	"pinyin": "Yan'an"
+}, {
+	"code": "610700",
+	"name": "汉中市",
+	"pinyin": "Hanzhong"
+}, {
+	"code": "610800",
+	"name": "榆林市",
+	"pinyin": "Yulin"
+}, {
+	"code": "610900",
+	"name": "安康市",
+	"pinyin": "Ankang"
+}, {
+	"code": "611000",
+	"name": "商洛市",
+	"pinyin": "Shangluo"
+}, {
+	"code": "611100",
+	"name": "西咸新区",
+	"pinyin": "Xixian"
+}, {
+	"code": "620100",
+	"name": "兰州市",
+	"pinyin": "Lanzhou"
+}, {
+	"code": "620200",
+	"name": "嘉峪关市",
+	"pinyin": "Jiayuguan"
+}, {
+	"code": "620300",
+	"name": "金昌市",
+	"pinyin": "Jinchang"
+}, {
+	"code": "620400",
+	"name": "白银市",
+	"pinyin": "Baiyin"
+}, {
+	"code": "620500",
+	"name": "天水市",
+	"pinyin": "Tianshui"
+}, {
+	"code": "620600",
+	"name": "武威市",
+	"pinyin": "Wuwei"
+}, {
+	"code": "620700",
+	"name": "张掖市",
+	"pinyin": "Zhangye"
+}, {
+	"code": "620800",
+	"name": "平凉市",
+	"pinyin": "Pingliang"
+}, {
+	"code": "620900",
+	"name": "酒泉市",
+	"pinyin": "Jiuquan"
+}, {
+	"code": "621000",
+	"name": "庆阳市",
+	"pinyin": "Qingyang"
+}, {
+	"code": "621100",
+	"name": "定西市",
+	"pinyin": "Dingxi"
+}, {
+	"code": "621200",
+	"name": "陇南市",
+	"pinyin": "Longnan"
+}, {
+	"code": "622900",
+	"name": "临夏回族自治州",
+	"pinyin": "Linxia"
+}, {
+	"code": "623000",
+	"name": "甘南藏族自治州",
+	"pinyin": "Gannan"
+}, {
+	"code": "630100",
+	"name": "西宁市",
+	"pinyin": "Xining"
+}, {
+	"code": "630200",
+	"name": "海东市",
+	"pinyin": "Hacodeong"
+}, {
+	"code": "632200",
+	"name": "海北藏族自治州",
+	"pinyin": "Haibei"
+}, {
+	"code": "632300",
+	"name": "黄南藏族自治州",
+	"pinyin": "Huangnan"
+}, {
+	"code": "632500",
+	"name": "海南藏族自治州",
+	"pinyin": "Hainan"
+}, {
+	"code": "632600",
+	"name": "果洛藏族自治州",
+	"pinyin": "Golog"
+}, {
+	"code": "632700",
+	"name": "玉树藏族自治州",
+	"pinyin": "Yushu"
+}, {
+	"code": "632800",
+	"name": "海西蒙古族藏族自治州",
+	"pinyin": "Haixi"
+}, {
+	"code": "640100",
+	"name": "银川市",
+	"pinyin": "Yinchuan"
+}, {
+	"code": "640200",
+	"name": "石嘴山市",
+	"pinyin": "Shizuishan"
+}, {
+	"code": "640300",
+	"name": "吴忠市",
+	"pinyin": "Wuzhong"
+}, {
+	"code": "640400",
+	"name": "固原市",
+	"pinyin": "Guyuan"
+}, {
+	"code": "640500",
+	"name": "中卫市",
+	"pinyin": "Zhongwei"
+}, {
+	"code": "650100",
+	"name": "乌鲁木齐市",
+	"pinyin": "Urumqi"
+}, {
+	"code": "650200",
+	"name": "克拉玛依市",
+	"pinyin": "Karamay"
+}, {
+	"code": "652100",
+	"name": "吐鲁番地区",
+	"pinyin": "Turpan"
+}, {
+	"code": "652200",
+	"name": "哈密地区",
+	"pinyin": "Hami"
+}, {
+	"code": "652300",
+	"name": "昌吉回族自治州",
+	"pinyin": "Changji"
+}, {
+	"code": "652700",
+	"name": "博尔塔拉蒙古自治州",
+	"pinyin": "Bortala"
+}, {
+	"code": "652800",
+	"name": "巴音郭楞蒙古自治州",
+	"pinyin": "Bayingol"
+}, {
+	"code": "652900",
+	"name": "阿克苏地区",
+	"pinyin": "Aksu"
+}, {
+	"code": "653000",
+	"name": "克孜勒苏柯尔克孜自治州",
+	"pinyin": "Kizilsu"
+}, {
+	"code": "653100",
+	"name": "喀什地区",
+	"pinyin": "Kashgar"
+}, {
+	"code": "653200",
+	"name": "和田地区",
+	"pinyin": "Hotan"
+}, {
+	"code": "654000",
+	"name": "伊犁哈萨克自治州",
+	"pinyin": "Ili"
+}, {
+	"code": "654200",
+	"name": "塔城地区",
+	"pinyin": "Qoqek"
+}, {
+	"code": "654300",
+	"name": "阿勒泰地区",
+	"pinyin": "Altay"
+}, {
+	"code": "659000",
+	"name": "直辖县级",
+	"pinyin": "null"
+}, {
+	"code": "710100",
+	"name": "台北市",
+	"pinyin": "Taipei"
+}, {
+	"code": "710200",
+	"name": "高雄市",
+	"pinyin": "Kaohsiung"
+}, {
+	"code": "710300",
+	"name": "基隆市",
+	"pinyin": "Keelung"
+}, {
+	"code": "710400",
+	"name": "台中市",
+	"pinyin": "Taichung"
+}, {
+	"code": "710500",
+	"name": "台南市",
+	"pinyin": "Tainan"
+}, {
+	"code": "710600",
+	"name": "新竹市",
+	"pinyin": "Hsinchu"
+}, {
+	"code": "710700",
+	"name": "嘉义市",
+	"pinyin": "Chiayi"
+}, {
+	"code": "710800",
+	"name": "新北市",
+	"pinyin": "New Taipei"
+}, {
+	"code": "712200",
+	"name": "宜兰县",
+	"pinyin": "Yilan"
+}, {
+	"code": "712300",
+	"name": "桃园县",
+	"pinyin": "Taoyuan"
+}, {
+	"code": "712400",
+	"name": "新竹县",
+	"pinyin": "Hsinchu"
+}, {
+	"code": "712500",
+	"name": "苗栗县",
+	"pinyin": "Miaoli"
+}, {
+	"code": "712700",
+	"name": "彰化县",
+	"pinyin": "Changhua"
+}, {
+	"code": "712800",
+	"name": "南投县",
+	"pinyin": "Nantou"
+}, {
+	"code": "712900",
+	"name": "云林县",
+	"pinyin": "Yunlin"
+}, {
+	"code": "713000",
+	"name": "嘉义县",
+	"pinyin": "Chiayi"
+}, {
+	"code": "713300",
+	"name": "屏东县",
+	"pinyin": "Pingtung"
+}, {
+	"code": "713400",
+	"name": "台东县",
+	"pinyin": "Taitung"
+}, {
+	"code": "713500",
+	"name": "花莲县",
+	"pinyin": "Hualien"
+}, {
+	"code": "713600",
+	"name": "澎湖县",
+	"pinyin": "Penghu"
+}, {
+	"code": "713700",
+	"name": "金门县",
+	"pinyin": "Jinmen"
+}, {
+	"code": "713800",
+	"name": "连江县",
+	"pinyin": "Lienchiang"
+}, {
+	"code": "810100",
+	"name": "香港岛",
+	"pinyin": "Hong Kong Island"
+}, {
+	"code": "810200",
+	"name": "九龙",
+	"pinyin": "Kowloon"
+}, {
+	"code": "810300",
+	"name": "新界",
+	"pinyin": "New Territories"
+}, {
+	"code": "820100",
+	"name": "澳门半岛",
+	"pinyin": "MacauPeninsula"
+}, {
+	"code": "820200",
+	"name": "氹仔岛",
+	"pinyin": "Taipa"
+}, {
+	"code": "820300",
+	"name": "路环岛",
+	"pinyin": "Coloane"
+}]

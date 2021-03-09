@@ -1,6 +1,0 @@
-{
-	"id": "xg-mall",
-	"uni-modules": {
-		"dependencies": ["uni-grid", "uni-icons", "uni-load-more", "uni-number-box", "uni-list", "uni-nav-bar", "uni-goods-nav", "uni-popup", "uni-rate"]
-	}
-}

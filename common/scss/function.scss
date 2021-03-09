@@ -1,0 +1,297 @@
+@mixin flex-layout($direction: row, $justify: center, $align: stretch) {
+	/* #ifndef APP-PLUS-NVUE */
+	display: flex;
+	/* #endif */
+	flex-direction: $direction;
+	align-items: $align;
+	justify-content: $justify;
+}
+
+@mixin position($type, $positions) {
+	position: $type;
+	
+	$options: top right bottom left;
+	
+	$length: length($positions);
+	
+	@for $i from 1 through $length {
+		@if nth($positions, $i) != none {
+			#{nth($options, $i)}: nth($positions, $i);
+		}
+	}
+}
+
+@mixin font($size: $uni-font-size-base, $color: $uni-text-color, $line-height: 1.5) {
+	font-size: $size;
+	color: $color;
+	line-height: $size*$line-height;
+}
+
+//例子 @include border([1px solid] [] [] []);
+@mixin border($borders) {
+	
+	@if type-of($borders) == list and type-of(nth($borders, 1)) == list {
+		@if length($borders) == 2 {
+			
+			@if length(nth($borders, 1)) == 1 {
+				border-top-width: nth(nth($borders, 1), 1);
+				border-top-style: solid;
+				border-top-color: $uni-border-color;
+				border-bottom-width: nth(nth($borders, 1), 1);
+				border-bottom-style: solid;
+				border-bottom-color: $uni-border-color;
+			}
+			@if length(nth($borders, 1)) == 2 {
+				border-top-width: nth(nth($borders, 1), 1);
+				border-top-style: nth(nth($borders, 1), 2);
+				border-top-color: $uni-border-color;
+				border-bottom-width: nth(nth($borders, 1), 1);
+				border-bottom-style: nth(nth($borders, 1), 2);
+				border-bottom-color: $uni-border-color;
+			}
+			@if length(nth($borders, 1)) == 3 {
+				border-top-width: nth(nth($borders, 1), 1);
+				border-top-style: nth(nth($borders, 1), 2);
+				border-top-color: nth(nth($borders, 1), 3);
+				border-bottom-width: nth(nth($borders, 1), 1);
+				border-bottom-style: nth(nth($borders, 1), 2);
+				border-bottom-color: nth(nth($borders, 1), 3);
+			}
+			
+			
+			@if length(nth($borders, 2)) == 1 {
+				border-right-width: nth(nth($borders, 2), 1);
+				border-right-style: solid;
+				border-right-color: $uni-border-color;
+				border-left-width: nth(nth($borders, 2), 1);
+				border-left-style: solid;
+				border-left-color: $uni-border-color;
+			}
+			@if length(nth($borders, 2)) == 2 {
+				border-right-width: nth(nth($borders, 2), 1);
+				border-right-style: nth(nth($borders, 2), 2);
+				border-right-color: $uni-border-color;
+				border-left-width: nth(nth($borders, 2), 1);
+				border-left-style: nth(nth($borders, 2), 2);
+				border-left-color: $uni-border-color;
+			}
+			@if length(nth($borders, 2)) == 3 {
+				border-right-width: nth(nth($borders, 2), 1);
+				border-right-style: nth(nth($borders, 2), 2);
+				border-right-color: nth(nth($borders, 2), 3);
+				border-left-width: nth(nth($borders, 2), 1);
+				border-left-style: nth(nth($borders, 2), 2);
+				border-left-color: nth(nth($borders, 2), 3);
+			}
+		}
+		
+		@if length($borders) == 3 {
+			
+			@if length(nth($borders, 1)) == 1 {
+				border-top-width: nth(nth($borders, 1), 1);
+				border-top-style: solid;
+				border-top-color: $uni-border-color;
+			}
+			@if length(nth($borders, 1)) == 2 {
+				border-top-width: nth(nth($borders, 1), 1);
+				border-top-style: nth(nth($borders, 1), 2);
+				border-top-color: $uni-border-color;
+			}
+			@if length(nth($borders, 1)) == 3 {
+				border-top-width: nth(nth($borders, 1), 1);
+				border-top-style: nth(nth($borders, 1), 2);
+				border-top-color: nth(nth($borders, 1), 3);
+			}
+			
+			
+			@if length(nth($borders, 2)) == 1 {
+				border-right-width: nth(nth($borders, 2), 1);
+				border-right-style: solid;
+				border-right-color: $uni-border-color;
+				border-left-width: nth(nth($borders, 2), 1);
+				border-left-style: solid;
+				border-left-color: $uni-border-color;
+			}
+			@if length(nth($borders, 2)) == 2 {
+				border-right-width: nth(nth($borders, 2), 1);
+				border-right-style: nth(nth($borders, 2), 2);
+				border-right-color: $uni-border-color;
+				border-left-width: nth(nth($borders, 2), 1);
+				border-left-style: nth(nth($borders, 2), 2);
+				border-left-color: $uni-border-color;
+			}
+			@if length(nth($borders, 2)) == 3 {
+				border-right-width: nth(nth($borders, 2), 1);
+				border-right-style: nth(nth($borders, 2), 2);
+				border-right-color: nth(nth($borders, 2), 3);
+				border-left-width: nth(nth($borders, 2), 1);
+				border-left-style: nth(nth($borders, 2), 2);
+				border-left-color: nth(nth($borders, 2), 3);
+			}
+			
+			@if length(nth($borders, 3)) == 1 {
+				border-bottom-width: nth(nth($borders, 3), 1);
+				border-bottom-style: solid;
+				border-bottom-color: $uni-border-color;
+			}
+			@if length(nth($borders, 3)) == 2 {
+				border-bottom-width: nth(nth($borders, 3), 1);
+				border-bottom-style: nth(nth($borders, 3), 2);
+				border-bottom-color: $uni-border-color;
+			}
+			@if length(nth($borders, 3)) == 3 {
+				border-bottom-width: nth(nth($borders, 3), 1);
+				border-bottom-style: nth(nth($borders, 3), 2);
+				border-bottom-color: nth(nth($borders, 3), 3);
+			}
+		}
+		
+		
+		@if length($borders) == 4 {
+			
+			@if length(nth($borders, 1)) == 1 {
+				border-top-width: nth(nth($borders, 1), 1);
+				border-top-style: solid;
+				border-top-color: $uni-border-color;
+			}
+			@if length(nth($borders, 1)) == 2 {
+				border-top-width: nth(nth($borders, 1), 1);
+				border-top-style: nth(nth($borders, 1), 2);
+				border-top-color: $uni-border-color;
+			}
+			@if length(nth($borders, 1)) == 3 {
+				border-top-width: nth(nth($borders, 1), 1);
+				border-top-style: nth(nth($borders, 1), 2);
+				border-top-color: nth(nth($borders, 1), 3);
+			}
+			
+			
+			@if length(nth($borders, 2)) == 1 {
+				border-right-width: nth(nth($borders, 2), 1);
+				border-right-style: solid;
+				border-right-color: $uni-border-color;
+			}
+			@if length(nth($borders, 2)) == 2 {
+				border-right-width: nth(nth($borders, 2), 1);
+				border-right-style: nth(nth($borders, 2), 2);
+				border-right-color: $uni-border-color;
+			}
+			@if length(nth($borders, 2)) == 3 {
+				border-right-width: nth(nth($borders, 2), 1);
+				border-right-style: nth(nth($borders, 2), 2);
+				border-right-color: nth(nth($borders, 2), 3);
+			}
+			
+			@if length(nth($borders, 3)) == 1 {
+				border-bottom-width: nth(nth($borders, 3), 1);
+				border-bottom-style: solid;
+				border-bottom-color: $uni-border-color;
+			}
+			@if length(nth($borders, 3)) == 2 {
+				border-bottom-width: nth(nth($borders, 3), 1);
+				border-bottom-style: nth(nth($borders, 3), 2);
+				border-bottom-color: $uni-border-color;
+			}
+			@if length(nth($borders, 3)) == 3 {
+				border-bottom-width: nth(nth($borders, 3), 1);
+				border-bottom-style: nth(nth($borders, 3), 2);
+				border-bottom-color: nth(nth($borders, 3), 3);
+			}
+			
+			@if length(nth($borders, 4)) == 1 {
+				border-left-width: nth(nth($borders, 4), 1);
+				border-left-style: solid;
+				border-left-color: $uni-border-color;
+			}
+			@if length(nth($borders, 4)) == 2 {
+				border-left-width: nth(nth($borders, 4), 1);
+				border-left-style: nth(nth($borders, 4), 2);
+				border-left-color: $uni-border-color;
+			}
+			@if length(nth($borders, 4)) == 3 {
+				border-left-width: nth(nth($borders, 4), 1);
+				border-left-style: nth(nth($borders, 4), 2);
+				border-left-color: nth(nth($borders, 4), 3);
+			}
+		}
+	} @else {
+		@if length($borders) == 1 {
+			border-width: nth($borders, 1);
+			border-style: solid;
+			border-color: $uni-border-color;
+		}
+		
+		@if length($borders) == 2 {
+			border-width: nth($borders, 1);
+			border-style: nth($borders, 2);
+			border-color: $uni-border-color;
+		}
+		
+		@if length($borders) == 3 {
+			border-width: nth($borders, 1);
+			border-style: nth($borders, 2);
+			border-color: nth($borders, 3);
+		}
+	}
+}
+
+@mixin border-radius($border-radius) {
+	@if length($border-radius) == 1 {
+		border-top-left-radius: nth($border-radius, 1);
+		border-top-right-radius: nth($border-radius, 1);
+		border-bottom-right-radius: nth($border-radius, 1);
+		border-bottom-left-radius: nth($border-radius, 1);
+	}
+	
+	@if length($border-radius) == 2 {
+		border-top-left-radius: nth($border-radius, 1);
+		border-top-right-radius: nth($border-radius, 2);
+		border-bottom-right-radius: nth($border-radius, 1);
+		border-bottom-left-radius: nth($border-radius, 2);
+	}
+	
+	@if length($border-radius) == 3 {
+		border-top-left-radius: nth($border-radius, 1);
+		border-top-right-radius: nth($border-radius, 2);
+		border-bottom-right-radius: nth($border-radius, 3);
+		border-bottom-left-radius: nth($border-radius, 2);
+	}
+	
+	@if length($border-radius) == 4 {
+		border-top-left-radius: nth($border-radius, 1);
+		border-top-right-radius: nth($border-radius, 2);
+		border-bottom-right-radius: nth($border-radius, 3);
+		border-bottom-left-radius: nth($border-radius, 4);
+	}
+} 
+
+@mixin imageFull {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	
+	/* #ifndef APP-PLUS-NVUE */
+	height: 100%;
+	width: 100%;
+	/* #endif */
+}
+
+@mixin lines($lines:2) {
+	text-overflow: ellipsis;
+	
+	/* #ifndef APP-NVUE */
+	word-break: break-all;
+	display: -webkit-box; 
+	-webkit-box-orient: vertical; 
+	-webkit-line-clamp: $lines; 
+	overflow: hidden; 
+	/* #endif */
+	
+	/* #ifdef APP-NVUE */
+	lines: $lines;
+	/* #endif */
+}
+
+
