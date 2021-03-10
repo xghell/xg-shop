@@ -1,0 +1,55 @@
+<template>
+	<view>
+		<uni-list>
+			<uni-list-chat v-for="(message, messageIndex) of messages" :key="messageIndex" :title="message.name" :avatar="message.avatar" :note="message.content" :time="message.date" :clickable="true" :badge-text="message.count" to="/pages/service/customer-service"></uni-list-chat>
+		</uni-list>
+		
+		<!-- #ifdef MP-WEIXIN -->
+		<view class="row-center-center bg-color-blue padding-v-side-base margin-lg border-radius-lg setting-btn" @tap="onSettingBtnTap">
+			<text class="text-color-white font-size-xl">消息设置</text>
+		</view>
+		<!-- #endif -->
+	</view>
+</template>
+
+<script>
+	import data from '@/data/message/list';
+	
+	export default {
+		data() {
+			return {
+				messages: []
+			};
+		},
+		async onLoad() {
+			const messagePromise = data.messages();
+			
+			this.messages = await messagePromise;
+		},
+		onNavigationBarButtonTap(e) {
+			const index = e.index;
+			
+			if (0 === index) {
+				this.onSettingBtnTap();
+			}
+		},
+		methods: {
+			onSettingBtnTap() {
+				uni.navigateTo({
+					url: '/pages/message/setting',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	/* #ifdef MP-WEIXIN */
+	.setting-btn {
+		@include position(fixed, none 0 0 0);
+	}
+	/* #endif */
+</style>

@@ -355,6 +355,39 @@
 			"style": {
 				
 			}
+		},
+        {
+            "path": "pages/message/list",
+			"style": {
+                "navigationBarTitleText": "消息",
+                "enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"float": "right",
+								"fontSrc": "/static/nav-bar.ttf",
+								"text": "\ue613",
+								"fontSize": "21px"
+							}
+						]
+					}
+				}
+            }
+        },
+		{
+		    "path": "pages/message/setting",
+			"style": {
+		        "navigationBarTitleText": "消息设置",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path": "pages/message/reception-management",
+			"style": {
+		        "navigationBarTitleText": "接收管理",
+		        "enablePullDownRefresh": false
+		    }
 		}
     ],
 	"tabBar": {

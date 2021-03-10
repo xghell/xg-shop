@@ -226,6 +226,8 @@
 
 	.uni-navbar--fixed {
 		position: fixed;
+		left: 0;
+		right: 0;
 		z-index: 998;
 	}
 

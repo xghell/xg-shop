@@ -1,6 +1,7 @@
 <template>
 	<view class="page">
 		<!-- #ifndef APP-NVUE -->
+		<!-- 导航栏 -->
 		<view id="nav-bar" class="nav-bar-wrap">
 			<xg-status-bar></xg-status-bar>
 			<image class="nav-bar-bg-image" :src="navBarBg" mode="widthFix"></image>
@@ -17,7 +18,7 @@
 					<tpl-search-bar radius="10000" cancelButton="none"></tpl-search-bar>
 				</view>
 				<view class="nav-bar-right">
-					<view class="nav-bar-right-item" v-for="(rightIcon, rightIconIndex) of navBarConfig.rightIconList" :key="rightIcon.title">
+					<view class="nav-bar-right-item" v-for="(rightIcon, rightIconIndex) of navBarConfig.rightIconList" :key="rightIcon.title" @tap="onNavBarButtonTap(rightIcon)">
 						<uni-icons :size="rightIcon.size" :color="rightIcon.color" :type="rightIcon.type"></uni-icons>
 						<text class="font-size-xs" :style="{color: rightIcon.color}">{{rightIcon.title}}</text>
 					</view>
@@ -226,7 +227,7 @@
 									<image  class="nav-bar-right-image" :src="navBarConfig.rightImage" mode="aspectFit"></image>
 									<text class="font-size-base text-color-white nav-bar-right-image-text">{{today}}</text>
 								</view>
-								<view class="nav-bar-right-item" v-for="(rightIcon, rightIconIndex) of navBarConfig.rightIconList" :key="rightIconIndex">
+								<view class="nav-bar-right-item" v-for="(rightIcon, rightIconIndex) of navBarConfig.rightIconList" :key="rightIconIndex" @tap="onNavBarButtonTap(rightIcon)">
 									<uni-icons :size="rightIcon.size" :color="rightIcon.color" :type="rightIcon.type"></uni-icons>
 									<text class="font-size-sm" :style="{color: rightIcon.color}">{{rightIcon.title}}</text>
 								</view>
@@ -335,6 +336,24 @@
 		// #endif
 		
 		methods: {
+			onNavBarButtonTap(e) {
+				const type = e.type;
+				if ('chat' === type) {
+					uni.navigateTo({
+						url: '/pages/message/list',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+					return ;
+				}
+				
+				if ('scan' === type) {
+					console.log('扫一扫');
+					return ;
+				}
+			},
+			
 			setTabScrollRef(tabIndex=0) {
 				// #ifdef APP-NVUE
 				const args = {

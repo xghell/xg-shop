@@ -1,0 +1,37 @@
+<template>
+	<view>
+		<uni-list>
+			<uni-list-item v-for="(setting, settingIndex) of linkSettinges" :key="settingIndex" :showArrow="true" :title="setting.name" to="/pages/message/reception-management"></uni-list-item>
+		</uni-list>
+		
+		<uni-list class="margin-top-base">
+			<uni-list-item v-for="(setting, settingIndex) of booleanSettinges" :key="settingIndex" :title="setting.name"  :showSwitch="true" :switchChecked="setting.value" @switchChange=""></uni-list-item>
+		</uni-list>
+		
+		
+	</view>
+</template>
+
+<script>
+	import data from '@/data/message/setting';
+	
+	export default {
+		data() {
+			return {
+				linkSettinges: [],
+				booleanSettinges: [],
+			}
+		},
+		async onLoad() {
+			const linkSettingesPromise = data.linkSettinges();
+			const bolleanSettingesPromise = data.booleanSettinges();
+			
+			this.linkSettinges = await linkSettingesPromise;
+			this.booleanSettinges = await bolleanSettingesPromise;
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+
+</style>

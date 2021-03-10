@@ -73,7 +73,7 @@
 				currentTabIndex: '',
 			};
 		},
-		async created() {
+		async onLoad() {
 			this.currentTabIndex = this.tabTitles[0].index;
 			
 			const navBarBgPromise = data.navBarBg();
@@ -81,6 +81,23 @@
 			
 			this.navBarBg = await navBarBgPromise;
 		},
+		// #ifndef MP-WEIXIN
+		onNavigationBarButtonTap(e) {
+			const index = e.index;
+			console.log(index);
+			//点击导航栏消息按钮
+			if (1 === index) {
+				uni.navigateTo({
+					url: '/pages/message/list',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+				return ;
+			}
+		},
+		// #endif
+		
 		methods: {
 			onTabTitleTap(index) {
 				this.currentTabIndex = index;

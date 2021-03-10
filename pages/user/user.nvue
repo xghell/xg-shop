@@ -19,7 +19,7 @@
 					<!-- #ifndef MP-WEIXIN -->
 					<view slot="right" ref="nav-bar-right" class="row-center-center">
 						<uni-icons class="margin-right-base" :size="22" type="gear" @click="onNavBarGearTap"></uni-icons>
-						<uni-icons :size="22" type="chat"></uni-icons>
+						<uni-icons :size="22" type="chat" @click="onNavBarBtnTap"></uni-icons>
 					</view>
 					<!-- #endif -->
 				</uni-nav-bar>
@@ -34,7 +34,7 @@
 						<text class="font-size-xl text-color-white">{{userInfo.nickname}}</text>
 						<view class="row-center-center">
 							<uni-icons class="margin-right-base" :size="22" color="#FFFFFF" type="gear" @click="onNavBarGearTap"></uni-icons>
-							<uni-icons :size="22" color="#FFFFFF" type="chat"></uni-icons>
+							<uni-icons :size="22" color="#FFFFFF" type="chat"  @click="onNavBarBtnTap"></uni-icons>
 						</view>
 					</view>
 					<view class="margin-top-sm">
@@ -108,7 +108,7 @@
 				products: [],
 			};
 		},
-		async created() {
+		async onLoad() {
 			const navBarBgPromise = data.navBarBg();
 			const userInfoPromise = data.userInfo();
 			const trackInfoListPromise = data.trackInfoList();
@@ -151,6 +151,15 @@
 					fail: () => {},
 					complete: () => {}
 				});
+			},
+			onNavBarBtnTap() {
+				uni.navigateTo({
+					url: '/pages/message/list',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+				return ;
 			},
 			
 			async loadProducts() {

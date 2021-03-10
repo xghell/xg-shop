@@ -79,6 +79,23 @@
 			this.cateTabTitles = await cateTabTitlesPromise;
 			this.cates = await catesPromise;
 		},
+		// #ifndef MP-WEIXIN
+		onNavigationBarButtonTap(e) {
+			const index = e.index;
+			
+			//点击导航栏消息按钮
+			if (1 === index) {
+				uni.navigateTo({
+					url: '/pages/message/list',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+				return ;
+			}
+		},
+		// #endif
+		
 		methods: {
 			cateTitleTap(index) {
 				this.titleCurrentIndex = index;

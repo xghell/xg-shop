@@ -1,0 +1,28 @@
+<template>
+	<view>
+		<uni-list>
+			<uni-list-item v-for="(setting, settingIndex) of settinges" :key="settingIndex" :showSwitch="true" thumbSize="lg" :thumb="setting.thumb" :title="setting.title" :note="setting.note" :switchChecked="setting.value"></uni-list-item>
+		</uni-list>
+	</view>
+</template>
+
+<script>
+	import data from '@/data/message/reception-management';
+	
+	export default {
+		data() {
+			return {
+				settinges: [],
+			}
+		},
+		async onLoad() {
+			const settingesPromise = data.settinges();
+			
+			this.settinges = await settingesPromise;
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
