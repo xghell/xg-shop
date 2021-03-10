@@ -9,11 +9,11 @@
 |目录|功能|
 |--	|--	|
 |common|公用目录，主要包括助手函数，公用样式等|
-|components|uni组件存放目录|
-|components-tpl|自定义组件目录，依赖于项目，跨项目使用需加以改造|
-|components-xg|自定义组件目录，可跨项目直接使用|
+|components|组件存放目录|
 |data|页面数据目录，存放所有页面数据|
+|pages|用于存放所有页面|
 |static/mock|用于模拟后端获取的静态资源|
+|uni_modules|用于存放uni_modules组件|
 
 # 三、意见反馈
 * 项目还有很多不完善，请大家多多包涵。
