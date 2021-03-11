@@ -26,7 +26,14 @@ export default {
 			
 			
 			this.$nextTick(function() {
+				// #ifdef H5
 				this.pageScrollTop = 10000000;
+				// #endif
+				
+				// #ifndef H5
+				this.pageScrollTop = 0;
+				// #endif
+				
 				// const query = uni.createSelectorQuery().in(this);
 				// query.select('#page-list').fields({size: true});
 				// query.select('#page-list-content').fields({size: true});
@@ -41,7 +48,12 @@ export default {
 			
 			this.old.pageScrollTop = scrollTop;
 			
+			// #ifdef H5
 			if (e.detail.deltaY > 1) {
+			// #endif
+			// #ifndef H5
+			if (e.detail.deltaY < -1) {
+			// #endif
 				this.closeFooterPopup();
 				this.showEmojiIcon();
 				uni.hideKeyboard();

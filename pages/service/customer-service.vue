@@ -136,7 +136,6 @@
 	
 		<!-- #ifndef H5 -->
 		<view v-if="recordingIconShow" class="recording-wrap">
-			{{recordingIconShow}}
 			<image class="recording-gif" src="/static/service/recording.gif" mode="aspectFit"></image>
 		</view>
 		<!-- #endif -->
@@ -176,23 +175,31 @@
 				this.setCurrentPlayingVoiceIndex(-1);
 			});
 			
+			// #ifndef H5
 			this.recorderManager = uni.getRecorderManager();
 			this.recorderManager.onStop(res => {
-				this.messages.push({
+				this.messages.unshift({
 					_id: '',
 					isSelf: true,
 					type: 'voice',
 					content: res.tempFilePath,
 					duration: this.recordDurating
 				});
-				
+				// console.log(res);
 				this.scrollToBottom();
 			})
+			// #endif
+			
 			
 			const messagesPromise = data.messages();
 			const emojiesPromise = data.emojies();
 			
+			// #ifdef H5
 			this.messages = await messagesPromise;
+			// #endif
+			// #ifndef H5
+			this.messages = (await messagesPromise).reverse();
+			// #endif
 			this.emojies = await emojiesPromise;
 		},
 		onUnload() {
@@ -283,12 +290,23 @@
 				}
 				
 				if (index === 'send') {
+					// #ifdef H5
 					this.messages.push({
 						_id: '',
 						isSelf: true,
 						type: 'text',
 						content: this.editorContent
 					});
+					// #endif
+					// #ifndef H5
+					this.messages.unshift({
+						_id: '',
+						isSelf: true,
+						type: 'text',
+						content: this.editorContent
+					});
+					// #endif
+					
 					// console.log(this.messages);
 					this.scrollToBottom();
 					// console.log(this.messages[0]);
@@ -331,6 +349,7 @@
 			},
 			onEditorFocus() {
 				this.showEmojiIcon();
+				this.scrollToBottom();
 			},
 			
 			onAlbumTap() {
@@ -401,19 +420,23 @@
 		/* #ifdef MP-WEIXIN */
 		height: 100%;
 		/* #endif */
+		/* #ifndef H5 */
+		transform: rotate(180deg);
+		transform-style: preserve-3d;
+		transform: rotateY(179deg) rotateZ(180deg);
+		backface-visibility: visible;
+		/* #endif */
 		
-		
-		// transform: rotate(180deg);
-		// transform-style: preserve-3d;
-		// transform: rotateY(179deg) rotateZ(180deg);
-		// backface-visibility: visible;
 	}
 	
 	.message-item {
-		// transform: rotate(180deg);
-		// transform-style: preserve-3d;
-		// transform: rotateY(180deg) rotateZ(180deg);
-		// backface-visibility: visible;
+		/* #ifndef H5 */
+		transform: rotate(180deg);
+		transform-style: preserve-3d;
+		transform: rotateY(180deg) rotateZ(180deg);
+		backface-visibility: visible;
+		/* #endif */
+		
 	}
 	
 	$arrow-size: 20rpx;
