@@ -10,12 +10,16 @@ $nav-bar-height: $nav-bar-fixed-height + $nav-bar-movable-height;
 	left: 0;
 }
 .nav-bar-poster {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
 	
 	opacity: 0;
+}
+
+.nav-bar-poster-image {
+	width: 750rpx;
 }
 
 .refresh-placeholder {
@@ -47,6 +51,9 @@ $nav-bar-height: $nav-bar-fixed-height + $nav-bar-movable-height;
 	right: 0;
 	left: 0;
 }
+.page-top-bg-image {
+	width: 750rpx;
+}
 
 
 // 导航栏部分
@@ -59,10 +66,10 @@ $nav-bar-height: $nav-bar-fixed-height + $nav-bar-movable-height;
 	left: 0;
 	right: 0;
 	
-	// @include border(2px, solid, red)
+	// @include border(2px solid red)
 }
 .nav-bar {
-	
+	// @include border(2px solid red)
 }
 .nav-bar-bg {
 	position: absolute;
@@ -74,6 +81,9 @@ $nav-bar-height: $nav-bar-fixed-height + $nav-bar-movable-height;
 	// background-color: blue;
 	// @include border(1px, solid, red)
 	overflow: hidden;
+}
+.nav-bar-bg-img {
+	width: 750rpx;
 }
 .nav-bar-bg-dynamic {
 	position: absolute;

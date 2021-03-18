@@ -29,7 +29,7 @@
 		
 		<!-- #ifdef APP-NVUE -->
 		<view ref="nav-bar-poster" id="nav-bar-poster" class="nav-bar-poster" :style="{top: (200-navBarPosterHeight) + 'px'}">
-			<image :src="poster" mode="widthFix" @load="onNavBarPosterLoad"></image>
+			<image class="nav-bar-poster-image" :src="poster" mode="widthFix" @load="onNavBarPosterLoad"></image>
 		</view>
 		<!-- #endif -->
 		
@@ -43,7 +43,7 @@
 			
 			<xg-list-item>
 				<view ref="page-top-bg" class="page-top-bg">
-					<image mode="widthFix" :src="navBarBg"></image>
+					<image class="page-top-bg-image" mode="widthFix" :src="navBarBg"></image>
 				</view>
 				
 				<!-- #ifdef APP-NVUE -->
@@ -208,7 +208,7 @@
 				<xg-status-bar></xg-status-bar>
 				<!-- 导航栏背景 -->
 				<view ref="nav-bar-bg" class="nav-bar-bg">
-					<image :src="navBarBg" mode="widthFix"></image>
+					<image class="nav-bar-bg-img" :src="navBarBg" mode="widthFix"></image>
 				</view>
 				
 				<view id="nav-bar-fixed">

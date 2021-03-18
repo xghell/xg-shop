@@ -1,7 +1,7 @@
 {
 	"id": "xg-mall",
     "displayName": "Mall 西瑾商城",
-    "version": "3.1.1",
+    "version": "3.1.2",
     "description": "商城项目 兼容android，ios、微信小程序、h5",
     "keywords": [
         "商城",
