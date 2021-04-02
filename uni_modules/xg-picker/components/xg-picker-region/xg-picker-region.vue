@@ -89,7 +89,7 @@
 		},
 		computed: {
 			showHotCitys() {
-				return typeof this.currentProvince === 'undefined';
+				return this.currentAddressItemIndex === 'province';
 			},
 			hotCitysInner() {
 				return this.hotCitys.length > 0 ? this.hotCitys : hotCitys;

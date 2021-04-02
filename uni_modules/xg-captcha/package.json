@@ -1,13 +1,10 @@
 {
-  "id": "xg-picker",
-  "displayName": "Picker  选择器",
-  "version": "1.0.1",
-  "description": "选择器集合",
+  "id": "xg-captcha",
+  "displayName": "验证码 captcha",
+  "version": "1.0.0",
+  "description": "xg-captcha",
   "keywords": [
-    "选择器",
-    "地址选择器",
-    "视频图片选择器",
-    ""
+    "xg-captcha"
 ],
   "repository": "",
   "engines": {
@@ -37,7 +34,7 @@
     "npmurl": ""
   },
   "uni_modules": {
-    "dependencies": ["uni-icons","uni-grid","xg-preview"],
+    "dependencies": [],
     "encrypt": [],
     "platforms": {
       "cloud": {

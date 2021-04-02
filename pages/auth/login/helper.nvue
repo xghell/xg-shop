@@ -1,0 +1,83 @@
+<template>
+	<view>
+		<view class="item">
+			<view class="item-label">
+				<text class="item-label-text">Q：</text>
+			</view>
+			<view class="item-content">
+				<text class="item-content-text">我的账户登录密码忘记了怎么办？</text>
+			</view>
+		</view>
+		<view class="item">
+			<view class="item-label">
+				<text class="item-label-text">A：</text>
+			</view>
+			<view class="item-content">
+				<text class="item-content-text">您可以点击找回密码，验证身份后即可重新设置新的登陆密码；您也可以通过短信验证码登录。</text>
+			</view>
+		</view>
+		
+		<view class="item">
+			<view class="item-label">
+				<text class="item-label-text">Q：</text>
+			</view>
+			<view class="item-content">
+				<text class="item-content-text">已经绑定的手机号不能正常使用，如何修改手机号码？</text>
+			</view>
+		</view>
+		<view class="item">
+			<view class="item-label">
+				<text class="item-label-text">A：</text>
+			</view>
+			<view class="item-content">
+				<text class="item-content-text">您可以点击更换账户绑定手机号，身份认证后您可以按照页面提示更换账户绑定的手机号码。</text>
+			</view>
+		</view>
+		
+		<view class="item">
+			<view class="item-label">
+				<text class="item-label-text">Q：</text>
+			</view>
+			<view class="item-content">
+				<text class="item-content-text">为什么需要身份验证？</text>
+			</view>
+		</view>
+		<view class="item">
+			<view class="item-label">
+				<text class="item-label-text">A：</text>
+			</view>
+			<view class="item-content">
+				<text class="item-content-text">系统检测到您的账户存在风险，为了保障您的账户安全，请您根据提示内容完成验证</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		
+	}
+</script>
+
+<style lang="scss" scoped>
+	.item {
+		@include flex-layout(row, flex-start);
+		padding: $uni-spacing-row-xl 0;
+		margin: 0 $uni-spacing-col-xl;
+		
+		@include border([] [] [1px solid] []);
+	}
+	.item-label {
+		width: 80rpx;
+	}
+	.item-label-text {
+		font-size: $uni-font-size-xl;
+		color: $uni-color-greyblack;
+	}
+	.item-content {
+		width: 600rpx;
+	}
+	.item-content-text {
+		font-size: $uni-font-size-lg;
+	}
+</style>

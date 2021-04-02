@@ -232,6 +232,14 @@
 				"navigationBarTitleText":"账户设置"
 			}
 		},
+		// {
+		//     "path" : "pages/address/country-choice",
+		//     "style": {
+		//         "navigationBarTitleText": "选择国家或地区",
+		//         "enablePullDownRefresh": false
+		//     }
+		    
+		// },
         {
             "path": "pages/address/list",
             "style": {
@@ -388,7 +396,115 @@
 		        "navigationBarTitleText": "接收管理",
 		        "enablePullDownRefresh": false
 		    }
+		},
+		{
+            "path" : "pages/auth/login/login",
+            "style": {
+                "navigationBarTitleText": "登录",
+                "enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"float": "right",
+								"text": "帮助",
+								"fontSize":"16px"
+							}
+						]
+					}
+				}
+            }
+            
+        },
+		{
+		    "path" : "pages/auth/login/captcha",
+		    "style": {
+		        "navigationBarTitleText": "手机号快捷登录",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		
+		{
+		    "path" : "pages/auth/login/helper",
+		    "style": {
+		        "navigationBarTitleText": "登录帮助",
+		        "enablePullDownRefresh": false
+		    }
+		    
 		}
+		// {
+		//     "path" : "pages/auth/register/register",
+		//     "style": {
+		//         "navigationBarTitleText": "手机快速注册",
+		//         "enablePullDownRefresh": false
+		//     }
+		    
+		// },
+		// {
+		//     "path" : "pages/auth/register/phone",
+		//     "style": {
+		//         "navigationBarTitleText": "手机快速注册",
+		//         "enablePullDownRefresh": false
+		//     }
+		    
+		// },
+		// {
+		//     "path" : "pages/auth/register/captcha",
+		//     "style": {
+		//         "navigationBarTitleText": "手机快速注册",
+		//         "enablePullDownRefresh": false
+		//     }
+		    
+		// },
+		// {
+		//     "path" : "pages/auth/forget-password/account",
+		//     "style": {
+		//         "navigationBarTitleText": "忘记密码",
+		//         "enablePullDownRefresh": false
+		//     }
+		    
+		// },
+		// {
+		//     "path" : "pages/auth/forget-password/auth-list",
+		//     "style": {
+		//         "navigationBarTitleText": "身份验证",
+		//         "enablePullDownRefresh": false
+		//     }
+		    
+		// },
+		// {
+		//     "path" : "pages/auth/forget-password/auth-phone",
+		//     "style": {
+		//         "navigationBarTitleText": "手机验证",
+		//         "enablePullDownRefresh": false
+		//     }
+		    
+		// },
+		// {
+		//     "path" : "pages/auth/forget-password/auth-identity",
+		//     "style": {
+		//         "navigationBarTitleText": "身份信息验证",
+		//         "enablePullDownRefresh": false
+		//     }
+		    
+		// },
+		// {
+		//     "path" : "pages/auth/forget-password/auth-consignee",
+		//     "style": {
+		//         "navigationBarTitleText": "历史收货人验证",
+		//         "enablePullDownRefresh": false
+		//     }
+		    
+		// },
+		// {
+		//     "path" : "pages/auth/forget-password/new-password",
+		//     "style": {
+		//         "navigationBarTitleText": "设置新的密码",
+		//         "enablePullDownRefresh": false
+		//     }
+		    
+		// }
     ],
 	"tabBar": {
 		"backgroundColor":"#FFFFFF",
@@ -443,7 +559,7 @@
 		"list": [
 			{
 				"name": "", //模式名称
-				"path": "pages/service/customer-service", //启动页面，必选
+				"path": "pages/auth/login/login", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]

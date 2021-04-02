@@ -1,22 +1,24 @@
 {
-  "id": "xg-picker",
-  "displayName": "Picker  选择器",
-  "version": "1.0.1",
-  "description": "选择器集合",
+  "id": "uni-easyinput",
+  "displayName": "Easyinput 增强输入框",
+  "version": "0.0.9",
+  "description": "Easyinput 组件是对原生input组件的增强",
   "keywords": [
-    "选择器",
-    "地址选择器",
-    "视频图片选择器",
-    ""
+    "input",
+    "uni-easyinput",
+    "输入框"
 ],
-  "repository": "",
+  "repository": "https://github.com/dcloudio/uni-ui",
   "engines": {
-    "HBuilderX": "^3.1.0"
+    "HBuilderX": ""
+  },
+  "directories": {
+    "example": "../../temps/example_temps"
   },
   "dcloudext": {
     "category": [
-        "前端组件",
-        "通用组件"
+      "前端组件",
+      "通用组件"
     ],
     "sale": {
       "regular": {
@@ -34,10 +36,12 @@
       "data": "无",
       "permissions": "无"
     },
-    "npmurl": ""
+    "npmurl": "https://www.npmjs.com/package/@dcloudio/uni-ui"
   },
   "uni_modules": {
-    "dependencies": ["uni-icons","uni-grid","xg-preview"],
+    "dependencies": [
+      "uni-icons"
+    ],
     "encrypt": [],
     "platforms": {
       "cloud": {
@@ -56,18 +60,18 @@
           "QQ浏览器(Android)": "y"
         },
         "H5-pc": {
-          "Chrome": "u",
-          "IE": "u",
-          "Edge": "u",
-          "Firefox": "u",
-          "Safari": "u"
+          "Chrome": "y",
+          "IE": "y",
+          "Edge": "y",
+          "Firefox": "y",
+          "Safari": "y"
         },
         "小程序": {
           "微信": "y",
-          "阿里": "u",
-          "百度": "u",
-          "字节跳动": "u",
-          "QQ": "u"
+          "阿里": "y",
+          "百度": "y",
+          "字节跳动": "y",
+          "QQ": "y"
         },
         "快应用": {
           "华为": "u",

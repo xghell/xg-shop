@@ -1,13 +1,10 @@
 {
-  "id": "xg-picker",
-  "displayName": "Picker  选择器",
-  "version": "1.0.1",
-  "description": "选择器集合",
+  "id": "xg-privacy",
+  "displayName": "隐私信息 privacy",
+  "version": "1.0.0",
+  "description": "xg-privacy",
   "keywords": [
-    "选择器",
-    "地址选择器",
-    "视频图片选择器",
-    ""
+    "xg-privacy"
 ],
   "repository": "",
   "engines": {
@@ -37,7 +34,7 @@
     "npmurl": ""
   },
   "uni_modules": {
-    "dependencies": ["uni-icons","uni-grid","xg-preview"],
+    "dependencies": [],
     "encrypt": [],
     "platforms": {
       "cloud": {

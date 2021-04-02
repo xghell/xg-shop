@@ -1,14 +1,14 @@
 {
 	"id": "xg-mall",
     "displayName": "Mall 西瑾商城",
-    "version": "3.1.2",
+    "version": "3.1.3",
     "description": "商城项目 兼容android，ios、微信小程序、h5",
     "keywords": [
         "商城",
-        "电商",
-        "mall",
-        "shop",
-        "goods"
+        "消息",
+        "客服",
+        "聊天",
+        "店铺"
     ],
     "repository": "https://github.com/xghell/xg-shop.git",
     "engines": {
