@@ -232,14 +232,14 @@
 				"navigationBarTitleText":"账户设置"
 			}
 		},
-		// {
-		//     "path" : "pages/address/country-choice",
-		//     "style": {
-		//         "navigationBarTitleText": "选择国家或地区",
-		//         "enablePullDownRefresh": false
-		//     }
+		{
+		    "path" : "pages/address/country-choice",
+		    "style": {
+		        "navigationBarTitleText": "选择国家或地区",
+		        "enablePullDownRefresh": false
+		    }
 		    
-		// },
+		},
         {
             "path": "pages/address/list",
             "style": {
@@ -432,31 +432,31 @@
 		        "enablePullDownRefresh": false
 		    }
 		    
+		},
+		{
+		    "path" : "pages/auth/register/register",
+		    "style": {
+		        "navigationBarTitleText": "手机快速注册",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/auth/register/phone",
+		    "style": {
+		        "navigationBarTitleText": "手机快速注册",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/auth/register/captcha",
+		    "style": {
+		        "navigationBarTitleText": "手机快速注册",
+		        "enablePullDownRefresh": false
+		    }
+		    
 		}
-		// {
-		//     "path" : "pages/auth/register/register",
-		//     "style": {
-		//         "navigationBarTitleText": "手机快速注册",
-		//         "enablePullDownRefresh": false
-		//     }
-		    
-		// },
-		// {
-		//     "path" : "pages/auth/register/phone",
-		//     "style": {
-		//         "navigationBarTitleText": "手机快速注册",
-		//         "enablePullDownRefresh": false
-		//     }
-		    
-		// },
-		// {
-		//     "path" : "pages/auth/register/captcha",
-		//     "style": {
-		//         "navigationBarTitleText": "手机快速注册",
-		//         "enablePullDownRefresh": false
-		//     }
-		    
-		// },
 		// {
 		//     "path" : "pages/auth/forget-password/account",
 		//     "style": {

@@ -1,0 +1,51 @@
+<template>
+	<view class="padding-xl">
+		<view class="row-center-center margin-top-base margin-bottom-lg">
+			<image class="logo" src="/static/auth/phone-captcha.png" mode="aspectFit"></image>
+		</view>
+		
+		<view class="margin-bottom-xl">
+			<text class="font-size-xl">我们将以短信或电话的形式将验证码发送给您，注意接听0589/0898/098等开头的电话</text>
+		</view>
+		<xg-captcha-input class="margin-v-side-xl" cellWidth="100rpx" cellHeight="120rpx" fontSize="60rpx" @finished="onCaptchaInputFinished"></xg-captcha-input>
+		
+		<xg-captcha-get :timeout="60"></xg-captcha-get>
+	</view>
+</template>
+
+<script>
+	import data from '@/data/auth/register/captcha';
+	import adminConfig from '@/admin.config';
+	
+	export default {
+		methods: {
+			async onCaptchaInputFinished(e) {
+				if (await data.verifyCaptcha()) {
+					uni.showToast({
+						title: '注册成功',
+						duration: 800,
+						success() {
+							setTimeout(() => {
+								uni.reLaunch({
+									url: adminConfig.login.url,
+									success: res => {
+										
+									},
+									fail: () => {},
+									complete: () => {}
+								});
+							}, 1000);
+						}
+					});
+				}
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.logo {
+		width: 120rpx;
+		height: 120rpx;
+	}
+</style>

@@ -1,0 +1,67 @@
+<template>
+	<view>
+		<view class="column-center-center margin-lg">
+			<image class="logo" src="/static/auth/cattle.png" mode=""></image>
+			<text class="font-size-lg">12456897854</text>
+		</view>
+		
+		<view class="register-btn-list">
+			<button class="border-radius-rect-circle margin-side-xl" type="warn" @tap="onuUniverifyBtnTap">
+				<text class="font-size-xl text-color-white padding-v-side-base ">本机号码一键注册</text>
+			</button>
+			<view class="row-center-center margin-lg" @tap="onOtherPhoneRegisterTap">
+				<text class="font-size-xl text-color-greyblack padding-v-side-base">其他手机号码注册</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import data from '@/data/auth/register/register';
+	import adminConfig from '@/admin.config';
+	
+	export default {
+		methods: {
+			async onuUniverifyBtnTap() {
+				if (await data.register()) {
+					uni.showToast({
+						title: '注册成功',
+						duration: 800,
+						success() {
+							setTimeout(() => {
+								uni.reLaunch({
+									url: adminConfig.login.url,
+									success: res => {
+										
+									},
+									fail: () => {},
+									complete: () => {}
+								});
+							}, 1000);
+						}
+					});
+				}
+			},
+			
+			onOtherPhoneRegisterTap() {
+				uni.navigateTo({
+					url: '/pages/auth/register/phone',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	.logo {
+		width: 200rpx;
+		height: 200rpx;
+	}
+	
+	.register-btn-list {
+		margin-top: 150rpx;
+	}
+</style>
