@@ -1,0 +1,51 @@
+<template>
+	<view>
+		<view class="column-center-center margin-top-base">
+			<image class="logo" src="/static/auth/auth-identity.png" mode="aspectFit"></image>
+			<text class="font-size-lg margin-top-base">请输入您本人身份证号码的前两位与后四位</text>
+			
+		</view>
+		<xg-captcha-input class="margin-xl"  borderType="underline" :isSeparated="true" :maxlength="6" :startLength="2" @finished="onFinished" @unfinished="onUnfinished"></xg-captcha-input>
+		
+		<view class="margin-top-xl">
+			<button class="border-radius-rect-circle margin-xl" type="warn" :disabled="isNextBtnDisabled" @tap="onNextBtnTap">
+				<text class="text-color-white padding-v-side-base">下一步</text>
+			</button>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				isNextBtnDisabled: true
+			}
+		},
+		methods: {
+			onFinished(e) {
+				// console.log(e);
+				this.isNextBtnDisabled = false;
+			},
+			onUnfinished(e) {
+				this.isNextBtnDisabled = true;
+			},
+			onNextBtnTap() {
+				uni.redirectTo({
+					url: '/pages/auth/forget-password/new-password',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			}
+		},
+		
+	}
+</script>
+
+<style lang="scss" scoped>
+	.logo {
+		width: 200rpx;
+		height: 200rpx;
+	}
+</style>

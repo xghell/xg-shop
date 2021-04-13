@@ -456,55 +456,55 @@
 		        "enablePullDownRefresh": false
 		    }
 		    
+		},
+		{
+		    "path" : "pages/auth/forget-password/account",
+		    "style": {
+		        "navigationBarTitleText": "忘记密码",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/auth/forget-password/auth-list",
+		    "style": {
+		        "navigationBarTitleText": "身份验证",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/auth/forget-password/auth-phone",
+		    "style": {
+		        "navigationBarTitleText": "手机验证",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/auth/forget-password/auth-identity",
+		    "style": {
+		        "navigationBarTitleText": "身份信息验证",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/auth/forget-password/auth-consignee",
+		    "style": {
+		        "navigationBarTitleText": "历史收货人验证",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/auth/forget-password/new-password",
+		    "style": {
+		        "navigationBarTitleText": "设置新的密码",
+		        "enablePullDownRefresh": false
+		    }
+		    
 		}
-		// {
-		//     "path" : "pages/auth/forget-password/account",
-		//     "style": {
-		//         "navigationBarTitleText": "忘记密码",
-		//         "enablePullDownRefresh": false
-		//     }
-		    
-		// },
-		// {
-		//     "path" : "pages/auth/forget-password/auth-list",
-		//     "style": {
-		//         "navigationBarTitleText": "身份验证",
-		//         "enablePullDownRefresh": false
-		//     }
-		    
-		// },
-		// {
-		//     "path" : "pages/auth/forget-password/auth-phone",
-		//     "style": {
-		//         "navigationBarTitleText": "手机验证",
-		//         "enablePullDownRefresh": false
-		//     }
-		    
-		// },
-		// {
-		//     "path" : "pages/auth/forget-password/auth-identity",
-		//     "style": {
-		//         "navigationBarTitleText": "身份信息验证",
-		//         "enablePullDownRefresh": false
-		//     }
-		    
-		// },
-		// {
-		//     "path" : "pages/auth/forget-password/auth-consignee",
-		//     "style": {
-		//         "navigationBarTitleText": "历史收货人验证",
-		//         "enablePullDownRefresh": false
-		//     }
-		    
-		// },
-		// {
-		//     "path" : "pages/auth/forget-password/new-password",
-		//     "style": {
-		//         "navigationBarTitleText": "设置新的密码",
-		//         "enablePullDownRefresh": false
-		//     }
-		    
-		// }
     ],
 	"tabBar": {
 		"backgroundColor":"#FFFFFF",

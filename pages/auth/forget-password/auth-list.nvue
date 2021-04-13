@@ -1,0 +1,33 @@
+<template>
+	<view class="padding-side-xl">
+		<view class="border-bottom-solid-1 padding-v-side-xl">
+			<text class="font-size-lg">请选择任意一种验证方式，验证通过即可设置新密码</text>
+		</view>
+		
+		<navigator hover-class="none" class="row-between-center border-bottom-solid-1 padding-v-side-lg" :url="'/pages/auth/forget-password/auth-phone?type=identity&account=' + account">
+			<text class="font-size-lg">手机号验证+身份信息验证</text>
+			<uni-icons type="arrowright"></uni-icons>
+		</navigator>
+		<navigator class="row-between-center border-bottom-solid-1 padding-v-side-lg" :url="'/pages/auth/forget-password/auth-phone?type=consignee&account=' + account">
+			<text class="font-size-lg">手机号验证+历史收货人验证</text>
+			<uni-icons type="arrowright"></uni-icons>
+		</navigator>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				account: ''
+			}
+		},
+		onLoad(options) {
+			this.account = options.account||'';
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	//
+</style>
